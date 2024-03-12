@@ -1,0 +1,3 @@
+# wrist twist
+from model1.keypoint_classifier.keypoint_classifier import KeyPointClassifier1
+from model1.point_history_classifier.point_history_classifier import PointHistoryClassifier1

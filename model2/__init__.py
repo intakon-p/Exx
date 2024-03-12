@@ -1,0 +1,3 @@
+# wrist bend
+from model2.keypoint_classifier.keypoint_classifier import KeyPointClassifier2
+from model2.point_history_classifier.point_history_classifier import PointHistoryClassifier2
