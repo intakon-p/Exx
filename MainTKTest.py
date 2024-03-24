@@ -1032,54 +1032,55 @@ def initiate():
     l2 =Label(root, textvariable = variable1, font= ('Helvetica 10 bold')).place(relx=.5, rely=.6,anchor= N)
     l3 =Label(root, textvariable = variable2, font= ('Helvetica 10 bold')).place(relx=.5, rely=.7,anchor= N)
 
-def conditionMuscle():
-    global Muscle
-    Muscle = st.text_input("Is the posture mainly static or action repeated occurs?(Y or n)")
+# def conditionMuscle():
+#     global Muscle
+#     Muscle = st.selectbox("Is the posture mainly static or action repeated occurs?", ["Y", "n"])
 
-    if Muscle == "" or Muscle is None:
-        Muscle == ""
-    elif Muscle == "Y" or Muscle == "n":
-        pass
-    else:
-        Muscle = "k"
-    return Muscle
+#     if Muscle == "" or Muscle is None:
+#         Muscle == ""
+#     elif Muscle == "Y" or Muscle == "n":
+#         pass
+#     else:
+#         Muscle = "k"
+#     return Muscle
 
-def conditionWeight():
-    global Weight
-    Weight1 = st.text_input("What is the weight of the load?")
-    if Weight1 is None or Weight1 == "":
-        Weight = -1
-    elif Weight1 is not None:
-        try:
-            Weight = float(Weight1)
-            st.write("Weight Used:", f"{Weight:.2f} kg")
-            return Weight
-        except ValueError:
-            st.write("Please enter a valid numeric value for Weight.")
-        return None
-    else:
-        Weight = -1
-    return Weight
+# def conditionWeight():
+#     global Weight
+#     # Weight1 = st.text_input("What is the weight of the load?")
+#     Weight1 = st.slider("What is the weight of the load?", 0, 20)
+#     if Weight1 is None or Weight1 == "":
+#         Weight = -1
+#     elif Weight1 is not None:
+#         try:
+#             Weight = float(Weight1)
+#             st.write("Weight Used:", f"{Weight:.2f} kg")
+#             return Weight
+#         except ValueError:
+#             st.write("Please enter a valid numeric value for Weight.")
+#         return None
+#     else:
+#         Weight = -1
+#     return Weight
 
-def checkUserInput():
-    Weight2 = float(Weight)
-    if Muscle == "Y" or Muscle == "n":
-        if Weight2 >= 0:
-            st.write("The application is ready to be used.")
-            a = 1
-        elif Weight2 < 0:
-            st.write("Please provide a positive value.")
-            a = 0
-        else:
-            st.write("Please provide a positive value.")
-            a = 0
-    elif Muscle == "" and Weight2 == -1:
-        st.write("Please provide both conditions.")
-        a = 0
-    else:
-        st.write("Error, please provide both conditions correctly.")
-        a = 0
-    return a
+# def checkUserInput():
+#     Weight2 = float(Weight)
+#     if Muscle == "Y" or Muscle == "n":
+#         if Weight2 >= 0:
+#             st.write("The application is ready to be used.")
+#             a = 1
+#         elif Weight2 < 0:
+#             st.write("Please provide a positive value.")
+#             a = 0
+#         else:
+#             st.write("Please provide a positive value.")
+#             a = 0
+#     elif Muscle == "" and Weight2 == -1:
+#         st.write("Please provide both conditions.")
+#         a = 0
+#     else:
+#         st.write("Error, please provide both conditions correctly.")
+#         a = 0
+#     return a
 
 
     # # Create a button to trigger the function

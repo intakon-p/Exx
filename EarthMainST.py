@@ -665,7 +665,7 @@ def start(logic):
     if logic == 1:
         if st.button("Choose Live Posture Analysis using webcam"):
             webcam()
-        elif st.button("Browse for a video or an audio"):
+        if st.button("Browse for a video or an audio"):
             browsefunc()
     else:
         pass 
@@ -674,6 +674,8 @@ conditionMuscle()
 conditionWeight()
 global a
 a = checkUserInput()
+
+st.file_uploader("Pick a file")
 
 if st.button("Reset"):
     if a == 1:
@@ -684,6 +686,6 @@ if st.button("Reset"):
 st.write("")
 st.write("")
 st.write("")
-st.write("<span style='font-weight: bold; color: rgb(255, 180, 10); font-size: 16px; '>Please check if the condtions are provided correctly before starting the application!</span>", unsafe_allow_html=True)
+st.write("<span style='font-weight: bold; color: rgb(255, 180, 10); font-size: 16px; '>Plasdasease check if the condtions are provided correctly before starting the application!</span>", unsafe_allow_html=True)
 
 start(a)
