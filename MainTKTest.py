@@ -209,10 +209,13 @@ def findDistance(x1, y1, x2, y2):
 
 # Calculate angle.
 def findAngle(x1, y1, x2, y2):
-    theta = m.acos((y2 - y1) * (-y1) / (m.sqrt(
-        (x2 - x1) ** 2 + (y2 - y1) ** 2) * y1))
-    degree = int(180 / m.pi) * theta
-    return degree
+    if y1 == 0:
+        return float('inf')  # Return infinity if y1 is zero to avoid division by zero
+    else:
+        theta = m.acos((y2 - y1) * (-y1) / (m.sqrt(
+            (x2 - x1) ** 2 + (y2 - y1) ** 2) * y1))
+        degree = int(180 / m.pi) * theta
+        return degree
 
 left_elbow_angle = 0;
 right_elbow_angle = 0;
@@ -728,9 +731,9 @@ def classifyPose(landmarks, output_image, display=False):
     #Muscle = input("Muscle use is static/repeated or not(Y/n)")
     #Weight = input("What is weight of object in KG ?")
     
-    if Muscle == "Y":
+    if Muscle == "Yes":
         MuscleN = 1
-    elif Muscle == "n":
+    elif Muscle == "No":
         MuscleN = 0
     else:
         MuscleN = 0
@@ -738,9 +741,9 @@ def classifyPose(landmarks, output_image, display=False):
     Calweight = 0
     if Weight < 1.99 :
         Calweight = 0
-    elif 1.99 <= Weight < 9.97 and Muscle == "n":
+    elif 1.99 <= Weight < 9.97 and Muscle == "No":
         Calweight = 1
-    elif 1.99 <= Weight < 9.97 and Muscle == "Y":
+    elif 1.99 <= Weight < 9.97 and Muscle == "Yes":
         Calweight = 2 
     elif Weight > 9.97:
         Calweight = 3
@@ -1032,55 +1035,82 @@ def initiate():
     l2 =Label(root, textvariable = variable1, font= ('Helvetica 10 bold')).place(relx=.5, rely=.6,anchor= N)
     l3 =Label(root, textvariable = variable2, font= ('Helvetica 10 bold')).place(relx=.5, rely=.7,anchor= N)
 
-# def conditionMuscle():
-#     global Muscle
-#     Muscle = st.selectbox("Is the posture mainly static or action repeated occurs?", ["Y", "n"])
+# def cameraName():
+#     # global CameraName
+#     optionsCam = ['0', '1', '2']
+#     CameraName = st.selectbox("Choose you camera.", optionsCam)
+#     # st.write("Choose " + str(CameraName))
+#     # return CameraName
 
-#     if Muscle == "" or Muscle is None:
-#         Muscle == ""
-#     elif Muscle == "Y" or Muscle == "n":
-#         pass
-#     else:
-#         Muscle = "k"
-#     return Muscle
+def conditionMuscle():
+    global Muscle
+    options = ['Yes', 'No']
 
-# def conditionWeight():
-#     global Weight
-#     # Weight1 = st.text_input("What is the weight of the load?")
-#     Weight1 = st.slider("What is the weight of the load?", 0, 20)
-#     if Weight1 is None or Weight1 == "":
-#         Weight = -1
-#     elif Weight1 is not None:
-#         try:
-#             Weight = float(Weight1)
-#             st.write("Weight Used:", f"{Weight:.2f} kg")
-#             return Weight
-#         except ValueError:
-#             st.write("Please enter a valid numeric value for Weight.")
-#         return None
-#     else:
-#         Weight = -1
-#     return Weight
+    # Muscle = st.text_input("Is the posture mainly static or action repeated occurs?(Y or n)")
+    Muscle = st.selectbox("Is the posture mainly static or action repeated occurs?", options)
 
-# def checkUserInput():
-#     Weight2 = float(Weight)
-#     if Muscle == "Y" or Muscle == "n":
-#         if Weight2 >= 0:
-#             st.write("The application is ready to be used.")
-#             a = 1
-#         elif Weight2 < 0:
-#             st.write("Please provide a positive value.")
-#             a = 0
-#         else:
-#             st.write("Please provide a positive value.")
-#             a = 0
-#     elif Muscle == "" and Weight2 == -1:
-#         st.write("Please provide both conditions.")
-#         a = 0
-#     else:
-#         st.write("Error, please provide both conditions correctly.")
-#         a = 0
-#     return a
+    if Muscle == "" or Muscle is None:
+        Muscle == ""
+    elif Muscle == "Y" or Muscle == "n":
+        pass
+    elif Muscle == "Y" or Muscle == "n":
+        pass
+    else:
+        Muscle = "k"
+    return Muscle
+
+def conditionWeight():
+    global Weight
+    # Weight1 = st.text_input("What is the weight of the load?")
+    Weight1 = st.select_slider("What is the weight of the load?", 0, 20)
+    if Weight1 is None or Weight1 == "":
+        Weight = -1
+    elif Weight1 is not None:
+        try:
+            Weight = float(Weight1)
+            st.write("Weight Used:", f"{Weight:.2f} kg")
+            return Weight
+        except ValueError:
+            st.write("Please enter a valid numeric value for Weight.")
+        return None
+    else:
+        Weight = -1
+    return Weight
+
+def conditionMuscle2():
+    global Muscle
+    options1 = ['Yes', 'No']
+    Muscle = st.selectbox("Is the posture mainly static or action repeated occurs?", options1)
+    # st.write("Muscle = " + str(Muscle))
+    return Muscle
+
+def conditionWeight2():
+    global Weight
+    values = list(range(0, 16))
+    Weight = st.select_slider("What is the weight of the load?", options = values)
+    # st.write("Weight = " + str(Weight))
+    return Weight
+
+
+def checkUserInput():
+    Weight2 = float(Weight)
+    if Muscle == "Y" or Muscle == "n":
+        if Weight2 >= 0:
+            st.write("The application is ready to be used.")
+            a = 1
+        elif Weight2 < 0:
+            st.write("Please provide a positive value.")
+            a = 0
+        else:
+            st.write("Please provide a positive value.")
+            a = 0
+    elif Muscle == "" and Weight2 == -1:
+        st.write("Please provide both conditions.")
+        a = 0
+    else:
+        st.write("Error, please provide both conditions correctly.")
+        a = 0
+    return a
 
 
     # # Create a button to trigger the function

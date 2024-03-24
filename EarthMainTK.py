@@ -642,7 +642,7 @@ def browsefunc():
       pass
    
 b1=Button(root,text="Browse for a video or an audio",font=40,command=browsefunc).place(relx=.5, rely=.2,anchor= N)
-b2=Button(root,text="Choose Live Posture Analysis using webcam",font=40,command=webcam).place(relx=.5, rely=.4,anchor= N)
+b1=Button(root,text="Choose Live Posture Analysis using webcam",font=40,command=webcam).place(relx=.5, rely=.4,anchor= N)
 #b1=Button(root,text="Main",font=40,command=main).place(relx=.5, rely=.6,anchor= N)
 root.mainloop()
 
