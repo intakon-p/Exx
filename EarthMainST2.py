@@ -12,7 +12,7 @@ import mimetypes
 # from tkinter import *  
 # from tkinter import messagebox  
 # from tkinter import filedialog
-import pyautogui as pgi
+# import pyautogui as pgi
 
 from appcopy import *
 from MainTKTest import *
