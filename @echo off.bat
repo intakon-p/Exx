@@ -1,2 +1,2 @@
 @echo off
-streamlit run EarthMainST.py
+streamlit run EarthMainST2.py

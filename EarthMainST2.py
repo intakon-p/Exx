@@ -20,13 +20,6 @@ from MainTKTest import *
 import streamlit as st
 import altair
 
-st.set_page_config(
-    page_title="Ex-stream-ly Cool App",
-    page_icon="🧊",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
 def get_args():
     parser = argparse.ArgumentParser()
 
@@ -108,7 +101,11 @@ def video_pose_estimation(name):
     use_brect = True
 
     # Camera preparation ###############################################################
-    cap = cv.VideoCapture(cap_device)
+    
+    if name == 0:
+        cap = cv.VideoCapture(cap_device)
+    elif name != 0:
+        cap = cv.VideoCapture(name)
     cap.set(cv.CAP_PROP_FRAME_WIDTH, cap_width)
     cap.set(cv.CAP_PROP_FRAME_HEIGHT, cap_height)
 
@@ -172,6 +169,13 @@ def video_pose_estimation(name):
 
     camera_video = cv2.VideoCapture(name)
     # Iterate until the webcam is accessed successfully.
+
+    # Create a placeholder for the image
+    image_placeholder = st.empty()
+    # Create a placeholder for the text
+    text_placeholder1 = st.empty()
+    text_placeholder2 = st.empty()
+
     while True:
         fps = cvFpsCalc.get()
 
@@ -326,11 +330,20 @@ def video_pose_estimation(name):
                 hand_sign_id2 = -1
             
         debug_image = draw_info(debug_image, fps)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame = draw_info(frame, fps)
         # debug_image1 = draw_info(debug_image1, fps)
         # debug_image2 = draw_info(debug_image2, fps)
 
-        cv2.imshow('Pose Classification', frame)
+
+        resized_frame = cv2.resize(frame, (1980, 1080))
+
+        # cv2.imshow('Pose Classification', frame)
+        # st.image(frame, channels="RGB", use_column_width=True, caption="Pose Classification", clear_streamlit_cache=True)
+        # image_placeholder.image(resized_frame, channels="RGB", use_column_width=True, caption="Pose Classification")
+        image_placeholder.image(resized_frame, channels="RGB", width = 900, caption = "Pose Classification")
+
+
         # cv2.imshow('Pose Classification', debug_image1)
         # cv2.imshow('Pose Classification', debug_image2)
 
@@ -349,7 +362,9 @@ def video_pose_estimation(name):
 
         LC, RC = find_rula_opp('TableA.csv','TableB.csv','TableC.csv')
         
-        st.write("LC = " + str(LC) + " and RC = " + str(RC))
+        # text_placeholder.write("LC = " + str(LC) + " and RC = " + str(RC))
+        text_placeholder1.write("Left RULA grand score = " + str(LC))
+        text_placeholder2.write("Right RULA grand score = " + str(RC))
 
         # variable1.set("Left RULA grand score: " + str(LC))
         # variable2.set("Right RULA grand score: " + str(RC))
@@ -447,6 +462,13 @@ def image_pose_estimation(file_path):
 
     camera_video = cv2.VideoCapture(0)
     # Iterate until the webcam is accessed successfully.
+
+    # Create a placeholder for the image
+    image_placeholder = st.empty()
+    # Create a placeholder for the text
+    text_placeholder1 = st.empty()
+    text_placeholder2 = st.empty()
+
     while True:
         fps = cvFpsCalc.get()
 
@@ -601,11 +623,20 @@ def image_pose_estimation(file_path):
                 hand_sign_id2 = -1
             
         debug_image = draw_info(debug_image, fps)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame = draw_info(frame, fps)
         # debug_image1 = draw_info(debug_image1, fps)
         # debug_image2 = draw_info(debug_image2, fps)
 
-        cv2.imshow('Pose Classification', frame)
+        resized_frame = cv2.resize(frame, (1980, 1080))
+
+        # cv2.imshow('Pose Classification', frame)
+        # st.image(frame)
+        # image_placeholder.image(resized_frame, channels="RGB", use_column_width=True, caption="Pose Classification")
+        image_placeholder.image(resized_frame, channels = "RGB", width = 900, caption = "Pose Classification")
+
+
+
         # cv2.imshow('Pose Classification', debug_image1)
         # cv2.imshow('Pose Classification', debug_image2)
 
@@ -624,8 +655,12 @@ def image_pose_estimation(file_path):
         global LC, RC
         LC, RC = find_rula_opp('TableA.csv','TableB.csv','TableC.csv')
 
-        st.write("LC = " + str(LC) + " and RC = " + str(RC))
+        # text_placeholder.write("LC = " + str(LC) + " and RC = " + str(RC))
+        # text_placeholder.write("Left RULA grand score = " + str(LC) + "\nRight RULA grand score = " + str(RC))
         
+        text_placeholder1.write("Left RULA grand score = " + str(LC))
+        text_placeholder2.write("Right RULA grand score = " + str(RC))
+
         # variable1.set("Left RULA grand score: " + str(LC))
         # variable2.set("Right RULA grand score: " + str(RC))
 
@@ -658,34 +693,83 @@ def browsefunc():
       video_pose_estimation(str(filename))
    elif mimestart == 'image':
       image_pose_estimation(str(filename))
-   else:
-      pass
+
    
-def start(logic):
-    if logic == 1:
-        if st.button("Choose Live Posture Analysis using webcam"):
-            webcam()
-        if st.button("Browse for a video or an audio"):
-            browsefunc()
-    else:
-        pass 
+# def start(logic):
+#     if logic == 1:
+#         if st.button("Choose Live Posture Analysis using webcam"):
+#             webcam()
+#         elif st.button("Browse for a video or an audio"):
+#             browsefunc()
+#     else:
+#         pass 
 
-conditionMuscle()
-conditionWeight()
+# conditionMuscle()
+# conditionWeight()
 global a
-a = checkUserInput()
+# a = checkUserInput()
 
-st.file_uploader("Pick a file")
+# if st.button("Reset"):
+#     if a == 1:
+#         a = 0
+#         start(a)
+#         a = 1
 
-if st.button("Reset"):
-    if a == 1:
-        a = 0
-        start(a)
-        a = 1
+import altair as alt
+import plotly.express as px
+    
+import base64
+# from multipage import MultiPage
+# app = MultiPage()
+
+st.set_page_config(
+    page_title="Automated RULA Analysis",
+    page_icon="🏂",
+    layout="wide",
+    initial_sidebar_state="expanded")
+_, titlebar, _=st.columns(3)
+# Title of the main page
+
+# # The main app
+# app.run()
+
+
+
+alt.themes.enable("dark")
+
+st.title('Automated RULA Analysis')
+
+# options1 = ['Yes', 'No']
+# Muscle = st.selectbox("Is the posture mainly static or action repeated occurs?", options1)
+# values = list(range(0, 20))
+# Weight = st.select_slider("What is the weight of the load?", options = values)
+
+optionsCam = ['0', '1', '2']
+CameraName = int(st.selectbox("Choose you camera.", optionsCam))
+# print(type(CameraName))
+conditionMuscle2()
+conditionWeight2()
 
 st.write("")
 st.write("")
 st.write("")
-st.write("<span style='font-weight: bold; color: rgb(255, 180, 10); font-size: 16px; '>Plasdasease check if the condtions are provided correctly before starting the application!</span>", unsafe_allow_html=True)
+st.write("<span style='font-weight: bold; color: rgb(255, 180, 10); font-size: 16px; '>Please check if the condtions are provided correctly before starting the application!</span>", unsafe_allow_html=True)
 
-start(a)
+# if st.button(" Browse for a Video or an Image "):
+#     browsefunc()
+# if st.button(" Choose Live Posture Analysis using Webcam "):
+#     webcam()
+
+if st.button(" Browse for a Video or an Image "):
+    col1, col2 = st.columns([1, 2])  # Split the screen into two columns
+    with col1:
+        st.write("")  # Placeholder to align the button to the right
+    with col2:
+        browsefunc()
+if st.button(" Choose Live Posture Analysis using webcam "):
+    col1, col2 = st.columns([1, 2])  # Split the screen into two columns
+    with col1:
+        st.write("")  # Placeholder to align the button to the right
+    with col2:
+        video_pose_estimation(CameraName)
+# start(a)
