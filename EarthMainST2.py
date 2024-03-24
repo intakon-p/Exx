@@ -683,7 +683,7 @@ def webcam():
 
 def browsefunc():
    
-   filename =filedialog.askopenfilename()
+   filename = filedialog.askopenfilename()
    mimestart = mimetypes.guess_type(str(filename))[0]
 
    if mimestart != None:
@@ -694,7 +694,6 @@ def browsefunc():
    elif mimestart == 'image':
       image_pose_estimation(str(filename))
 
-   
 # def start(logic):
 #     if logic == 1:
 #         if st.button("Choose Live Posture Analysis using webcam"):
@@ -760,12 +759,35 @@ st.write("<span style='font-weight: bold; color: rgb(255, 180, 10); font-size: 1
 # if st.button(" Choose Live Posture Analysis using Webcam "):
 #     webcam()
 
-if st.button(" Browse for a Video or an Image "):
+uploaded_file = st.file_uploader("Browse for a file", type=["png", "jpg", "jpeg", "mp4"], accept_multiple_files=False)
+if uploaded_file is not None:
     col1, col2 = st.columns([1, 2])  # Split the screen into two columns
     with col1:
         st.write("")  # Placeholder to align the button to the right
     with col2:
-        browsefunc()
+        # Display the uploaded file
+        # st.image(uploaded_file, caption='Uploaded Image', use_column_width=True)
+
+        # Create the 'temp' directory if it doesn't exist
+        os.makedirs("temp", exist_ok=True)
+
+        # Save the uploaded file temporarily
+        file_path = os.path.join("temp", uploaded_file.name)
+        with open(file_path, "wb") as f:
+            f.write(uploaded_file.read())
+
+        # Call the pose estimation function with the file path
+        image_pose_estimation(file_path)
+
+
+# if st.file_uploader(" Browse for a Video or an Image "):
+#     col1, col2 = st.columns([1, 2])  # Split the screen into two columns
+#     with col1:
+#         st.write("")  # Placeholder to align the button to the right
+#     with col2:
+#         browsefunc2()
+
+
 if st.button(" Choose Live Posture Analysis using webcam "):
     col1, col2 = st.columns([1, 2])  # Split the screen into two columns
     with col1:
