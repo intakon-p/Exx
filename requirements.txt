@@ -18,3 +18,4 @@ pandas==2.2.1
 utils==1.0.2
 argparse==1.4.0
 more-itertools==10.2.0
+plotly==5.20.0
