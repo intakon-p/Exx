@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 import time
 import os
 import mimetypes
-from tkinter import *  
-from tkinter import messagebox  
-from tkinter import filedialog
+# from tkinter import *  
+# from tkinter import messagebox  
+# from tkinter import filedialog
 import pyautogui as pgi
 
 from appcopy import *
@@ -681,18 +681,18 @@ def image_pose_estimation(file_path):
 def webcam():
     video_pose_estimation(0)
 
-def browsefunc():
+# def browsefunc():
    
-   filename = filedialog.askopenfilename()
-   mimestart = mimetypes.guess_type(str(filename))[0]
+#    filename = filedialog.askopenfilename()
+#    mimestart = mimetypes.guess_type(str(filename))[0]
 
-   if mimestart != None:
-      mimestart = mimestart.split('/')[0]
+#    if mimestart != None:
+#       mimestart = mimestart.split('/')[0]
 
-   if mimestart == 'video':
-      video_pose_estimation(str(filename))
-   elif mimestart == 'image':
-      image_pose_estimation(str(filename))
+#    if mimestart == 'video':
+#       video_pose_estimation(str(filename))
+#    elif mimestart == 'image':
+#       image_pose_estimation(str(filename))
 
 # def start(logic):
 #     if logic == 1:

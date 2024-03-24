@@ -18,7 +18,7 @@ from utils import CvFpsCalc
 
 from appcopy import *
 
-from tkinter import *
+# from tkinter import *
 import streamlit as st
 
 
@@ -1025,15 +1025,15 @@ import mediapipe as mp
 import matplotlib.pyplot as plt
 
 
-def initiate():
-    global root, variable1, variable2
-    root=Tk()
-    variable1=StringVar()    
-    variable2=StringVar()    
-    root.geometry("800x800")
-    l1 =Label(root, text = "Biomechanical Posture", font= ('Helvetica 25 bold')).place(relx=.5, rely=0,anchor= N)
-    l2 =Label(root, textvariable = variable1, font= ('Helvetica 10 bold')).place(relx=.5, rely=.6,anchor= N)
-    l3 =Label(root, textvariable = variable2, font= ('Helvetica 10 bold')).place(relx=.5, rely=.7,anchor= N)
+# def initiate():
+#     global root, variable1, variable2
+#     root=Tk()
+#     variable1=StringVar()    
+#     variable2=StringVar()    
+#     root.geometry("800x800")
+#     l1 =Label(root, text = "Biomechanical Posture", font= ('Helvetica 25 bold')).place(relx=.5, rely=0,anchor= N)
+#     l2 =Label(root, textvariable = variable1, font= ('Helvetica 10 bold')).place(relx=.5, rely=.6,anchor= N)
+#     l3 =Label(root, textvariable = variable2, font= ('Helvetica 10 bold')).place(relx=.5, rely=.7,anchor= N)
 
 # def cameraName():
 #     # global CameraName
