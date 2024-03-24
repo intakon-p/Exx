@@ -6,6 +6,7 @@ opencv-contrib-python==4.7.0.72
 streamlit==1.31.0
 mediapipe==0.10.11
 tk==0.1.0
+tkinter==0.1.0
 PyAutoGUI==0.9.54
 numpy==1.24.3
 Pillow==9.4.0
