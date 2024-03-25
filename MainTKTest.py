@@ -363,6 +363,23 @@ def classifyPose(landmarks, output_image, display=False):
     # Specify the color (Red) with which the label will be written on the image.
     color = (0, 0, 255)
     
+
+
+
+
+
+
+    View_Classification = calculateDistance(landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value], landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value])
+    print("View = " + str(View_Classification))
+    if 325 < View_Classification < 650:
+        View = "F"
+        print("View = " + View)
+    elif 0 < View_Classification <= 325:
+        View = "S"
+        print("View = " + View)
+
+
+
     # Calculate the required angles.
     #----------------------------------------------------------------------------------------------------------------
     

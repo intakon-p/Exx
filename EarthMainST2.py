@@ -722,7 +722,7 @@ import base64
 # app = MultiPage()
 
 st.set_page_config(
-    page_title="Automated RULA Analysis",
+    page_title=" Automated RULA Analysis ",
     page_icon="🏂",
     layout="wide",
     initial_sidebar_state="expanded")
@@ -736,15 +736,50 @@ _, titlebar, _=st.columns(3)
 
 alt.themes.enable("dark")
 
-st.title('Automated RULA Analysis')
+st.markdown("<h1 style='text-align: center; color: white;'>AI Web Application for Automated RULA Analysis</h1>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; color: grey; font-size: 16px; '>Using this artificial intelligence, you can quickly detect the worker's posture and obtain the RULA grand score.</h2>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center; color: grey; font-size: 16px; '>   </h3>", unsafe_allow_html=True)
+
+
+col1, col2, col3, col4, col5 = st.columns(5)
+
+with col1:
+    st.write("")
+
+with col2:
+    st.write("")
+
+with col3:
+    st.image("311021065_186045907268871_7154347385706692598_n.jpg", width = 300, caption = '   ')
+    st.markdown("<h3 style='text-align: center; color: grey; font-size: 14px;'><a href='https://indie-ct.enit.kku.ac.th' style='color: white; text-decoration: underline;'>Discover more about Indie-ct research laboratory</a></h3>", unsafe_allow_html=True)
+    st.markdown("")
+    st.markdown("")
+
+with col4:
+    st.write("")
+
+with col4:
+    st.write("")
+
 
 # options1 = ['Yes', 'No']
 # Muscle = st.selectbox("Is the posture mainly static or action repeated occurs?", options1)
 # values = list(range(0, 20))
 # Weight = st.select_slider("What is the weight of the load?", options = values)
 
-optionsCam = ['0', '1', '2']
-CameraName = int(st.selectbox("Choose you camera.", optionsCam))
+optionsCam = ['Intregated Camera', 'External Camera 1', 'External Camera 2', 'External Camera 3', 'External Camera 4']
+CameraName = st.selectbox("Choose you camera.", optionsCam)
+if CameraName == 'Intregated Camera':
+    CameraName = 0
+elif CameraName == 'External Camera 1':
+    CameraName = 1
+elif CameraName == 'External Camera 2':
+    CameraName = 2
+elif CameraName == 'External Camera 3':
+    CameraName = 3
+elif CameraName == 'External Camera 4':
+    CameraName = 4
+
 # print(type(CameraName))
 conditionMuscle2()
 conditionWeight2()
