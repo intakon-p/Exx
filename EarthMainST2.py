@@ -764,7 +764,7 @@ import base64
 
 st.set_page_config(
     page_title=" Automated RULA Analysis ",
-    page_icon="🏂",
+    page_icon="💪",
     layout="wide",
     initial_sidebar_state="expanded")
 _, titlebar, _=st.columns(3)
@@ -791,7 +791,7 @@ with col2:
     st.write("")
 
 with col3:
-    st.image("311021065_186045907268871_7154347385706692598_n.jpg", width = 300, caption = '   ')
+    st.image("Biever.jpg", width = 300, caption = '   ')
     st.markdown("<h3 style='text-align: center; color: grey; font-size: 14px;'><a href='https://indie-ct.enit.kku.ac.th' style='color: white; text-decoration: underline;'>Discover more about Indie-ct research laboratory</a></h3>", unsafe_allow_html=True)
     st.markdown("")
     st.markdown("")
@@ -878,8 +878,9 @@ if uploaded_file is not None:
 #     with col2:
 #         browsefunc2()
 
+# 📹🧠🫀🏋️🤾💪♥️🩺📷🎥📽️🔎🔍🏂
 
-if st.button(" Choose Live Posture Analysis using camera "):
+if st.button(" 📷  Choose Live Posture Analysis using camera "):
     simulate_loading()
     col1, col2, col3, col4, col5 = st.columns(5) 
     with col1:
@@ -892,6 +893,106 @@ if st.button(" Choose Live Posture Analysis using camera "):
         st.write("")
     with col5:
         st.write("")
+
+# import streamlit.components.v1 as components
+
+# components.html(
+#     """
+# <!DOCTYPE html>
+# <html>
+# <head>
+# <meta name="viewport" content="width=device-width, initial-scale=1">
+# <style>
+# * {box-sizing: border-box;}
+# body {font-family: Verdana, sans-serif;}
+
+# /* Slideshow container */
+# .slideshow-container {
+#   max-width: 1000px;
+#   position: relative;
+#   margin: auto;
+# }
+
+# /* The dots/bullets/indicators */
+# .dot {
+#   height: 15px;
+#   width: 15px;
+#   margin: 0 2px;
+#   background-color: #bbb;
+#   border-radius: 50%;
+#   display: inline-block;
+#   transition: background-color 0.6s ease;
+# }
+
+# .active {
+#   background-color: #ffffff;
+# }
+
+# /* Fading animation */
+# .fade {
+#   animation-name: fade;
+#   animation-duration: 1.5s;
+# }
+
+# @keyframes fade {
+#   from {opacity: .4} 
+#   to {opacity: 1}
+# }
+# </style>
+# </head>
+# <body>
+
+# <div class="slideshow-container">
+
+# <div class="mySlides fade">
+#   <img src="https://unsplash.com/photos/GJ8ZQV7eGmU/download?force=true&w=1920" style="width:100%">
+# </div>
+
+# <div class="mySlides fade">
+#   <img src="https://unsplash.com/photos/eHlVZcSrjfg/download?force=true&w=1920" style="width:100%">
+# </div>
+
+# <div class="mySlides fade">
+#   <img src="https://unsplash.com/photos/zVhYcSjd7-Q/download?force=true&w=1920" style="width:100%">
+# </div>
+
+# </div>
+# <br>
+
+# <div style="text-align:center">
+#   <span class="dot"></span> 
+#   <span class="dot"></span> 
+#   <span class="dot"></span> 
+# </div>
+
+# <script>
+# let slideIndex = 0;
+# showSlides();
+
+# function showSlides() {
+#   let i;
+#   let slides = document.getElementsByClassName("mySlides");
+#   let dots = document.getElementsByClassName("dot");
+#   for (i = 0; i < slides.length; i++) {
+#     slides[i].style.display = "none";  
+#   }
+#   slideIndex++;
+#   if (slideIndex > slides.length) {slideIndex = 1}    
+#   for (i = 0; i < dots.length; i++) {
+#     dots[i].className = dots[i].className.replace(" active", "");
+#   }
+#   slides[slideIndex-1].style.display = "block";  
+#   dots[slideIndex-1].className += " active";
+#   setTimeout(showSlides, 2000); // Change image every 2 seconds
+# }
+# </script>
+
+# </body>
+# </html> 
+
+#     """,
+#     height=600,
+# )
 
     
 # start(a)

@@ -35,10 +35,14 @@ ax.set_zlim([0, 1])    # Fixed z-limit for 3D visualization
 # Open the webcam
 cap = cv2.VideoCapture(0)
 
+# T - elev = 0, azim = 90, roll = 0
+# F - elev = 90, azim = 90, roll = 0
+# F - elev = 90, azim = 90, roll = 90
+
 # Initial view angles
 elev = 90
 azim = 90
-roll = 0
+roll = 90
 
 while True:
     ret, frame = cap.read()
@@ -80,12 +84,13 @@ while True:
         plt.pause(0.01)
 
     # Update view angles (rotate around z-axis)
-    elev += 1  # Increment azimuth angle to rotate around z-axis
-    ax.view_init(elev=elev, azim=azim, roll=roll)
+    # elev += 1  # Increment azimuth angle to rotate around z-axis
+    # ax.view_init(elev=elev, azim=azim, roll=roll)
 
     # Check for 'q' key press to exit
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+    # 
 
 # Release the webcam and close all OpenCV windows
 cap.release()
