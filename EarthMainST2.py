@@ -4,6 +4,7 @@ import numpy as np
 import time
 import mediapipe as mp
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 
 import time
@@ -20,6 +21,34 @@ from MainTKTest import *
 import streamlit as st
 import altair
 
+def plot_3d_points(landmark_positions_3d):
+    # Convert the list of lists into a NumPy array
+    landmark_positions_3d_np = np.array(landmark_positions_3d)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(landmark_positions_3d_np[:, 0], landmark_positions_3d_np[:, 1], landmark_positions_3d_np[:, 2])
+    
+    # Create an initial placeholder
+    plot_placeholder1 = st.empty()
+
+    # Generate initial data
+    x = np.linspace(0, 10, 100)
+    y = np.sin(x)
+
+    # Create a figure and plot
+    fig, ax = plt.subplots()
+    ax.plot(x, y)
+
+    # Display the plot
+    plot_placeholder1.pyplot(fig)
+
+    # Update the plot
+    new_y = np.cos(x)  # New data
+    ax.clear()  # Clear previous plot
+    ax.plot(x, new_y)  # Plot new data
+    plot_placeholder1.pyplot(fig)  # Display updated plot
+
 def get_args():
     parser = argparse.ArgumentParser()
 
@@ -35,7 +64,7 @@ def get_args():
     parser.add_argument("--min_tracking_confidence",
                         help='min_tracking_confidence',
                         type=int,
-                        default=0.5)
+                        default=0.7)
 
     args = parser.parse_args()
 
@@ -60,7 +89,7 @@ def my_function(var1, var2):
 # l3 =Label(root, textvariable = variable2, font= ('Helvetica 10 bold')).place(relx=.5, rely=.7,anchor= N)
 
 # pose_video = mp_pose.Pose(static_image_mode=False, min_detection_confidence=0.7, model_complexity=1)
-pose_video = mp_pose.Holistic(static_image_mode=False, min_detection_confidence=0., model_complexity=1)
+pose_video = mp_pose.Holistic(static_image_mode=False, min_detection_confidence=0.1, model_complexity=1)
 
 def sendWarning(x):
     pass
@@ -341,7 +370,7 @@ def video_pose_estimation(name):
         # cv2.imshow('Pose Classification', frame)
         # st.image(frame, channels="RGB", use_column_width=True, caption="Pose Classification", clear_streamlit_cache=True)
         # image_placeholder.image(resized_frame, channels="RGB", use_column_width=True, caption="Pose Classification")
-        image_placeholder.image(resized_frame, channels="RGB", width = 900, caption = "Pose Classification")
+        image_placeholder.image(resized_frame, channels="RGB", width = 900, caption = "")
 
 
         # cv2.imshow('Pose Classification', debug_image1)
@@ -356,6 +385,7 @@ def video_pose_estimation(name):
         score_wrist_twist(hand_sign_id1L, hand_sign_id1R)
 
         L_wrist_bend_score, R_wrist_bend_score = score_wrist_bend(hand_sign_id2)
+ 
         wrist_range_score_cal(L_wrist_bend_score)
         
 
@@ -519,6 +549,14 @@ def image_pose_estimation(file_path):
         keypoints = pose.process(frame)
         # Convert the frame back to BGR.
 
+
+        landmark_positions_3d = []
+        if keypoints.pose_landmarks:
+            for landmark in keypoints.pose_landmarks.landmark:
+                landmark_positions_3d.append([landmark.x, landmark.y, landmark.z])
+        
+
+
         
 
         # frame.flags.writeable = False
@@ -633,7 +671,7 @@ def image_pose_estimation(file_path):
         # cv2.imshow('Pose Classification', frame)
         # st.image(frame)
         # image_placeholder.image(resized_frame, channels="RGB", use_column_width=True, caption="Pose Classification")
-        image_placeholder.image(resized_frame, channels = "RGB", width = 900, caption = "Pose Classification")
+        image_placeholder.image(resized_frame, channels = "RGB", width = 900, caption = "")
 
 
 
@@ -658,6 +696,8 @@ def image_pose_estimation(file_path):
         # text_placeholder.write("LC = " + str(LC) + " and RC = " + str(RC))
         # text_placeholder.write("Left RULA grand score = " + str(LC) + "\nRight RULA grand score = " + str(RC))
         
+        # Visualize 3D points
+        plot_3d_points(landmark_positions_3d)
         text_placeholder1.write("Left RULA grand score = " + str(LC))
         text_placeholder2.write("Right RULA grand score = " + str(RC))
 
@@ -794,12 +834,21 @@ st.write("<span style='font-weight: bold; color: rgb(255, 180, 10); font-size: 1
 # if st.button(" Choose Live Posture Analysis using Webcam "):
 #     webcam()
 
+def simulate_loading():
+    with st.spinner('Loading...'):
+        # Simulate loading by waiting for a few seconds
+        time.sleep(5)
+    st.success('Loading complete!')
+
+
 uploaded_file = st.file_uploader("Browse for a file", type=["png", "jpg", "jpeg", "mp4"], accept_multiple_files=False)
 if uploaded_file is not None:
-    col1, col2 = st.columns([1, 2])  # Split the screen into two columns
+    simulate_loading()
+    col1, col2, col3, col4, col5 = st.columns(5)  # Split the screen into two columns
     with col1:
         st.write("")  # Placeholder to align the button to the right
     with col2:
+        
         # Display the uploaded file
         # st.image(uploaded_file, caption='Uploaded Image', use_column_width=True)
 
@@ -813,6 +862,12 @@ if uploaded_file is not None:
 
         # Call the pose estimation function with the file path
         image_pose_estimation(file_path)
+    with col3:
+        st.write("")
+    with col4:
+        st.write("")
+    with col5:
+        st.write("")
 
 
 # if st.file_uploader(" Browse for a Video or an Image "):
@@ -823,10 +878,19 @@ if uploaded_file is not None:
 #         browsefunc2()
 
 
-if st.button(" Choose Live Posture Analysis using webcam "):
-    col1, col2 = st.columns([1, 2])  # Split the screen into two columns
+if st.button(" Choose Live Posture Analysis using camera "):
+    simulate_loading()
+    col1, col2, col3, col4, col5 = st.columns(5) 
     with col1:
         st.write("")  # Placeholder to align the button to the right
     with col2:
         video_pose_estimation(CameraName)
+    with col3:
+        st.write("")  # Placeholder to align the button to the right
+    with col4:
+        st.write("")
+    with col5:
+        st.write("")
+
+    
 # start(a)

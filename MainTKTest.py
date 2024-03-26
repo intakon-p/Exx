@@ -42,7 +42,7 @@ def get_args():
     parser.add_argument("--min_tracking_confidence",
                         help='min_tracking_confidence',
                         type=int,
-                        default=0.5)
+                        default=0.9)
 
     args = parser.parse_args()
 
@@ -762,7 +762,9 @@ def classifyPose(landmarks, output_image, display=False):
         Calweight = 1
     elif 1.99 <= Weight < 9.97 and Muscle == "Yes":
         Calweight = 2 
-    elif Weight > 9.97:
+    elif Weight > 9.97 and Muscle == "No":
+        Calweight = 2
+    elif Weight > 9.97 and Muscle == "Yes":
         Calweight = 3
     print("Start")
     print("")
@@ -953,6 +955,13 @@ def score_wrist_bend(id):
 def wrist_range_score_cal(L_wrist_bend):
     global L_wrist_range_score_new, R_wrist_range_score_new
    
+    # if L_wrist_range_score is not None:
+    #     pass
+    # elif L_wrist_range_score is None:
+    #     L_wrist_range_score = 1
+
+    # print("show = " + str(L_wrist_range_score))   
+
     # print("L_wrist_score_SUM = " + str(L_wrist_range_score) + " and " + "wrist_bend_SUM = " + str(L_wrist_bend))
     # print("R_wrist_score_SUM = " + str(R_wrist_range_score) + " and " + "wrist_bend_SUM = " + str(L_wrist_bend))
     L_wrist_range_score_new = L_wrist_range_score + L_wrist_bend
@@ -1096,7 +1105,7 @@ def conditionWeight():
 
 def conditionMuscle2():
     global Muscle
-    options1 = ['Yes', 'No']
+    options1 = ['No', 'Yes']
     Muscle = st.selectbox("Is the posture mainly static or action repeated occurs?", options1)
     # st.write("Muscle = " + str(Muscle))
     return Muscle
@@ -1109,25 +1118,25 @@ def conditionWeight2():
     return Weight
 
 
-def checkUserInput():
-    Weight2 = float(Weight)
-    if Muscle == "Y" or Muscle == "n":
-        if Weight2 >= 0:
-            st.write("The application is ready to be used.")
-            a = 1
-        elif Weight2 < 0:
-            st.write("Please provide a positive value.")
-            a = 0
-        else:
-            st.write("Please provide a positive value.")
-            a = 0
-    elif Muscle == "" and Weight2 == -1:
-        st.write("Please provide both conditions.")
-        a = 0
-    else:
-        st.write("Error, please provide both conditions correctly.")
-        a = 0
-    return a
+# def checkUserInput():
+#     Weight2 = float(Weight)
+#     if Muscle == "Y" or Muscle == "n":
+#         if Weight2 >= 0:
+#             st.write("The application is ready to be used.")
+#             a = 1
+#         elif Weight2 < 0:
+#             st.write("Please provide a positive value.")
+#             a = 0
+#         else:
+#             st.write("Please provide a positive value.")
+#             a = 0
+#     elif Muscle == "" and Weight2 == -1:
+#         st.write("Please provide both conditions.")
+#         a = 0
+#     else:
+#         st.write("Error, please provide both conditions correctly.")
+#         a = 0
+#     return a
 
 
     # # Create a button to trigger the function
