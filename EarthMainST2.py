@@ -32,22 +32,8 @@ def plot_3d_points(landmark_positions_3d):
     # Create an initial placeholder
     plot_placeholder1 = st.empty()
 
-    # Generate initial data
-    x = np.linspace(0, 10, 100)
-    y = np.sin(x)
-
-    # Create a figure and plot
-    fig, ax = plt.subplots()
-    ax.plot(x, y)
-
     # Display the plot
     plot_placeholder1.pyplot(fig)
-
-    # Update the plot
-    new_y = np.cos(x)  # New data
-    ax.clear()  # Clear previous plot
-    ax.plot(x, new_y)  # Plot new data
-    plot_placeholder1.pyplot(fig)  # Display updated plot
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -696,8 +682,23 @@ def image_pose_estimation(file_path):
         # text_placeholder.write("LC = " + str(LC) + " and RC = " + str(RC))
         # text_placeholder.write("Left RULA grand score = " + str(LC) + "\nRight RULA grand score = " + str(RC))
         
-        # Visualize 3D points
-        plot_3d_points(landmark_positions_3d)
+        # def plot_3d_points(landmark_positions_3d):
+        # # Convert the list of lists into a NumPy array
+        # landmark_positions_3d_np = np.array(landmark_positions_3d)
+
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111, projection='3d')
+        # ax.scatter(landmark_positions_3d_np[:, 0], landmark_positions_3d_np[:, 1], landmark_positions_3d_np[:, 2])
+        
+        # # Create an initial placeholder
+        # plot_placeholder1 = st.empty()
+
+        # # Display the plot
+        # plot_placeholder1.pyplot(fig)
+        # plot_placeholder1.clear()
+
+        # # Visualize 3D points
+        plot_3d_points(landmarks)
         text_placeholder1.write("Left RULA grand score = " + str(LC))
         text_placeholder2.write("Right RULA grand score = " + str(RC))
 
