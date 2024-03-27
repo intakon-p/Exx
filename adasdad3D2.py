@@ -92,20 +92,50 @@ keypoint_connections = [
 # Create a new figure for subplots
 fig = plt.figure(figsize=(15, 5))
 
-# Subplot 1
-ax1 = fig.add_subplot(131, projection='3d')
-ax1.set_title('View 1')
-ax1.view_init(elev=-90, azim=-90)
-
 # Subplot 2
 ax2 = fig.add_subplot(132, projection='3d')
-ax2.set_title('View 2')
-ax2.view_init(elev=0, azim=-90)
+ax2.set_title('Top')
+ax2.view_init(elev=0, azim=-90, roll=180)
+ax2.set_xticks([])
+ax2.set_yticks([])
+ax2.set_zticks([])
+ax2.set_xticklabels([])
+ax2.set_yticklabels([])
+ax2.set_zticklabels([])
+ax2.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+ax2.tick_params(axis='y', which='both', bottom=False, top=False, labelbottom=False)
+ax2.tick_params(axis='z', which='both', bottom=False, top=False, labelbottom=False)
+ax2.set_axis_off()
+
+# Subplot 1
+ax1 = fig.add_subplot(131, projection='3d')
+ax1.set_title('Front')
+ax1.view_init(elev=-90, azim=-90, roll=0)
+ax1.set_xticks([])
+ax1.set_yticks([])
+ax1.set_zticks([])
+ax1.set_xticklabels([])
+ax1.set_yticklabels([])
+ax1.set_zticklabels([])
+ax1.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+ax1.tick_params(axis='y', which='both', bottom=False, top=False, labelbottom=False)
+ax1.tick_params(axis='z', which='both', bottom=False, top=False, labelbottom=False)
+ax1.set_axis_off()
 
 # Subplot 3
 ax3 = fig.add_subplot(133, projection='3d')
-ax3.set_title('View 3')
-ax3.view_init(elev=0, azim=-180)
+ax3.set_title('Side')
+ax3.view_init(elev=0, azim=-180, roll=90)
+ax3.set_xticks([])
+ax3.set_yticks([])
+ax3.set_zticks([])
+ax3.set_xticklabels([])
+ax3.set_yticklabels([])
+ax3.set_zticklabels([])
+ax3.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+ax3.tick_params(axis='y', which='both', bottom=False, top=False, labelbottom=False)
+ax3.tick_params(axis='z', which='both', bottom=False, top=False, labelbottom=False)
+ax3.set_axis_off()
 
 # Open the webcam
 cap = cv2.VideoCapture(0)
