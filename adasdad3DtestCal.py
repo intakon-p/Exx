@@ -3,6 +3,77 @@ import mediapipe as mp
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+import numpy as np
+
+# Define global variables for keypoints
+global Nose_Pos #0
+global Left_eye_inner_Pos #1
+global Left_eye_Pos
+global Left_eye_outer_Pos
+global Right_eye_inner_Pos
+global Right_eye_Pos #5
+global Right_eye_outer_Pos
+global Left_ear_Pos
+global Right_ear_Pos
+global Mouth_left_Pos
+global Mouth_right_Pos #10
+global Left_shoulder_Pos
+global Right_shoulder_Pos
+global Left_elbow_Pos
+global Right_elbow_Pos
+global Left_wrist_Pos #15
+global Right_wrist_Pos
+global Left_pinky_Pos
+global Right_pinky_Pos
+global Left_index_Pos
+global Right_index_Pos #20
+global Left_thumb_Pos
+global Right_thumb_Pos
+global Left_hip_Pos
+global Right_hip_Pos
+global Left_knee_Pos #25
+global Right_knee_Pos
+global Left_ankle_Pos
+global Right_ankle_Pos
+global Left_heel_Pos
+global Right_heel_Pos #30
+global Left_foot_index_Pos
+global Right_foot_index_Pos #32
+global Neck_Pos #33
+
+
+
+# Initialize variables to store keypoint positions
+Nose_Pos = None
+Right_Shoulder = None
+Left_Shoulder = None
+
+
+
+def calculate_angle_between_keypoints_2d(keypoint1, keypoint2, keypoint3):
+    global angle
+    # Only use x and y coordinates for angle calculation
+    x1, y1, _ = keypoint1
+    x2, y2, _ = keypoint2
+    x3, y3, _ = keypoint3
+    
+    # Calculate vectors between keypoints
+    vector1 = np.array([x1 - x2, y1 - y2])
+    vector2 = np.array([x3 - x2, y3 - y2])
+
+    # Calculate dot product and magnitudes
+    dot_product = np.dot(vector1, vector2)
+    magnitude_vector1 = np.linalg.norm(vector1)
+    magnitude_vector2 = np.linalg.norm(vector2)
+
+    # Calculate cosine of the angle
+    cos_theta = dot_product / (magnitude_vector1 * magnitude_vector2)
+
+    # Convert cosine to angle in degrees
+    angle = np.degrees(np.arccos(cos_theta))
+    
+    return angle
+
 # Initialize MediaPipe pose model
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose(static_image_mode=False, min_detection_confidence=0.5, min_tracking_confidence=0.5)
@@ -96,46 +167,16 @@ fig = plt.figure(figsize=(15, 5))
 ax2 = fig.add_subplot(132, projection='3d')
 ax2.set_title('Top')
 ax2.view_init(elev=0, azim=-90, roll=180)
-ax2.set_xticks([])
-ax2.set_yticks([])
-ax2.set_zticks([])
-ax2.set_xticklabels([])
-ax2.set_yticklabels([])
-ax2.set_zticklabels([])
-ax2.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
-ax2.tick_params(axis='y', which='both', bottom=False, top=False, labelbottom=False)
-ax2.tick_params(axis='z', which='both', bottom=False, top=False, labelbottom=False)
-ax2.set_axis_off()
 
 # Subplot 1
 ax1 = fig.add_subplot(131, projection='3d')
 ax1.set_title('Front')
 ax1.view_init(elev=-90, azim=-90, roll=0)
-ax1.set_xticks([])
-ax1.set_yticks([])
-ax1.set_zticks([])
-ax1.set_xticklabels([])
-ax1.set_yticklabels([])
-ax1.set_zticklabels([])
-ax1.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
-ax1.tick_params(axis='y', which='both', bottom=False, top=False, labelbottom=False)
-ax1.tick_params(axis='z', which='both', bottom=False, top=False, labelbottom=False)
-ax1.set_axis_off()
 
 # Subplot 3
 ax3 = fig.add_subplot(133, projection='3d')
 ax3.set_title('Side')
 ax3.view_init(elev=0, azim=-180, roll=90)
-ax3.set_xticks([])
-ax3.set_yticks([])
-ax3.set_zticks([])
-ax3.set_xticklabels([])
-ax3.set_yticklabels([])
-ax3.set_zticklabels([])
-ax3.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
-ax3.tick_params(axis='y', which='both', bottom=False, top=False, labelbottom=False)
-ax3.tick_params(axis='z', which='both', bottom=False, top=False, labelbottom=False)
-ax3.set_axis_off()
 
 # Open the webcam
 cap = cv2.VideoCapture(0)
@@ -219,7 +260,81 @@ while True:
             print("Keypoint positions:")
             for idx, point_3d in enumerate(keypoints_3d):
                 print(f"Keypoint {idx}: {point_3d}")
-    
+                # Assign values to global variables based on the keypoint index
+                if idx == 0:
+                    Nose_Pos = point_3d
+                elif idx == 1:
+                    Left_eye_inner_Pos = point_3d
+                elif idx == 2:
+                    Left_eye_Pos = point_3d
+                elif idx == 3:
+                    Left_eye_outer_Pos = point_3d
+                elif idx == 4:
+                    Right_eye_inner_Pos = point_3d
+                elif idx == 5:
+                    Right_eye_Pos = point_3d
+                elif idx == 6:
+                    Right_eye_outer_Pos = point_3d
+                elif idx == 7:
+                    Left_ear_Pos = point_3d
+                elif idx == 8:
+                    Right_ear_Pos = point_3d
+                elif idx == 9:
+                    Mouth_left_Pos = point_3d
+                elif idx == 10:
+                    Mouth_right_Pos = point_3d
+                elif idx == 11:
+                    Left_shoulder_Pos = point_3d
+                elif idx == 12:
+                    Right_shoulder_Pos = point_3d
+                elif idx == 13:
+                    Left_elbow_Pos = point_3d
+                elif idx == 14:
+                    Right_elbow_Pos = point_3d
+                elif idx == 15:
+                    Left_wrist_Pos = point_3d
+                elif idx == 16:
+                    Right_wrist_Pos = point_3d
+                elif idx == 17:
+                    Left_pinky_Pos = point_3d
+                elif idx == 18:
+                    Right_pinky_Pos = point_3d
+                elif idx == 19:
+                    Left_index_Pos = point_3d
+                elif idx == 20:
+                    Right_index_Pos = point_3d
+                elif idx == 21:
+                    Left_thumb_Pos = point_3d
+                elif idx == 22:
+                    Right_thumb_Pos = point_3d
+                elif idx == 23:
+                    Left_hip_Pos = point_3d
+                elif idx == 24:
+                    Right_hip_Pos = point_3d
+                elif idx == 25:
+                    Left_knee_Pos = point_3d
+                elif idx == 26:
+                    Right_knee_Pos = point_3d
+                elif idx == 27:
+                    Left_ankle_Pos = point_3d
+                elif idx == 28:
+                    Right_ankle_Pos = point_3d
+                elif idx == 29:
+                    Left_heel_Pos = point_3d
+                elif idx == 30:
+                    Right_heel_Pos = point_3d
+                elif idx == 31:
+                    Left_foot_index_Pos = point_3d
+                elif idx == 32:
+                    Right_foot_index_Pos = point_3d
+                elif idx == 33:
+                    Neck_Pos = point_3d
+
+            # Print the positions of specific keypoints
+            print("Nose position:", Nose_Pos)
+            print("Right Shoulder position:", Right_shoulder_Pos)
+            print("Left Shoulder position:", Left_shoulder_Pos)
+
     plt.pause(30)
 
 # Release the webcam and close all OpenCV windows
