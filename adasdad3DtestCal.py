@@ -5,6 +5,8 @@ from mpl_toolkits.mplot3d import Axes3D
 
 import numpy as np
 
+from angle_cal import *
+
 # Define global variables for keypoints
 global Nose_Pos #0
 global Left_eye_inner_Pos #1
@@ -78,32 +80,6 @@ Right_heel_Pos = None
 Left_foot_index_Pos = None
 Right_foot_index_Pos = None
 Neck_Pos = None
-
-
-
-def calculate_angle_between_keypoints_2d(keypoint1, keypoint2, keypoint3):
-    global angle
-    # Only use x and y coordinates for angle calculation
-    x1, y1, _ = keypoint1
-    x2, y2, _ = keypoint2
-    x3, y3, _ = keypoint3
-    
-    # Calculate vectors between keypoints
-    vector1 = np.array([x1 - x2, y1 - y2])
-    vector2 = np.array([x3 - x2, y3 - y2])
-
-    # Calculate dot product and magnitudes
-    dot_product = np.dot(vector1, vector2)
-    magnitude_vector1 = np.linalg.norm(vector1)
-    magnitude_vector2 = np.linalg.norm(vector2)
-
-    # Calculate cosine of the angle
-    cos_theta = dot_product / (magnitude_vector1 * magnitude_vector2)
-
-    # Convert cosine to angle in degrees
-    angle = np.degrees(np.arccos(cos_theta))
-    
-    return angle
 
 # Initialize MediaPipe pose model
 mp_pose = mp.solutions.pose
@@ -360,12 +336,13 @@ while True:
                     Right_foot_index_Pos = point_3d
                 elif idx == 33:
                     Neck_Pos = point_3d
-
-            # Print the positions of specific keypoints
-            print("Nose position:", Nose_Pos)
-            print("Right Shoulder position:", Right_shoulder_Pos)
-            print("Left Shoulder position:", Left_shoulder_Pos)
-            print("Left Shoulder position:", Left_foot_index_Pos)
+                    
+            # Calculate angle
+                    
+            # Step 1 - xz
+            
+            
+            
 
     plt.pause(30)
 
