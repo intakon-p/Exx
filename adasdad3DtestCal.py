@@ -43,10 +43,41 @@ global Neck_Pos #33
 
 
 
-# Initialize variables to store keypoint positions
+# Initialize variables
 Nose_Pos = None
-Right_Shoulder = None
-Left_Shoulder = None
+Left_eye_inner_Pos = None
+Left_eye_Pos = None
+Left_eye_outer_Pos = None
+Right_eye_inner_Pos = None
+Right_eye_Pos = None
+Right_eye_outer_Pos = None
+Left_ear_Pos = None
+Right_ear_Pos = None
+Mouth_left_Pos = None
+Mouth_right_Pos = None
+Left_shoulder_Pos = None
+Right_shoulder_Pos = None
+Left_elbow_Pos = None
+Right_elbow_Pos = None
+Left_wrist_Pos = None
+Right_wrist_Pos = None
+Left_pinky_Pos = None
+Right_pinky_Pos = None
+Left_index_Pos = None
+Right_index_Pos = None
+Left_thumb_Pos = None
+Right_thumb_Pos = None
+Left_hip_Pos = None
+Right_hip_Pos = None
+Left_knee_Pos = None
+Right_knee_Pos = None
+Left_ankle_Pos = None
+Right_ankle_Pos = None
+Left_heel_Pos = None
+Right_heel_Pos = None
+Left_foot_index_Pos = None
+Right_foot_index_Pos = None
+Neck_Pos = None
 
 
 
@@ -334,6 +365,7 @@ while True:
             print("Nose position:", Nose_Pos)
             print("Right Shoulder position:", Right_shoulder_Pos)
             print("Left Shoulder position:", Left_shoulder_Pos)
+            print("Left Shoulder position:", Left_foot_index_Pos)
 
     plt.pause(30)
 
