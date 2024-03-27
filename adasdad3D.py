@@ -98,231 +98,113 @@ ax.set_xlim([0, 640])  # Adjust according to your image size
 ax.set_ylim([480, 0])  # Adjust according to your image size
 ax.set_zlim([0, 1])    # Fixed z-limit for 3D visualization
 
-def DimGraphCam(capName):
-    # Open the webcam
-    cap = cv2.VideoCapture(capName)
+# Open the webcam
+cap = cv2.VideoCapture(0)
 
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+    
+    # Convert the image to RGB
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    
+    # Perform pose estimation
+    results = pose.process(rgb_frame)
+    
+    # Clear the plot for the next frame
+    ax.clear()
+    
+    # If pose detected, plot keypoints and lines
+    if results.pose_landmarks:
+        # Extract 3D keypoints
+        keypoints_3d = []
+
+        for landmark in results.pose_landmarks.landmark:
+            # Convert normalized coordinates to pixel coordinates
+            cx, cy, cz = landmark.x * frame.shape[1], landmark.y * frame.shape[0], landmark.z
+            keypoints_3d.append((cx, cy, cz))
         
-        # Convert the image to RGB
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # Calculate midpoint between left and right shoulders
+        left_shoulder = keypoints_3d[mp_pose.PoseLandmark.LEFT_SHOULDER.value]
+        right_shoulder = keypoints_3d[mp_pose.PoseLandmark.RIGHT_SHOULDER.value]
+        midpoint_shoulders = ((keypoints_3d[11][0] + keypoints_3d[12][0]) / 2, (keypoints_3d[11][1] + keypoints_3d[12][1]) / 2, (keypoints_3d[11][2] + keypoints_3d[12][2]) / 2)
         
-        # Perform pose estimation
-        results = pose.process(rgb_frame)
+        # Add the midpoint shoulders to keypoints_3d
+        keypoints_3d.append(midpoint_shoulders)
+
+        # Add the midpoint shoulders to keypoint_colors
+        keypoint_colors[len(keypoints_3d) - 1] = '#ce4802'  # Green color for midpoint shoulders
+
+        # Define connections between the midpoint and other keypoints
+        keypoint_connections_with_midpoint = [
+            # Midpoint shoulders to nose
+            (len(keypoints_3d) - 1, Pose.NOSE.value),
+            # Add more connections as needed
+        ]
         
-        # Clear the plot for the next frame
-        ax.clear()
-        
-        # If pose detected, plot keypoints and lines
-        if results.pose_landmarks:
-            # Extract 3D keypoints
-            keypoints_3d = []
+        # Plot keypoints in 3D space with specified color
+        for idx, point_3d in enumerate(keypoints_3d):
+            color = keypoint_colors.get(idx, 'gray')  # Default to gray if color not specified
+            ax.scatter(point_3d[0], point_3d[1], point_3d[2], c=color, marker='o')
 
-            for landmark in results.pose_landmarks.landmark:
-                # Convert normalized coordinates to pixel coordinates
-                cx, cy, cz = landmark.x * frame.shape[1], landmark.y * frame.shape[0], landmark.z
-                keypoints_3d.append((cx, cy, cz))
-            
-            # Calculate midpoint between left and right shoulders
-            left_shoulder = keypoints_3d[mp_pose.PoseLandmark.LEFT_SHOULDER.value]
-            right_shoulder = keypoints_3d[mp_pose.PoseLandmark.RIGHT_SHOULDER.value]
-            midpoint_shoulders = ((keypoints_3d[11][0] + keypoints_3d[12][0]) / 2, (keypoints_3d[11][1] + keypoints_3d[12][1]) / 2, (keypoints_3d[11][2] + keypoints_3d[12][2]) / 2)
-            
-            # Add the midpoint shoulders to keypoints_3d
-            keypoints_3d.append(midpoint_shoulders)
+        # Draw lines between connected keypoints with specified color
+        for connection in keypoint_connections:
+            start_point_idx, end_point_idx = connection
+            start_point = keypoints_3d[start_point_idx]
+            end_point = keypoints_3d[end_point_idx]
+            color = connection_colors.get(connection, 'gray')  # Default to gray if color not specified
+            ax.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], [start_point[2], end_point[2]], color=color)
 
-            # Add the midpoint shoulders to keypoint_colors
-            keypoint_colors[len(keypoints_3d) - 1] = '#ce4802'  # Green color for midpoint shoulders
+        # Plot lines connecting the midpoint to other keypoints
+        for connection in keypoint_connections_with_midpoint:
+            start_point_idx, end_point_idx = connection
+            start_point = keypoints_3d[start_point_idx]
+            end_point = keypoints_3d[end_point_idx]
+            ax.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], [start_point[2], end_point[2]], color='#0d0096')
 
-            # Define connections between the midpoint and other keypoints
-            keypoint_connections_with_midpoint = [
-                # Midpoint shoulders to nose
-                (len(keypoints_3d) - 1, Pose.NOSE.value),
-                # Add more connections as needed
-            ]
-            
-            # Plot keypoints in 3D space with specified color
-            for idx, point_3d in enumerate(keypoints_3d):
-                color = keypoint_colors.get(idx, 'gray')  # Default to gray if color not specified
-                ax.scatter(point_3d[0], point_3d[1], point_3d[2], c=color, marker='o')
+        # Define connections between the midpoint and each shoulder with colors
+        keypoint_connections_with_midpoint = [
+            # Midpoint shoulders to left shoulder (color: blue)
+            (len(keypoints_3d) - 1, Pose.LEFT_SHOULDER.value, '#d44606'),
+            # Midpoint shoulders to right shoulder (color: red)
+            (len(keypoints_3d) - 1, Pose.RIGHT_SHOULDER.value, '#970102'),
+        ]
 
-            # Draw lines between connected keypoints with specified color
-            for connection in keypoint_connections:
-                start_point_idx, end_point_idx = connection
-                start_point = keypoints_3d[start_point_idx]
-                end_point = keypoints_3d[end_point_idx]
-                color = connection_colors.get(connection, 'gray')  # Default to gray if color not specified
-                ax.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], [start_point[2], end_point[2]], color=color)
-
-            # Plot lines connecting the midpoint to other keypoints
-            for connection in keypoint_connections_with_midpoint:
-                start_point_idx, end_point_idx = connection
-                start_point = keypoints_3d[start_point_idx]
-                end_point = keypoints_3d[end_point_idx]
-                ax.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], [start_point[2], end_point[2]], color='#0d0096')
-
-            # Define connections between the midpoint and each shoulder with colors
-            keypoint_connections_with_midpoint = [
-                # Midpoint shoulders to left shoulder (color: blue)
-                (len(keypoints_3d) - 1, Pose.LEFT_SHOULDER.value, '#d44606'),
-                # Midpoint shoulders to right shoulder (color: red)
-                (len(keypoints_3d) - 1, Pose.RIGHT_SHOULDER.value, '#970102'),
-            ]
-
-            # Plot lines connecting the midpoint to each shoulder with different colors
-            for connection in keypoint_connections_with_midpoint:
-                start_point_idx, end_point_idx, color = connection
-                start_point = keypoints_3d[start_point_idx]
-                end_point = keypoints_3d[end_point_idx]
-                ax.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], [start_point[2], end_point[2]], color=color)
+        # Plot lines connecting the midpoint to each shoulder with different colors
+        for connection in keypoint_connections_with_midpoint:
+            start_point_idx, end_point_idx, color = connection
+            start_point = keypoints_3d[start_point_idx]
+            end_point = keypoints_3d[end_point_idx]
+            ax.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], [start_point[2], end_point[2]], color=color)
 
 
 
-            # # Merge both lists of connections
-            # all_connections = keypoint_connections + keypoint_connections_with_midpoint
+        # # Merge both lists of connections
+        # all_connections = keypoint_connections + keypoint_connections_with_midpoint
 
-            # # Draw lines between connected keypoints with specified color
-            # for connection in all_connections:
-            #     start_point_idx, end_point_idx = connection
-            #     start_point = keypoints_3d[start_point_idx]
-            #     end_point = keypoints_3d[end_point_idx]
-            #     if connection in connection_colors:
-            #         color = connection_colors[connection]
-            #     else:
-            #         color = 'gray'  # Default to gray if color not specified
-            #     ax.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], [start_point[2], end_point[2]], color=color)
-
-
-            # Update plot
-            plt.pause(.5)
-
-        # Check for 'q' key press to exit
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    # Release the webcam and close all OpenCV windows
-    cap.release()
-    cv2.destroyAllWindows()
-
-    # Close MediaPipe pose model
-    pose.close()
+        # # Draw lines between connected keypoints with specified color
+        # for connection in all_connections:
+        #     start_point_idx, end_point_idx = connection
+        #     start_point = keypoints_3d[start_point_idx]
+        #     end_point = keypoints_3d[end_point_idx]
+        #     if connection in connection_colors:
+        #         color = connection_colors[connection]
+        #     else:
+        #         color = 'gray'  # Default to gray if color not specified
+        #     ax.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], [start_point[2], end_point[2]], color=color)
 
 
-def DimGraphImg(ImgName):
-    # Open the webcam
-    cap = cv2.VideoCapture(0)
+        # Update plot
+        plt.pause(.5)
 
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-        
-        # Convert the image to RGB
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        
-        # Perform pose estimation
-        results = pose.process(rgb_frame)
-        
-        # Clear the plot for the next frame
-        ax.clear()
-        
-        # If pose detected, plot keypoints and lines
-        if results.pose_landmarks:
-            # Extract 3D keypoints
-            keypoints_3d = []
+    # Check for 'q' key press to exit
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
-            for landmark in results.pose_landmarks.landmark:
-                # Convert normalized coordinates to pixel coordinates
-                cx, cy, cz = landmark.x * frame.shape[1], landmark.y * frame.shape[0], landmark.z
-                keypoints_3d.append((cx, cy, cz))
-            
-            # Calculate midpoint between left and right shoulders
-            left_shoulder = keypoints_3d[mp_pose.PoseLandmark.LEFT_SHOULDER.value]
-            right_shoulder = keypoints_3d[mp_pose.PoseLandmark.RIGHT_SHOULDER.value]
-            midpoint_shoulders = ((keypoints_3d[11][0] + keypoints_3d[12][0]) / 2, (keypoints_3d[11][1] + keypoints_3d[12][1]) / 2, (keypoints_3d[11][2] + keypoints_3d[12][2]) / 2)
-            
-            # Add the midpoint shoulders to keypoints_3d
-            keypoints_3d.append(midpoint_shoulders)
+# Release the webcam and close all OpenCV windows
+cap.release()
+cv2.destroyAllWindows()
 
-            # Add the midpoint shoulders to keypoint_colors
-            keypoint_colors[len(keypoints_3d) - 1] = '#ce4802'  # Green color for midpoint shoulders
-
-            # Define connections between the midpoint and other keypoints
-            keypoint_connections_with_midpoint = [
-                # Midpoint shoulders to nose
-                (len(keypoints_3d) - 1, Pose.NOSE.value),
-                # Add more connections as needed
-            ]
-            
-            # Plot keypoints in 3D space with specified color
-            for idx, point_3d in enumerate(keypoints_3d):
-                color = keypoint_colors.get(idx, 'gray')  # Default to gray if color not specified
-                ax.scatter(point_3d[0], point_3d[1], point_3d[2], c=color, marker='o')
-
-            # Draw lines between connected keypoints with specified color
-            for connection in keypoint_connections:
-                start_point_idx, end_point_idx = connection
-                start_point = keypoints_3d[start_point_idx]
-                end_point = keypoints_3d[end_point_idx]
-                color = connection_colors.get(connection, 'gray')  # Default to gray if color not specified
-                ax.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], [start_point[2], end_point[2]], color=color)
-
-            # Plot lines connecting the midpoint to other keypoints
-            for connection in keypoint_connections_with_midpoint:
-                start_point_idx, end_point_idx = connection
-                start_point = keypoints_3d[start_point_idx]
-                end_point = keypoints_3d[end_point_idx]
-                ax.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], [start_point[2], end_point[2]], color='#0d0096')
-
-            # Define connections between the midpoint and each shoulder with colors
-            keypoint_connections_with_midpoint = [
-                # Midpoint shoulders to left shoulder (color: blue)
-                (len(keypoints_3d) - 1, Pose.LEFT_SHOULDER.value, '#d44606'),
-                # Midpoint shoulders to right shoulder (color: red)
-                (len(keypoints_3d) - 1, Pose.RIGHT_SHOULDER.value, '#970102'),
-            ]
-
-            # Plot lines connecting the midpoint to each shoulder with different colors
-            for connection in keypoint_connections_with_midpoint:
-                start_point_idx, end_point_idx, color = connection
-                start_point = keypoints_3d[start_point_idx]
-                end_point = keypoints_3d[end_point_idx]
-                ax.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], [start_point[2], end_point[2]], color=color)
-
-
-
-            # # Merge both lists of connections
-            # all_connections = keypoint_connections + keypoint_connections_with_midpoint
-
-            # # Draw lines between connected keypoints with specified color
-            # for connection in all_connections:
-            #     start_point_idx, end_point_idx = connection
-            #     start_point = keypoints_3d[start_point_idx]
-            #     end_point = keypoints_3d[end_point_idx]
-            #     if connection in connection_colors:
-            #         color = connection_colors[connection]
-            #     else:
-            #         color = 'gray'  # Default to gray if color not specified
-            #     ax.plot([start_point[0], end_point[0]], [start_point[1], end_point[1]], [start_point[2], end_point[2]], color=color)
-
-
-            # Update plot
-            plt.pause(.5)
-
-        # Check for 'q' key press to exit
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    # Release the webcam and close all OpenCV windows
-    cap.release()
-    cv2.destroyAllWindows()
-
-    # Close MediaPipe pose model
-    pose.close()
-
-
-
-DimGraphCam(0)
+# Close MediaPipe pose model
+pose.close()
