@@ -339,12 +339,25 @@ while True:
                     
             # Calculate angle
                     
-            # Step 1 - xz
+            # Step 1 - yz
+            left_shoulder_angle = calculate_angle(Left_elbow_Pos, Left_shoulder_Pos, Left_hip_Pos, 'yz')
+            right_shoulder_angle = calculate_angle(Right_elbow_Pos, Right_shoulder_Pos, Right_hip_Pos, 'yz')
+
+            # Step 2 - yz
+            left_shoulder_angle = calculate_angle(Left_shoulder_Pos, Left_elbow_Pos, Left_wrist_Pos, 'yz')
+            right_shoulder_angle = calculate_angle(Right_shoulder_Pos, Right_elbow_Pos, Right_wrist_Pos, 'yz')   
+            intersection_point_xz = find_intersection_point(Left_elbow_Pos, Left_wrist_Pos, Right_elbow_Pos, Right_wrist_Pos, 'xz')
+            intersection_point_xy = find_intersection_point(Left_elbow_Pos, Left_wrist_Pos, Right_elbow_Pos, Right_wrist_Pos, 'xy')
+            if intersection_point_xz or intersection_point_xz:
+                print("Intersection point:", intersection_point_xz)
+            else:
+                print("Lines are parallel, no intersection point")
+            
             
             
             
 
-    plt.pause(30)
+    plt.pause(.01)
 
 # Release the webcam and close all OpenCV windows
 cap.release()
