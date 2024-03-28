@@ -191,13 +191,6 @@ ax3.view_init(elev=0, azim=-180, roll=90)
 # Open the webcam
 cap = cv2.VideoCapture(0)
 
-global left_shoulder_score
-global right_shoulder_score
-global left_shoulder_abduct_score
-global right_shoulder_abduct_score
-global step1_left_score
-global step1_right_score
-
 while True:
     ret, frame = cap.read()
     if not ret:
@@ -374,7 +367,7 @@ while True:
             elif 45 <= left_shoulder_angle < 90:
                 left_shoulder_score = 3
             elif 90 <= left_shoulder_angle:
-                left_shoulder_score = 4     
+                left_shoulder_score = 4       
 
             if 0 <= right_shoulder_angle < 20:
                 right_shoulder_score = 1
@@ -383,52 +376,32 @@ while True:
             elif 45 <= right_shoulder_angle < 90:
                 right_shoulder_score = 3
             elif 90 <= right_shoulder_angle:
-                right_shoulder_score = 4                    
+                right_shoulder_score = 4                                           
+
             # Addition - front view shoulder abducted
             left_shoulder_abduct_angle = calculate_angle(Left_elbow_Pos, Left_shoulder_Pos, Left_hip_Pos, 'front')
             right_shoulder_abduct_angle = calculate_angle(Right_elbow_Pos, Right_shoulder_Pos, Right_hip_Pos, 'front')
-            if left_shoulder_abduct_angle > 45:
+            if left_shoulder_abduct_angle > 30:
                 left_shoulder_abduct_score = 1
-            else:
-                left_shoulder_abduct_score = 0
-            if right_shoulder_abduct_angle > 45:
+            if right_shoulder_abduct_angle > 30:
                 right_shoulder_abduct_score = 1 
-            else:
-                right_shoulder_abduct_score = 0
 
             step1_left_score = left_shoulder_score + left_shoulder_abduct_score
             step1_right_score = right_shoulder_score + right_shoulder_abduct_score
-            # print("step1 left score = " + str(step1_left_score) + " and step1 right score = " + str(step1_right_score))
-
+            print("setp 1 left score is: " + str(step1_left_score) + "setp 1 right score is: " + str(step1_right_score))
 
             # Step 2 - side view elbow position
             left_wrist_angle = calculate_angle(Left_shoulder_Pos, Left_elbow_Pos, Left_wrist_Pos, 'side')
             right_wrist_angle = calculate_angle(Right_shoulder_Pos, Right_elbow_Pos, Right_wrist_Pos, 'side')   
-            if 90 <= left_wrist_angle <= 150:
-                left_wrist_score = 1
-            else:
-                left_wrist_score = 2
-            if 90 <= right_wrist_angle < 150:
-                right_wrist_score = 1
-            else:
-                right_wrist_score = 2           
             # Addition - front&top views forearm across midline
             forearm_intersection_point_xz = find_intersection_point(Left_elbow_Pos, Left_wrist_Pos, Right_elbow_Pos, Right_wrist_Pos, 'top')
             forearm_intersection_point_xy = find_intersection_point(Left_elbow_Pos, Left_wrist_Pos, Right_elbow_Pos, Right_wrist_Pos, 'front')
             if forearm_intersection_point_xz:
-                wrist_midline = 1
-                # print("Intersection point:", forearm_intersection_point_xz)
+                print("Intersection point:", forearm_intersection_point_xz)
             elif forearm_intersection_point_xy:
-                wrist_midline = 1
-                # print("Intersection point:", forearm_intersection_point_xy)
+                print("Intersection point:", forearm_intersection_point_xy)
             else:
-                wrist_midline = 0
-                # print("Lines are parallel, no intersection point")
-
-            step2_left_score = left_wrist_score + wrist_midline
-            step2_right_score = right_wrist_score + wrist_midline
-            # print("step2 left score = " + str(step2_left_score) + " and step2 right score = " + str(step2_right_score))
-
+                print("Lines are parallel, no intersection point")
 
             # Step 3 - side view wrist position
             left_wrist_angle = calculate_angle(Left_elbow_Pos, Left_wrist_Pos, Left_index_Pos, 'side')
@@ -437,17 +410,9 @@ while True:
             left_wrist_deviation_angle = calculate_angle(Left_elbow_Pos, Left_wrist_Pos, Left_index_Pos, 'top')
             right_wrist_deviation_angle = calculate_angle(Right_elbow_Pos, Right_wrist_Pos, Right_index_Pos, 'top')
 
-            step3_left_score = 2
-            step3_right_score = 2
-
-
             # Setp 4 - front view wrist twist
             left_wrist_twist_angle = calculate_angle(Left_index_Pos, Left_wrist_Pos, Left_thumb_Pos, 'front')
             right_wrist_twist_angle = calculate_angle(Right_index_Pos, Right_wrist_Pos, Right_thumb_Pos, 'front')
-
-            step3_left_score = 2
-            step3_right_score = 2
-
 
             # Step 9 - side view neck position
             # neck_angle = calculate_angle(Left_shoulder_Pos, Neck_Pos, , 'side')
