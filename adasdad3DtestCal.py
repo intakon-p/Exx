@@ -191,12 +191,38 @@ ax3.view_init(elev=0, azim=-180, roll=90)
 # Open the webcam
 cap = cv2.VideoCapture(0)
 
-global left_shoulder_score
-global right_shoulder_score
-global left_shoulder_abduct_score
-global right_shoulder_abduct_score
 global step1_left_score
 global step1_right_score
+global step2_left_score
+global step2_right_score
+global step3_left_score
+global step3_right_score
+global step4_left_score
+global step4_right_score
+global step5_left_score
+global step5_right_score
+global step6_left_score
+global step6_right_score
+global step7_left_score
+global step7_right_score
+global step8_left_score
+global step8_right_score
+global step9_left_score
+global step9_right_score
+global step10_left_score
+global step10_right_score
+global step11_left_score
+global step11_right_score
+global step12_left_score
+global step12_right_score
+global step13_left_score
+global step13_right_score
+global step14_left_score
+global step14_right_score
+global step15_left_score
+global step15_right_score
+global step16_left_score
+global step16_right_score
 
 while True:
     ret, frame = cap.read()
@@ -362,6 +388,27 @@ while True:
                 elif idx == 35:
                     Hip_Pos = point_3d
                     
+            # Calibrate
+            calibrate_angle = calculate_angle(Left_shoulder_Pos, Right_shoulder_Pos, (Right_shoulder_Pos[0], Right_shoulder_Pos[1],Right_shoulder_Pos[2]-1), 'top')
+            if 60 <= calibrate_angle < 120:
+                view = "0" # Up
+            elif 30 < calibrate_angle < 60:
+                view = "1" # Up-Left
+            elif 0 <= calibrate_angle < 30:
+                view = "2" # Left
+            elif 120 < calibrate_angle < 150:
+                view = "-1" # Up-Right
+            elif 150 <= calibrate_angle < 180:
+                view = "-2" # Right
+
+            if 45 <= calibrate_angle < 135:
+                view2 = "0" # Up
+            elif 0 <= calibrate_angle < 45:
+                view2 = "1" # Left
+            elif 135 <= calibrate_angle < 180:
+                view2 = "-1" # Right
+            
+
             # Calculate angle
                     
             # Step 1 - side view shoulder position
@@ -441,18 +488,59 @@ while True:
             step3_right_score = 2
 
 
-            # Setp 4 - front view wrist twist
+            # Step 4 - front view wrist twist
             left_wrist_twist_angle = calculate_angle(Left_index_Pos, Left_wrist_Pos, Left_thumb_Pos, 'front')
             right_wrist_twist_angle = calculate_angle(Right_index_Pos, Right_wrist_Pos, Right_thumb_Pos, 'front')
 
-            step3_left_score = 2
-            step3_right_score = 2
+            step4_left_score = 2
+            step4_right_score = 2
+
+
+            # Table A score
 
 
             # Step 9 - side view neck position
-            # neck_angle = calculate_angle(Left_shoulder_Pos, Neck_Pos, , 'side')
+            neck_angle = findAngle(Left_shoulder_Pos[0], Left_shoulder_Pos[1], Left_ear_Pos[0], Left_ear_Pos[1])
+            if 12.5 <= neck_angle < 24.5:
+                neck_score = 1
+            elif 25 <= neck_angle < 29.5:
+                neck_score = 2         
+            elif 30 <= neck_angle:
+                neck_score = 3
+            else:
+                neck_score = 4
+            # Addition bending
+            neck_bent_angle = calculate_angle(Right_shoulder_Pos, Neck_Pos, Head_Pos, 'top')
+            if 75 <= neck_bent_angle < 105:
+                neck_bent_score = 0
+            else:
+                neck_bent_score = 1
+            # Addition  rotation
+            calibrate_neck_angle = calculate_angle(Left_ear_Pos, Right_ear_Pos, (Right_ear_Pos[0], Right_ear_Pos[1],Right_ear_Pos[2]-1), 'top')
+
+            step9_score = neck_score + neck_bent_score
+
 
             # Step 10 - side view trunk position
+            trunk_angle = calculate_angle(Right_knee_Pos, Right_hip_Pos, Right_shoulder_Pos, 'side')
+            if 178.5 < trunk_angle <= 180:
+                trunk_score = 1
+            elif 168.5 < trunk_angle <= 178.5:
+                trunk_score = 2
+            elif 150 <= trunk_angle <= 168.5:
+                trunk_score = 3
+            elif 0 <= trunk_angle < 150:
+                trunk_score = 3
+            # Addition bending
+            trunk_bent_angle = calculate_angle(Right_knee_Pos, Right_hip_Pos, Right_shoulder_Pos, 'front')
+            print("trunk = " + str(trunk_bent_angle))
+            if 180 >= trunk_bent_angle >162.5 :
+                trunk_bent_score = 0
+            else:
+                trunk_bent_score = 1
+            
+            step10_score = trunk_score + trunk_bent_score
+
 
             # Step 11 - side&front views legs position
             left_knee_angle = calculate_angle(Left_hip_Pos, Left_knee_Pos, Left_ankle_Pos, 'side')
@@ -461,6 +549,9 @@ while True:
                 legs_score = 2
             else: # Balance
                 legs_score = 1
+
+            step11_score = legs_score
+
             
     plt.pause(1)
 

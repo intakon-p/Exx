@@ -1,4 +1,5 @@
 import numpy as np
+import math as m
 
 def calculate_angle(keypoint1, keypoint2, keypoint3, plane):
     global angle
@@ -124,40 +125,12 @@ def find_intersection_point(keypoint1, keypoint2, keypoint3, keypoint4, plane):
         else:
             return False  # Intersection point lies outside the line segments
 
-# def calculate_distance(keypoint1, keypoint2, plane):
-#     # Extract x, y, and z coordinates for each keypoint
-#     x1, y1, z1 = keypoint1
-#     x2, y2, z2 = keypoint2
-
-#     # For test z-coordinates
-#     keypoint1 = x1, y1, z1*250
-#     keypoint2 = x2, y2, z2*250
-
-#     if plane == 'front':
-#         # Calculate vectors between keypoints in the XY-plane
-#         hight_left = np.array([0, 0, ])
-#     elif plane == 'top':
-#         # Calculate vectors between keypoints in the XZ-plane
-#         vector1 = np.array([x1 - x2, 0, (z1 - z2)*250])
-#         vector2 = np.array([x3 - x2, 0, (z3 - z2)*250])
-#     elif plane == 'side':
-#         # Calculate vectors between keypoints in the YZ-plane
-#         vector1 = np.array([0, y1 - y2, (z1 - z2)*250])
-#         vector2 = np.array([0, y3 - y2, (z3 - z2)*250])
-
-#     # Calculate dot product and magnitudes
-#     dot_product = np.dot(vector1, vector2)
-#     magnitude_vector1 = np.linalg.norm(vector1)
-#     magnitude_vector2 = np.linalg.norm(vector2)
-
-#     # Calculate cosine of the angle
-#     cos_theta = dot_product / (magnitude_vector1 * magnitude_vector2)
-
-#     # Convert cosine to angle in degrees
-#     angle = np.degrees(np.arccos(cos_theta))
-#     # print("Left Shoulder: " + str(angle))
-#     # print("elbow " + str(keypoint1))
-#     # print("shoulder " + str(keypoint2))
-#     # print("hip " + str(keypoint3))
-
-#     return angle
+# Calculate angle.
+def findAngle(x1, y1, x2, y2):
+    if y1 == 0:
+        return float('inf')  # Return infinity if y1 is zero to avoid division by zero
+    else:
+        theta = m.acos((y2 - y1) * (-y1) / (m.sqrt(
+            (x2 - x1) ** 2 + (y2 - y1) ** 2) * y1))
+        degree = int(180 / m.pi) * theta
+        return degree
