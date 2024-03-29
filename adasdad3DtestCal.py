@@ -800,7 +800,7 @@ def image_pose_estimation2(file_path):
     while True:
         ret, frame = cap.read()
         if not ret:
-            break
+            continue
    
         frame = cv2.imread(file_path)
 
