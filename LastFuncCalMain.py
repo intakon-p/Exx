@@ -253,16 +253,16 @@ def video_pose_estimation2(name):
 
 
             # Step 2 - side view elbow position
-            left_wrist_angle = calculate_angle(Left_shoulder_Pos, Left_elbow_Pos, Left_wrist_Pos, 'side')
-            right_wrist_angle = calculate_angle(Right_shoulder_Pos, Right_elbow_Pos, Right_wrist_Pos, 'side')   
-            if 90 <= left_wrist_angle <= 150:
-                left_wrist_score = 1
+            left_lowerarm_angle = calculate_angle(Left_shoulder_Pos, Left_elbow_Pos, Left_wrist_Pos, 'side')
+            right_lowerarm_angle = calculate_angle(Right_shoulder_Pos, Right_elbow_Pos, Right_wrist_Pos, 'side')   
+            if 90 <= left_lowerarm_angle <= 150:
+                left_lowerarm_score = 1
             else:
-                left_wrist_score = 2
-            if 90 <= right_wrist_angle < 150:
-                right_wrist_score = 1
+                left_lowerarm_score = 2
+            if 90 <= right_lowerarm_angle < 150:
+                right_lowerarm_score = 1
             else:
-                right_wrist_score = 2           
+                right_lowerarm_score = 2           
             # Addition - front&top views forearm across midline
             forearm_intersection_point_xz = find_intersection_point(Left_elbow_Pos, Left_wrist_Pos, Right_elbow_Pos, Right_wrist_Pos, 'top')
             forearm_intersection_point_xy = find_intersection_point(Left_elbow_Pos, Left_wrist_Pos, Right_elbow_Pos, Right_wrist_Pos, 'front')
@@ -276,8 +276,8 @@ def video_pose_estimation2(name):
                 wrist_midline = 0
                 # print("Lines are parallel, no intersection point")
 
-            step2_left_score = left_wrist_score + wrist_midline
-            step2_right_score = right_wrist_score + wrist_midline
+            step2_left_score = left_lowerarm_score + wrist_midline
+            step2_right_score = right_lowerarm_score + wrist_midline
             # print("step2 left score = " + str(step2_left_score) + " and step2 right score = " + str(step2_right_score))
 
 
