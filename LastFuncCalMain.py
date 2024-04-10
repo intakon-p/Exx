@@ -59,7 +59,19 @@ def video_pose_estimation2(name):
         (23, 25),  # Left hip to left knee
         (24, 26),  # Right hip to right knee
         (25, 27),  # Left knee to left ankle
-        (26, 28)   # Right knee to right ankle
+        (26, 28),   # Right knee to right ankle
+
+        (11, 12),  # Left shoulder to right shoulder
+
+        (8, 6),  
+        (6, 5),   
+        (5, 4),  
+        (4, 0),    
+        (0, 1),    
+        (1, 2),    
+        (2, 3),  
+        (3, 7),
+        (10, 9)
     ]
 
     # Open the webcam
@@ -253,16 +265,16 @@ def video_pose_estimation2(name):
 
 
             # Step 2 - side view elbow position
-            left_lowerarm_angle = calculate_angle(Left_shoulder_Pos, Left_elbow_Pos, Left_wrist_Pos, 'side')
-            right_lowerarm_angle = calculate_angle(Right_shoulder_Pos, Right_elbow_Pos, Right_wrist_Pos, 'side')   
-            if 90 <= left_lowerarm_angle <= 150:
-                left_lowerarm_score = 1
+            left_elbow_angle = calculate_angle(Left_shoulder_Pos, Left_elbow_Pos, Left_wrist_Pos, 'side')
+            right_elbow_angle = calculate_angle(Right_shoulder_Pos, Right_elbow_Pos, Right_wrist_Pos, 'side')   
+            if 90 <= left_elbow_angle <= 150:
+                left_elbow_score = 1
             else:
-                left_lowerarm_score = 2
-            if 90 <= right_lowerarm_angle < 150:
-                right_lowerarm_score = 1
+                left_elbow_score = 2
+            if 90 <= right_elbow_angle < 150:
+                right_elbow_score = 1
             else:
-                right_lowerarm_score = 2           
+                right_elbow_score = 2           
             # Addition - front&top views forearm across midline
             forearm_intersection_point_xz = find_intersection_point(Left_elbow_Pos, Left_wrist_Pos, Right_elbow_Pos, Right_wrist_Pos, 'top')
             forearm_intersection_point_xy = find_intersection_point(Left_elbow_Pos, Left_wrist_Pos, Right_elbow_Pos, Right_wrist_Pos, 'front')
@@ -276,8 +288,8 @@ def video_pose_estimation2(name):
                 wrist_midline = 0
                 # print("Lines are parallel, no intersection point")
 
-            step2_left_score = left_lowerarm_score + wrist_midline
-            step2_right_score = right_lowerarm_score + wrist_midline
+            step2_left_score = left_elbow_score + wrist_midline
+            step2_right_score = right_elbow_score + wrist_midline
             # print("step2 left score = " + str(step2_left_score) + " and step2 right score = " + str(step2_right_score))
 
 
@@ -390,6 +402,9 @@ def video_pose_estimation2(name):
             LC, RC = find_rula_opp('TableA.csv','TableB.csv','TableC.csv')
 
             cv2.imshow("Image with Keypoints", image_with_keypoints)  
+            # Check for 'q' key press to exit
+            if cv2.waitKey(2) & 0xFF == ord('q'):
+                break
             print("Left RULA grand score = " + str(LC))
             print("Right RULA grand score = " + str(RC))
 
