@@ -553,13 +553,16 @@ def video_pose_estimation2(name):
             # print("Calweight = " + str(Calweight))
 
             LC, RC = find_rula_opp('TableA.csv','TableB.csv','TableC.csv')
+            colorL, colorR = color(LC, RC)
+            l2 = Label(root, textvariable = variable1, font= ('Helvetica 10 bold', 25), fg = colorL, bg = "#242424").place(relx=.5, rely=.775,anchor= N)
+            l3 = Label(root, textvariable = variable2, font= ('Helvetica 10 bold', 25), fg = colorR, bg = "#242424").place(relx=.5, rely=.85,anchor= N)
 
             cv2.imshow("Image with Keypoints", image_with_keypoints)  
             # Check for 'q' key press to exit
             if cv2.waitKey(2) & 0xFF == ord('q'):
                 break
-            print("Left RULA grand score = " + str(LC))
-            print("Right RULA grand score = " + str(RC))
+            # print("Left RULA grand score = " + str(LC))
+            # print("Right RULA grand score = " + str(RC))
             variable1.set("LC : " + str(LC))
             variable2.set("RC : " + str(RC))
             root.update()
@@ -932,13 +935,16 @@ def image_pose_estimation2(name):
             # print("Calweight = " + str(Calweight))
 
             LC, RC = find_rula_opp('TableA.csv','TableB.csv','TableC.csv')
+            colorL, colorR = color(LC, RC)
+            l2 = Label(root, textvariable = variable1, font= ('Helvetica 10 bold', 25), fg = colorL, bg = "#242424").place(relx=.5, rely=.775,anchor= N)
+            l3 = Label(root, textvariable = variable2, font= ('Helvetica 10 bold', 25), fg = colorR, bg = "#242424").place(relx=.5, rely=.85,anchor= N)
 
             cv2.imshow("Image with Keypoints", image_with_keypoints)  
             # Check for 'q' key press to exit
             if cv2.waitKey(2) & 0xFF == ord('q'):
                 break
-            print("Left RULA grand score = " + str(LC))
-            print("Right RULA grand score = " + str(RC))
+            # print("Left RULA grand score = " + str(LC))
+            # print("Right RULA grand score = " + str(RC))
             variable1.set("LC : " + str(LC))
             variable2.set("RC : " + str(RC))
             root.update()
@@ -1032,9 +1038,27 @@ def browse():
     else:
         pass
 
-l1 =Label(root, text = "Biomechanic Posture System", font= ('Helvetica 25 bold', 30), fg = "white", bg = "#242424").place(relx=.5, rely=0.05,anchor= N)
-l2 =Label(root, textvariable = variable1, font= ('Helvetica 10 bold', 25), fg = "white", bg = "#242424").place(relx=.5, rely=.775,anchor= N)
-l3 =Label(root, textvariable = variable2, font= ('Helvetica 10 bold', 25), fg = "white", bg = "#242424").place(relx=.5, rely=.85,anchor= N)
+def color(L, R):
+    if 0 <= L < 3:
+        colorL = "#99c73c"
+    elif 3 <= L < 5:
+        colorL = "#faf04c"
+    elif 5 <= L < 7:
+        colorL = "#f07451"
+    elif 7 <= L:
+        colorL = "#ef3e31"
+
+    if 0 <= R < 3:
+        colorR = "#99c73c"
+    elif 3 <= R < 5:
+        colorR = "#faf04c"
+    elif 5 <= R < 7:
+        colorR = "#f07451"
+    elif 7 <= R:
+        colorR = "#ef3e31"
+    return colorL, colorR
+
+l1 = Label(root, text = "Biomechanic Posture System", font= ('Helvetica 25 bold', 30), fg = "white", bg = "#242424").place(relx=.5, rely=0.05,anchor= N)
 
 b1 = ctk.CTkButton(master = root, text = "Webcam", command = video_pose_estimation).place(relx=0.5, rely=.1625, anchor = CENTER) 
 b2 = ctk.CTkButton(master = root, text = "Browse", command = browse).place(relx=0.5, rely=.25, anchor = CENTER)
