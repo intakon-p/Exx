@@ -18,7 +18,7 @@ root = ctk.CTk()
 variable1=StringVar()    
 variable2=StringVar()    
 
-root.geometry ("1980x1280")
+root.geometry ("700x840")
 
 # Initialize variables
 Nose_Pos = None
@@ -1033,10 +1033,10 @@ def browse():
         pass
 
 l1 =Label(root, text = "Biomechanic Posture System", font= ('Helvetica 25 bold', 30), fg = "white", bg = "#242424").place(relx=.5, rely=0.05,anchor= N)
-l2 =Label(root, textvariable = variable1, font= ('Helvetica 10 bold', 25), fg = "white", bg = "#242424").place(relx=.5, rely=.6,anchor= N)
-l3 =Label(root, textvariable = variable2, font= ('Helvetica 10 bold', 25), fg = "white", bg = "#242424").place(relx=.5, rely=.7,anchor= N)
+l2 =Label(root, textvariable = variable1, font= ('Helvetica 10 bold', 25), fg = "white", bg = "#242424").place(relx=.5, rely=.775,anchor= N)
+l3 =Label(root, textvariable = variable2, font= ('Helvetica 10 bold', 25), fg = "white", bg = "#242424").place(relx=.5, rely=.85,anchor= N)
 
-b1 = ctk.CTkButton(master = root, text = "Webcam", command = video_pose_estimation).place(relx=0.5, rely=.2, anchor = CENTER) 
-b2 = ctk.CTkButton(master = root, text = "Browse", command = browse).place(relx=0.5, rely=.3, anchor = CENTER)
+b1 = ctk.CTkButton(master = root, text = "Webcam", command = video_pose_estimation).place(relx=0.5, rely=.1625, anchor = CENTER) 
+b2 = ctk.CTkButton(master = root, text = "Browse", command = browse).place(relx=0.5, rely=.25, anchor = CENTER)
 
 root. mainloop()
