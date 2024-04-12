@@ -10,6 +10,14 @@ from angle_cal import *
 import pandas as pd
 import numpy as np
 import math as m
+from tkinter import Label, StringVar
+from PIL import Image, ImageTk  # Importing Image class from PIL module
+from tkinter import Tk, Label, StringVar
+from tkvideoplayer import TkinterVideo
+# from tkvidTest import *
+
+import tkinter
+import customtkinter
 
 mimetypes.init()
 
@@ -18,7 +26,11 @@ root = ctk.CTk()
 variable1=StringVar()    
 variable2=StringVar()    
 
-root.geometry ("700x840")
+root.geometry ("700x780")
+root.title("Deep Learning-Based Automatic RULA Assessment System")
+
+# frame_1 = ctk.CTkFrame(master=root, corner_radius=15)
+# frame_1.pack(pady=20, padx=20, fill="both", expand=True)
 
 # Initialize variables
 Nose_Pos = None
@@ -57,7 +69,7 @@ Right_foot_index_Pos = None
 Neck_Pos = None
 Head_Pos = None
 Hip_Pos = None
-
+        
 def calculate_angle(keypoint1, keypoint2, keypoint3, plane):
     global angle
     # Extract x, y, and z coordinates for each keypoint
@@ -526,9 +538,6 @@ def video_pose_estimation2(name):
             global MuscleN
             global Calweight
             global Weight    
-        
-            Muscle = "No"
-            Weight = 0
 
             if Muscle == "Yes":
                 MuscleN = 1
@@ -550,22 +559,34 @@ def video_pose_estimation2(name):
                 Calweight = 3
             # print("Start")
             # print("")
-            # print("Calweight = " + str(Calweight))
+            # print("Weight = " + str(Weight))
+            # print("Muscle = " + str(Muscle))
+            print("Calweight = " + str(Calweight))
 
             LC, RC = find_rula_opp('TableA.csv','TableB.csv','TableC.csv')
             colorL, colorR = color(LC, RC)
-            l2 = Label(root, textvariable = variable1, font= ('Helvetica 10 bold', 25), fg = colorL, bg = "#242424").place(relx=.5, rely=.775,anchor= N)
-            l3 = Label(root, textvariable = variable2, font= ('Helvetica 10 bold', 25), fg = colorR, bg = "#242424").place(relx=.5, rely=.85,anchor= N)
+            l2 = Label(root, textvariable = variable1, font= ('Helvetica 10 bold', 25), fg = colorL, bg = "#2b2b2b").place(relx=.5, rely=.775,anchor= N)
+            l3 = Label(root, textvariable = variable2, font= ('Helvetica 10 bold', 25), fg = colorR, bg = "#2b2b2b").place(relx=.5, rely=.85,anchor= N)
 
             cv2.imshow("Image with Keypoints", image_with_keypoints)  
-            # Check for 'q' key press to exit
-            if cv2.waitKey(2) & 0xFF == ord('q'):
-                break
+            # # Check for 'q' key press to exit
+            # if cv2.waitKey(2) & 0xFF == ord('q'):
+            #     break
             # print("Left RULA grand score = " + str(LC))
             # print("Right RULA grand score = " + str(RC))
+
+            # videoplayer = TkinterVideo(master=root, scaled=True)
+            # videoplayer.load(image_with_keypoints)
+            # videoplayer.pack(expand=True, fill="both")
+
+            # videoplayer.play() # play the video
+
             variable1.set("LC : " + str(LC))
             variable2.set("RC : " + str(RC))
             root.update()
+
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
     # Release the webcam and close all OpenCV windows
     cap.release()
@@ -908,10 +929,7 @@ def image_pose_estimation2(name):
             global MuscleN
             global Calweight
             global Weight    
-        
-            Muscle = "No"
-            Weight = 0
-
+            
             if Muscle == "Yes":
                 MuscleN = 1
             elif Muscle == "No":
@@ -932,22 +950,34 @@ def image_pose_estimation2(name):
                 Calweight = 3
             # print("Start")
             # print("")
-            # print("Calweight = " + str(Calweight))
+            # print("Weight = " + str(Weight))
+            # print("Muscle = " + str(Muscle))
+            print("Calweight = " + str(Calweight))
 
             LC, RC = find_rula_opp('TableA.csv','TableB.csv','TableC.csv')
             colorL, colorR = color(LC, RC)
-            l2 = Label(root, textvariable = variable1, font= ('Helvetica 10 bold', 25), fg = colorL, bg = "#242424").place(relx=.5, rely=.775,anchor= N)
-            l3 = Label(root, textvariable = variable2, font= ('Helvetica 10 bold', 25), fg = colorR, bg = "#242424").place(relx=.5, rely=.85,anchor= N)
+            l2 = Label(root, textvariable = variable1, font= ('Helvetica 10 bold', 25), fg = colorL, bg = "#2b2b2b").place(relx=.5, rely=.775,anchor= N)
+            l3 = Label(root, textvariable = variable2, font= ('Helvetica 10 bold', 25), fg = colorR, bg = "#2b2b2b").place(relx=.5, rely=.85,anchor= N)
 
             cv2.imshow("Image with Keypoints", image_with_keypoints)  
-            # Check for 'q' key press to exit
-            if cv2.waitKey(2) & 0xFF == ord('q'):
-                break
-            # print("Left RULA grand score = " + str(LC))
-            # print("Right RULA grand score = " + str(RC))
+            # # Check for 'q' key press to exit
+            # if cv2.waitKey(2) & 0xFF == ord('q'):
+            #     break
+            # # print("Left RULA grand score = " + str(LC))
+            # # print("Right RULA grand score = " + str(RC))
+
+            # videoplayer = TkinterVideo(master=root, scaled=True)
+            # videoplayer.load(name)
+            # videoplayer.pack(expand=True, fill="both")
+
+            # videoplayer.play() # play the video
+
             variable1.set("LC : " + str(LC))
             variable2.set("RC : " + str(RC))
             root.update()
+
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
     # Close MediaPipe pose model
     pose.close()
@@ -1008,19 +1038,32 @@ def find_rula_opp(input1,input2,input3):
 
     return LC, RC  
 
-# def conditionMuscle2():
-#     global Muscle
-#     options1 = ['No', 'Yes']
-#     Muscle = st.selectbox("Is the posture mainly static or action repeated occurs?", options1)
-#     # st.write("Muscle = " + str(Muscle))
-#     return Muscle
+def conditionMuscle2():
+    global Muscle
+    combobox_var = customtkinter.StringVar(value="Is the posture mainly static or action repeated occurs?")  # set initial value
 
-# def conditionWeight2():
-#     global Weight
-#     values = list(range(0, 16))
-#     Weight = st.select_slider("What is the weight of the load?", options = values)
-#     # st.write("Weight = " + str(Weight))
-#     return Weight
+    def combobox_callback(choice):
+        print("combobox dropdown clicked:", choice)
+
+    Muscle = customtkinter.CTkOptionMenu(master=root,
+                                        values=["No", "Yes"],
+                                        command=combobox_callback,
+                                        variable=combobox_var)
+    Muscle.pack(padx=50, pady=10)
+    return Muscle
+
+def conditionWeight2():
+    global Weight
+    def slider_event(value):
+        print(value)
+
+    Weight_slider = customtkinter.CTkSlider(master=root, from_=0, to=10, command=slider_event)
+    Weight_slider.place(relx=0.5, rely=0.925, anchor=tkinter.CENTER)
+
+    # Get the value of the slider using the get() method
+    Weight = float(Weight_slider.get())
+    print(Weight)
+    return Weight
 
 def video_pose_estimation():
     video_pose_estimation2(0)
@@ -1058,7 +1101,14 @@ def color(L, R):
         colorR = "#ef3e31"
     return colorL, colorR
 
-l1 = Label(root, text = "Biomechanic Posture System", font= ('Helvetica 25 bold', 30), fg = "white", bg = "#242424").place(relx=.5, rely=0.05,anchor= N)
+video_file=''
+frame_1 = customtkinter.CTkFrame(master=root, corner_radius=15)
+frame_1.pack(pady=20, padx=20, fill="both", expand=True)
+
+conditionWeight2()
+conditionMuscle2()
+
+l1 = Label(root, text = "Deep Learning-Based Automatic RULA Assessment System", font= ('Helvetica 25 bold', 30), fg = "white", bg = "#2b2b2b").place(relx=.5, rely=0.05,anchor= N)
 
 b1 = ctk.CTkButton(master = root, text = "Webcam", command = video_pose_estimation).place(relx=0.5, rely=.1625, anchor = CENTER) 
 b2 = ctk.CTkButton(master = root, text = "Browse", command = browse).place(relx=0.5, rely=.25, anchor = CENTER)
