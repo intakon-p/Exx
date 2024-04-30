@@ -10,6 +10,8 @@ from angle_cal import *
 import pandas as pd
 import numpy as np
 import math as m
+import threading
+import time
 
 mimetypes.init()
 
@@ -58,6 +60,97 @@ Neck_Pos = None
 Head_Pos = None
 Hip_Pos = None
 
+
+def calculateAngle(landmark1, landmark2, landmark3):
+    '''
+    This function calculates angle between three different landmarks.
+    Args:
+        landmark1: The first landmark containing the x,y and z coordinates.
+        landmark2: The second landmark containing the x,y and z coordinates.
+        landmark3: The third landmark containing the x,y and z coordinates.
+    Returns:
+        angle: The calculated angle between the three landmarks.
+
+    '''
+
+    # Get the required landmarks coordinates.
+    x1, y1, _ = landmark1
+    x2, y2, _ = landmark2
+    x3, y3, _ = landmark3
+
+    # Calculate the angle between the three points
+    angle = m.degrees(m.atan2(y3 - y2, x3 - x2) - m.atan2(y1 - y2, x1 - x2))
+    
+    # Check if the angle is less than zero.
+    if angle < 0:
+
+        # Add 360 to the found angle.
+        angle += 360
+    
+    # Return the calculated angle.
+    return angle
+
+def calculateDistance(keypoint1, keypoint2):
+    x1, y1, _ = keypoint1
+    x2, y2, _ = keypoint2
+
+    # Calculate the Distance between the two points
+    dis = m.sqrt( ((x2 - x1)**2)+((y2 - y1))**2)
+
+    
+    # Return the calculated Distance.
+    return dis
+
+
+
+def calculate_angle1(keypoint1, keypoint2, keypoint3, plane, Tellside):
+    global angle
+    # Extract x, y, and z coordinates for each keypoint
+    x1, y1, z1 = keypoint1
+    x2, y2, z2 = keypoint2
+    x3, y3, z3 = keypoint3
+
+    # For test z-coordinates
+    keypoint1 = x1, y1, z1*101
+    keypoint2 = x2, y2, z2*101
+    keypoint3 = x3, y3, z3*101
+
+    if plane == 'front':
+        # Calculate vectors between keypoints in the XY-plane
+        vector1 = np.array([x1 - x2, y1 - y2, 0])
+        vector2 = np.array([x3 - x2, y3 - y2, 0])
+    elif plane == 'top':
+        # Calculate vectors between keypoints in the XZ-plane
+        vector1 = np.array([x1 - x2, 0, (z1 - z2)*101])
+        vector2 = np.array([x3 - x2, 0, (z3 - z2)*101])
+    elif plane == 'side':
+        # Calculate vectors between keypoints in the YZ-plane
+        vector1 = np.array([0, y1 - y2, (z1 - z2)*101])
+        vector2 = np.array([0, y3 - y2, (z3 - z2)*101])
+
+    # Calculate dot product and magnitudes
+    dot_product = np.dot(vector1, vector2)
+    magnitude_vector1 = np.linalg.norm(vector1)
+    magnitude_vector2 = np.linalg.norm(vector2)
+
+    # Calculate cosine of the angle
+    cos_theta = dot_product / (magnitude_vector1 * magnitude_vector2)
+
+    # Convert cosine to angle in degrees
+    angle = np.degrees(np.arccos(cos_theta))
+    
+    # Determine the orientation of the body relative to the camera
+    if 70 <= angle <= 100:
+        Tellside = 0  # Body is facing the camera
+    else:
+        Tellside = 1  # Side body is facing the camera
+    
+    return angle, Tellside
+
+
+
+
+
 def calculate_angle(keypoint1, keypoint2, keypoint3, plane):
     global angle
     # Extract x, y, and z coordinates for each keypoint
@@ -66,9 +159,9 @@ def calculate_angle(keypoint1, keypoint2, keypoint3, plane):
     x3, y3, z3 = keypoint3
 
     # For test z-coordinates
-    keypoint1 = x1, y1, z1*250
-    keypoint2 = x2, y2, z2*250
-    keypoint3 = x3, y3, z3*250
+    keypoint1 = x1, y1, z1*101
+    keypoint2 = x2, y2, z2*101
+    keypoint3 = x3, y3, z3*101
 
     if plane == 'front':
         # Calculate vectors between keypoints in the XY-plane
@@ -76,12 +169,12 @@ def calculate_angle(keypoint1, keypoint2, keypoint3, plane):
         vector2 = np.array([x3 - x2, y3 - y2, 0])
     elif plane == 'top':
         # Calculate vectors between keypoints in the XZ-plane
-        vector1 = np.array([x1 - x2, 0, (z1 - z2)*250])
-        vector2 = np.array([x3 - x2, 0, (z3 - z2)*250])
+        vector1 = np.array([x1 - x2, 0, (z1 - z2)*101])
+        vector2 = np.array([x3 - x2, 0, (z3 - z2)*101])
     elif plane == 'side':
         # Calculate vectors between keypoints in the YZ-plane
-        vector1 = np.array([0, y1 - y2, (z1 - z2)*250])
-        vector2 = np.array([0, y3 - y2, (z3 - z2)*250])
+        vector1 = np.array([0, y1 - y2, (z1 - z2)*101])
+        vector2 = np.array([0, y3 - y2, (z3 - z2)*101])
 
     # Calculate dot product and magnitudes
     dot_product = np.dot(vector1, vector2)
@@ -108,10 +201,10 @@ def find_intersection_point(keypoint1, keypoint2, keypoint3, keypoint4, plane):
     x4, y4, z4 = keypoint4
 
     # For test z-coordinates
-    keypoint1 = x1, y1, z1 * 250
-    keypoint2 = x2, y2, z2 * 250
-    keypoint3 = x3, y3, z3 * 250
-    keypoint4 = x4, y4, z4 * 250
+    keypoint1 = x1, y1, z1 * 101
+    keypoint2 = x2, y2, z2 * 101
+    keypoint3 = x3, y3, z3 * 101
+    keypoint4 = x4, y4, z4 * 101
     
     if plane == 'front':
         # Calculate slopes of the lines
@@ -192,12 +285,20 @@ def findAngle(x1, y1, x2, y2):
         degree = int(180 / m.pi) * theta
         return degree
 
+
+#for webcam
 def video_pose_estimation2(name):
     # Initialize MediaPipe pose model
+
+    
     mp_pose = mp.solutions.pose
+    mp_drawing = mp.solutions.drawing_utils
     pose = mp_pose.Pose()
-    mp_hand = mp.solutions.hands
-    hands = mp_hand.Hands()
+    mp_hands = mp.solutions.hands
+    hands = mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.8)
+    mp_drawing_styles = mp.solutions.drawing_styles
+
+    mp_holistic = mp.solutions.holistic
 
     # Define indices of keypoints for drawing lines (connections)
     keypoint_connections = [
@@ -223,11 +324,18 @@ def video_pose_estimation2(name):
         (1, 2),    
         (2, 3),  
         (3, 7),
-        (10, 9)
+        (10, 9),
+        (15,19),
+        (16,20)
     ]
+
+
+    
 
     # Open the webcam
     cap = cv2.VideoCapture(name)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)  # Set the width
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720) 
 
     # Define global variables for keypoints
     global Nose_Pos #0
@@ -266,6 +374,8 @@ def video_pose_estimation2(name):
     global Neck_Pos #33
     global Head_Pos #34
     global Hip_Pos #35
+    
+    
 
     global step1_left_score
     global step1_right_score
@@ -279,6 +389,16 @@ def video_pose_estimation2(name):
     global step9_score
     global step10_score
     global step11_score
+    
+    # #trymultitreading
+    # def pose_estimation_thread(name):
+    #     video_pose_estimation2(name)
+    
+    # # Start the pose estimation thread
+    # pose_thread = threading.Thread(target=pose_estimation_thread, args=(0,))
+    # pose_thread.start()
+
+
 
     while True:
         ret, frame = cap.read()
@@ -287,12 +407,15 @@ def video_pose_estimation2(name):
    
         # Detect keypoints
         pose_results = pose.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-
+        
         # If pose detected, plot keypoints and lines
+       
+
         if pose_results.pose_landmarks :
             image_with_keypoints = frame.copy()  # Create a copy of the captured image
             keypoints_3d = []
-
+            mp_drawing.draw_landmarks(image_with_keypoints,pose_results.pose_landmarks,mp_pose.POSE_CONNECTIONS)
+        
             for landmark in pose_results.pose_landmarks.landmark:
                 cx, cy, cz = landmark.x * frame.shape[1], landmark.y * frame.shape[0], landmark.z
 
@@ -346,6 +469,8 @@ def video_pose_estimation2(name):
                     (Right_hip_Pos[1] + Left_hip_Pos[1]) / 2,
                     (Right_hip_Pos[2] + Left_hip_Pos[2]) / 2)
 
+    
+
             # Separate 3D coordinates into individual lists
             keypoints_x, keypoints_y, keypoints_z = zip(*keypoints_3d)
 
@@ -356,6 +481,26 @@ def video_pose_estimation2(name):
                 start_coords = (int(keypoints_3d[start_point][0]), int(keypoints_3d[start_point][1]))
                 end_coords = (int(keypoints_3d[end_point][0]), int(keypoints_3d[end_point][1]))
                 cv2.line(image_with_keypoints, start_coords, end_coords, color=(255, 0, 0), thickness=2)  # Red line
+
+           
+            text_posx = 20
+            text_step = 40
+           # Define the text to display
+            text = "Right Shoulder (X, Y, Z): {:.2f}, {:.2f}, {:.2f}".format(
+            Right_shoulder_Pos[0], Right_shoulder_Pos[1], Right_shoulder_Pos[2])
+
+            # Choose the position to display the text (adjust as needed)
+            text_position = (10, text_posx + text_step * 2)
+
+            # Choose the font scale and color
+            font_scale = 1.3
+            font_color = (0, 0, 255)  # Red color
+
+            # Choose the font thickness
+            font_thickness = 2
+
+# Display the text on the image
+            #cv2.putText(image_with_keypoints, text, text_position, cv2.FONT_HERSHEY_PLAIN, font_scale, font_color, font_thickness)
 
             # Calibrate
             calibrate_angle = calculate_angle(Left_shoulder_Pos, Right_shoulder_Pos, (Right_shoulder_Pos[0], Right_shoulder_Pos[1],Right_shoulder_Pos[2]-1), 'top')
@@ -376,12 +521,31 @@ def video_pose_estimation2(name):
                 view2 = "1" # Left
             elif 135 <= calibrate_angle < 180:
                 view2 = "-1" # Right
-            
-            # Calculate angle
+
+            #Tellside step test
+            bodysideangle=calculateAngle(Left_hip_Pos,Left_shoulder_Pos,Right_shoulder_Pos)
+            if 80 <=bodysideangle<= 100 :
+                #หันเข้ากล้อง
+                Tellside = 0
+            else :
+                #หันข้าง
+                Tellside = 1
+
+            cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(bodysideangle)), (10, text_posx*5), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(Tellside)), (10, text_posx*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+        
                     
             # Step 1 - side view shoulder position
-            left_shoulder_angle = calculate_angle(Left_elbow_Pos, Left_shoulder_Pos, Left_hip_Pos, 'side')
-            right_shoulder_angle = calculate_angle(Right_elbow_Pos, Right_shoulder_Pos, Right_hip_Pos, 'side')
+            #หันหน้า
+            if Tellside == 0: 
+              left_shoulder_angle= calculate_angle(Left_elbow_Pos, Left_shoulder_Pos, Left_hip_Pos, 'side')
+              right_shoulder_angle= calculate_angle(Right_elbow_Pos, Right_shoulder_Pos, Right_hip_Pos, 'side')
+
+            #หันข้าง
+            elif Tellside == 1:
+              left_shoulder_angle= calculate_angle(Left_elbow_Pos, Left_shoulder_Pos, Left_hip_Pos, 'front')
+              right_shoulder_angle= calculate_angle(Right_elbow_Pos, Right_shoulder_Pos, Right_hip_Pos, 'front')
+
             if 0 <= left_shoulder_angle < 20:
                 left_shoulder_score = 1
             elif 20 <= left_shoulder_angle < 45:
@@ -400,8 +564,12 @@ def video_pose_estimation2(name):
             elif 90 <= right_shoulder_angle:
                 right_shoulder_score = 4                    
             # Addition - front view shoulder abducted
-            left_shoulder_abduct_angle = calculate_angle(Left_elbow_Pos, Left_shoulder_Pos, Left_hip_Pos, 'front')
-            right_shoulder_abduct_angle = calculate_angle(Right_elbow_Pos, Right_shoulder_Pos, Right_hip_Pos, 'front')
+            if Tellside== 0:
+              left_shoulder_abduct_angle = calculate_angle(Left_elbow_Pos, Left_shoulder_Pos, Left_hip_Pos, 'front')
+              right_shoulder_abduct_angle = calculate_angle(Right_elbow_Pos, Right_shoulder_Pos, Right_hip_Pos, 'front')
+            if Tellside == 1:
+                left_shoulder_abduct_angle = calculate_angle(Left_elbow_Pos, Left_shoulder_Pos, Left_hip_Pos, 'side')
+                right_shoulder_abduct_angle = calculate_angle(Right_elbow_Pos, Right_shoulder_Pos, Right_hip_Pos, 'side')
             if left_shoulder_abduct_angle > 45:
                 left_shoulder_abduct_score = 1
             else:
@@ -413,9 +581,25 @@ def video_pose_estimation2(name):
 
             step1_left_score = left_shoulder_score + left_shoulder_abduct_score
             step1_right_score = right_shoulder_score + right_shoulder_abduct_score
-            print("step1 left score = " + str(step1_left_score) + " and step1 right score = " + str(step1_right_score))
-
-
+            #print("step1 left score = " + str(step1_left_score) + " and step1 right score = " + str(step1_right_score))
+            
+            
+            
+            
+            
+            #Tellside step test
+            Tellside=calculateAngle(Left_hip_Pos,Left_shoulder_Pos,Right_shoulder_Pos)
+            #cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(Tellside)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            
+            cv2.putText(image_with_keypoints, "L_upper_angle : " + str("{:0.2f}".format(left_shoulder_angle)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            #cv2.putText(image_with_keypoints, "L_upper_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            cv2.putText(image_with_keypoints, "R_upper_angle : " + str("{:0.2f}".format(right_shoulder_angle)), (10, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            #cv2.putText(image_with_keypoints, "R_upper_score : " + str("{:0.2f}".format(right_shoulder_score)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            
+            cv2.putText(image_with_keypoints, "L_upper_abduct angle : " + str("{:0.2f}".format(left_shoulder_abduct_angle)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            cv2.putText(image_with_keypoints, "R_upper_abduct angle : " + str("{:0.2f}".format(right_shoulder_abduct_angle)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            
             # Step 2 - side view elbow position
             left_elbow_angle = calculate_angle(Left_shoulder_Pos, Left_elbow_Pos, Left_wrist_Pos, 'side')
             right_elbow_angle = calculate_angle(Right_shoulder_Pos, Right_elbow_Pos, Right_wrist_Pos, 'side')   
@@ -442,7 +626,7 @@ def video_pose_estimation2(name):
 
             step2_left_score = left_elbow_score + wrist_midline
             step2_right_score = right_elbow_score + wrist_midline
-            print("step2 left score = " + str(step2_left_score) + " and step2 right score = " + str(step2_right_score))
+            #print("step2 left score = " + str(step2_left_score) + " and step2 right score = " + str(step2_right_score))
 
 
             # Step 3 - side view wrist position
@@ -454,7 +638,8 @@ def video_pose_estimation2(name):
 
             step3_left_score = 2
             step3_right_score = 2
-
+            #print("leftwrist angle = " + str(left_wrist_angle))
+            #print("rightwrist angle = " + str(right_wrist_angle))
 
             # Step 4 - front view wrist twist
             left_wrist_twist_angle = calculate_angle(Left_index_Pos, Left_wrist_Pos, Left_thumb_Pos, 'front')
@@ -511,7 +696,7 @@ def video_pose_estimation2(name):
 
             # step10_score = trunk_score + trunk_bent_score
             step10_score = trunk_score
-            print("step10 trunk score = " + str(step10_score))
+            #print("step10 trunk score = " + str(step10_score))
 
             # Step 11 - side&front views legs position
             left_knee_angle = calculate_angle(Left_hip_Pos, Left_knee_Pos, Left_ankle_Pos, 'side')
@@ -522,7 +707,7 @@ def video_pose_estimation2(name):
                 legs_score = 1
 
             step11_score = legs_score
-            print("step11 leg score = " + str(step11_score))
+            #print("step11 leg score = " + str(step11_score))
 
             global Muscle
             global MuscleN
@@ -555,16 +740,24 @@ def video_pose_estimation2(name):
             # print("Calweight = " + str(Calweight))
 
             LC, RC = find_rula_opp('TableA.csv','TableB.csv','TableC.csv')
+            
 
             cv2.imshow("Image with Keypoints", image_with_keypoints)  
-            # Check for 'q' key press to exit
-            if cv2.waitKey(2) & 0xFF == ord('q'):
-                break
-            print("Left RULA grand score = " + str(LC))
-            print("Right RULA grand score = " + str(RC))
-            variable1.set("LC : " + str(LC))
-            variable2.set("RC : " + str(RC))
-            root.update()
+
+        else:
+            cv2.imshow("Image with Keypoints", frame)
+        
+        # Check for 'q' key press to exit
+        if cv2.waitKey(2) & 0xFF == ord('q'):
+            break
+        print("Left RULA grand score = " + str(LC))
+        print("Right RULA grand score = " + str(RC))
+        variable1.set("LC : " + str(LC))
+        variable2.set("RC : " + str(RC))
+        root.update()
+        
+            
+       
 
     # Release the webcam and close all OpenCV windows
     cap.release()
@@ -604,7 +797,9 @@ def image_pose_estimation2(name):
         (1, 2),    
         (2, 3),  
         (3, 7),
-        (10, 9)
+        (10, 9),
+        (15,19),
+        (16,20)
     ]
 
     # Open the webcam
@@ -660,6 +855,7 @@ def image_pose_estimation2(name):
     global step9_score
     global step10_score
     global step11_score
+    
 
     while True:
         ret, frame = cap.read()
@@ -835,8 +1031,9 @@ def image_pose_estimation2(name):
 
             step3_left_score = 2
             step3_right_score = 2
-
-
+            print("rightwrist angle = " + str(right_wrist_angle))
+            print("leftwrist angle = " + str(left_wrist_angle))
+             
             # Step 4 - front view wrist twist
             left_wrist_twist_angle = calculate_angle(Left_index_Pos, Left_wrist_Pos, Left_thumb_Pos, 'front')
             right_wrist_twist_angle = calculate_angle(Right_index_Pos, Right_wrist_Pos, Right_thumb_Pos, 'front')
@@ -1020,21 +1217,23 @@ def find_rula_opp(input1,input2,input3):
 #     # st.write("Weight = " + str(Weight))
 #     return Weight
 
+
+
 def video_pose_estimation():
     video_pose_estimation2(0)
 
 def browse():
-    filename = filedialog.askopenfilename()
-    mimestart = mimetypes.guess_type(str(filename))[0]
+     filename = filedialog.askopenfilename()
+     mimestart = mimetypes.guess_type(str(filename))[0]
 
-    if mimestart != None:
-        mimestart = mimestart.split('/')[0]
-    if mimestart == 'video':
-        video_pose_estimation2(str(filename))
-    elif mimestart == 'image':
-        image_pose_estimation2(str(filename))
-    else:
-        pass
+     if mimestart != None:
+         mimestart = mimestart.split('/')[0]
+     if mimestart == 'video':
+         video_pose_estimation2(str(filename))
+     elif mimestart == 'image':
+         image_pose_estimation2(str(filename))
+     else:
+         pass
 
 l1 =Label(root, text = "Biomechanic Posture System", font= ('Helvetica 25 bold', 30), fg = "white", bg = "#242424").place(relx=.5, rely=0.05,anchor= N)
 l2 =Label(root, textvariable = variable1, font= ('Helvetica 10 bold', 25), fg = "white", bg = "#242424").place(relx=.5, rely=.775,anchor= N)
