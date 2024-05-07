@@ -582,11 +582,11 @@ def video_pose_estimation2(name):
 
             
 
-            if 45 <= calibrate_angle < 135:
+            if 45 <= calibrate_angle < 120:
                 view2 = 0 # Up
             elif 0 <= calibrate_angle < 45:
                 view2 = 1 # Left
-            elif 135 <= calibrate_angle < 180:
+            elif 120 <= calibrate_angle < 180:
                 view2 = -1 # Right
 
             #Tellside step test
@@ -624,6 +624,13 @@ def video_pose_estimation2(name):
 
               if left_shoulder_abduct_angle> 90 :
                   left_shoulder_angle=10
+               #step 3
+               #step3 (Accu
+              left_wrist_angle = 180-calculate_angle(Left_elbow_Pos, Left_wrist_Pos,Left_index_Pos, 'front')
+              right_wrist_angle = 180-calculate_angle(Right_elbow_Pos, Right_wrist_Pos, Right_index_Pos, 'front')
+
+
+               
 
             #หันข้าง
             #if view2 == 1 :
@@ -789,27 +796,39 @@ def video_pose_estimation2(name):
             print("step9 neck score = " + str(step9_score))
 
 
-            # Step 10 - side view trunk position
-            trunk_angle = calculate_angle(Right_knee_Pos, Right_hip_Pos, Right_shoulder_Pos, 'side')
-            if 178.5 < trunk_angle <= 180:
-                trunk_score = 1
-            elif 168.5 < trunk_angle <= 178.5:
-                trunk_score = 2
-            elif 150 <= trunk_angle <= 168.5:
-                trunk_score = 3
-            elif 0 <= trunk_angle < 150:
-                trunk_score = 3
-            # Addition bending
-            trunk_bent_angle = calculate_angle(Right_knee_Pos, Right_hip_Pos, Right_shoulder_Pos, 'front')
-            if 180 >= trunk_bent_angle > 162.5 :
-                trunk_bent_score = 0
-            else:
-                trunk_bent_score = 1
+            #step 10
+            print ("Cali AN = "+str(calibrate_angle))
+            print("view2 = " + str(view2))
+            if view2 == -1:
+                trunk_angle =180-calculate_angle(Right_knee_Pos, Right_hip_Pos, Right_shoulder_Pos, 'front')
+    
+            if view2 == 1:
+                trunk_angle=180 - calculate_angle(Left_knee_Pos, Left_hip_Pos, Left_shoulder_Pos, 'front')
             
 
+            if view2 != 0 :
+                if 0 < trunk_angle <= 8.3:
+                        trunk_score = 1
+                elif 8.3 < trunk_angle <= 20:
+                        trunk_score = 2
+                elif 20 <= trunk_angle <= 60:
+                        trunk_score = 3
+                elif 60 < trunk_angle:
+                        trunk_score = 4
+                
+            if view2 == 0:
+                trunk_angle=0
+                trunk_score=1
+            # Addition bending
+            # trunk_bent_angle = calculate_angle(Right_knee_Pos, Right_hip_Pos, Right_shoulder_Pos, 'front')
+            # if 180 >= trunk_bent_angle > 162.5 :
+            #     trunk_bent_score = 0
+            # else:
+            #     trunk_bent_score = 1
             # step10_score = trunk_score + trunk_bent_score
             step10_score = trunk_score
-            #print("step10 trunk score = " + str(step10_score))
+            print("step10 trunk angle = " + str(trunk_angle))
+            print("step10 trunk score = " + str(step10_score))
 
             # Step 11 - side&front views legs position
             left_knee_angle = calculate_angle(Left_hip_Pos, Left_knee_Pos, Left_ankle_Pos, 'side')
