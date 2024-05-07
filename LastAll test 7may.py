@@ -616,8 +616,8 @@ def video_pose_estimation2(name):
               left_shoulder_abduct_angle = calculate_angle(Left_elbow_Pos, Left_shoulder_Pos, Left_hip_Pos, 'front')
               right_shoulder_abduct_angle = calculate_angle(Right_elbow_Pos, Right_shoulder_Pos, Right_hip_Pos, 'front')
               #step2
-              left_elbow_angle = calculate_angle(Left_shoulder_Pos, Left_elbow_Pos, Index_Tip, 'front')
-              right_elbow_angle = calculate_angle(Right_shoulder_Pos, Right_elbow_Pos, Index_Tip, 'front')
+              left_elbow_angle = calculate_angle(Left_shoulder_Pos, Left_elbow_Pos, Left_wrist_Pos, 'side')
+              right_elbow_angle = calculate_angle(Right_shoulder_Pos, Right_elbow_Pos,Right_wrist_Pos, 'side')
 
               if  right_shoulder_abduct_angle > 90 :
                   right_shoulder_angle=10
