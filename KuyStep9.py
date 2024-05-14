@@ -831,8 +831,8 @@ def webcam2(name):
             # left_wrist_twist_angle = calculate_angle(Left_index_Pos, Left_wrist_Pos, Left_thumb_Pos, 'front')
             # right_wrist_twist_angle = calculate_angle(Right_index_Pos, Right_wrist_Pos, Right_thumb_Pos, 'front')
 
-            #step4_left_score = 2
-            #step4_right_score = 2
+            step4_left_score = 2
+            step4_right_score = 2
 
 
             # Table A score
@@ -1534,8 +1534,8 @@ def video_pose_estimation(name):
             # left_wrist_twist_angle = calculate_angle(Left_index_Pos, Left_wrist_Pos, Left_thumb_Pos, 'front')
             # right_wrist_twist_angle = calculate_angle(Right_index_Pos, Right_wrist_Pos, Right_thumb_Pos, 'front')
 
-            # step4_left_score = 2
-            # step4_right_score = 2
+            step4_left_score = 2
+            step4_right_score = 2
 
 
             # Table A score
