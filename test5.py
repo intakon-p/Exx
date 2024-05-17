@@ -113,10 +113,6 @@ play_pause_btn.pack(pady=10)
 
 
 def browse_image():
-    for video_file in vid_player.winfo_children():
-        video_file.destroy()
-    
-    vid_player.stop()
     file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg;*.jpeg;*.png;*.gif;*.bmp")])
     if file_path:
         resize_image(file_path)
