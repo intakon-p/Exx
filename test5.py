@@ -30,8 +30,9 @@ subfram2.pack(side="bottom",expand=False,fill="both")
 
 #############################################################################################33
 def open_video():
-    # for widget in frame_1.winfo_children():
-    #     widget.destroy()
+    for label in vid_player.winfo_children():
+     label.destroy()
+    
     vid_player.stop()
     global video_file
     video_file=filedialog.askopenfilename(filetypes =[('Video', ['*.mp4','*.avi','*.mov','*.mkv','*gif']),('All Files', '*.*')])
@@ -89,7 +90,8 @@ frame_1 = customtkinter.CTkFrame(master=subframe, corner_radius=15,border_color=
 frame_1.pack(pady=20, padx=20, fill="both", expand=True)
 
 button_1 = customtkinter.CTkButton(master=leftframe, text="Open Video", corner_radius=8, command=open_video)
-button_1.place(relx=0.5, rely=0.3, anchor="n") 
+button_1.place(relx=0.5, rely=0.3, anchor="n")
+ 
 
 vid_player = TkinterVideo(master=frame_1, scaled=True, keep_aspect=True, consistant_frame_rate=True, bg="black",)
 vid_player.set_resampling_method(1)
@@ -104,12 +106,17 @@ progress_slider.pack(fill="both", padx=10, pady=10)
 
 play_pause_btn = customtkinter.CTkButton(master=frame_1, text="Play ►", command=play_pause)
 play_pause_btn.pack(pady=10)
+
     
 
 ######################################################################################################3
 
 
 def browse_image():
+    for video_file in vid_player.winfo_children():
+        video_file.destroy()
+    
+    vid_player.stop()
     file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg;*.jpeg;*.png;*.gif;*.bmp")])
     if file_path:
         resize_image(file_path)
@@ -117,25 +124,29 @@ def browse_image():
 # Function to resize and display the image
 def resize_image(file_path):
     
+     
+    
     img = Image.open(file_path)
     img = img.resize((800, 600), Image.LANCZOS)
     ctk_image = customtkinter.CTkImage(light_image=img, dark_image=img, size=(500, 540))
     
     # Clear previous content in subframe
-    # for widget in subframe.winfo_children():
-    #     widget.destroy()
+    for widget in vid_player.winfo_children():
+        widget.destroy()
     
     # Create a label to display the image
-    label = customtkinter.CTkLabel(master=frame_1, image=ctk_image, text="")
+    label = customtkinter.CTkLabel(master=vid_player, image=ctk_image, text="")
       # Keep a reference to avoid garbage collection
     label.place(relx=0.5, rely=0.5, anchor="center")
 
 
 # Function to capture video from webcam and display it in real-time
 def display_video():
+    for widget in vid_player.winfo_children():
+     widget.destroy()
     
-    for widget in subframe.winfo_children():
-        widget.destroy()
+    # for widget in subframe.winfo_children():
+    #     widget.destroy()
     cap = cv2.VideoCapture(0)  # Index 0 represents the default webcam
 
     while True:
@@ -158,7 +169,7 @@ def display_video():
         
         # Create a label to display the image in the subframe
         if not hasattr(display_video, 'label'):  # Check if label has been created
-            display_video.label = customtkinter.CTkLabel(master=frame_1, image=ctk_image, text="")
+            display_video.label = customtkinter.CTkLabel(master=vid_player, image=ctk_image, text="")
             display_video.label.image = ctk_image  # Keep a reference to avoid garbage collection
             display_video.label.place(relx=0.5, rely=0.5, anchor="center")
         else:
