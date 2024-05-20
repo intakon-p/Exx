@@ -2615,18 +2615,38 @@ def webcam():
     
 
 def browse():
-        
-        
-        #text_variable.set("You pressed the Browse button!")
-        filename = filedialog.askopenfilename()
+    #text_variable.set("You pressed the Browse button!")
+    filename = filedialog.askopenfilename()
+    mimestart = mimetypes.guess_type(str(filename))[0]
+
+    if mimestart != None:
+        mimestart = mimestart.split('/')[0]
+    if mimestart == 'video':
+        reset_vid_player()
+        video_pose_estimation(str(filename))
+    elif mimestart == 'image':
+        reset_vid_player()
+        image_pose_estimation(str(filename))
+        pil_image = Image.open("processed_image.jpg")
+        #img = img.resize((800, 600), Image.LANCZOS)
+        ctk_image = ctk.CTkImage(light_image=pil_image, dark_image=pil_image, size=(800, 600))
+
+        # Create a label to display the image
+        label = ctk.CTkLabel(master=vid_player, image=ctk_image, text="")
+        # Keep a reference to avoid garbage collection
+        label.place(relx=0.5, rely=0.5, anchor="center")
+    else:
+        pass
+
+def browse_img():
+    filename = filedialog.askopenfilename(filetypes=[("JPEG files", "*.jpg"), ("MP4 files", "*.mp4")]) # Only allow .jpg files
+    if filename:  # Check if a file is selected
         mimestart = mimetypes.guess_type(str(filename))[0]
 
         if mimestart != None:
             mimestart = mimestart.split('/')[0]
         if mimestart == 'video':
             reset_vid_player()
-
-
             video_pose_estimation(str(filename))
         elif mimestart == 'image':
             reset_vid_player()
@@ -2634,15 +2654,35 @@ def browse():
             pil_image = Image.open("processed_image.jpg")
             #img = img.resize((800, 600), Image.LANCZOS)
             ctk_image = ctk.CTkImage(light_image=pil_image, dark_image=pil_image, size=(800, 600))
-    
+
             # Create a label to display the image
             label = ctk.CTkLabel(master=vid_player, image=ctk_image, text="")
             # Keep a reference to avoid garbage collection
             label.place(relx=0.5, rely=0.5, anchor="center")
+        else:
+            pass
 
+def browse_vid():
+    filename = filedialog.askopenfilename(filetypes=[("MP4 files", "*.mp4"), ("JPEG files", "*.jpg")]) # Only allow .jpg files
+    if filename:  # Check if a file is selected
+        mimestart = mimetypes.guess_type(str(filename))[0]
 
+        if mimestart != None:
+            mimestart = mimestart.split('/')[0]
+        if mimestart == 'video':
+            reset_vid_player()
+            video_pose_estimation(str(filename))
+        elif mimestart == 'image':
+            reset_vid_player()
+            image_pose_estimation(str(filename))
+            pil_image = Image.open("processed_image.jpg")
+            #img = img.resize((800, 600), Image.LANCZOS)
+            ctk_image = ctk.CTkImage(light_image=pil_image, dark_image=pil_image, size=(800, 600))
 
-
+            # Create a label to display the image
+            label = ctk.CTkLabel(master=vid_player, image=ctk_image, text="")
+            # Keep a reference to avoid garbage collection
+            label.place(relx=0.5, rely=0.5, anchor="center")
         else:
             pass
 
@@ -2781,8 +2821,12 @@ def slider_event(value):
 
 def SettingOpt():
     toplevel = ctk.CTkToplevel(root)
-    toplevel.geometry("600x500")
+    toplevel.geometry("800x600")
     toplevel.title("Setting Window")
+
+    # Make the toplevel window always on top
+    toplevel.attributes("-topmost", True)
+
 
     # Load images for dark mode, light mode, and system mode
     dark_mode_img = Image.open("dark_theme_color.png")
@@ -2819,9 +2863,13 @@ def SettingOpt():
     system_mode_frame = ctk.CTkFrame(master=toplevel, fg_color="transparent")
 
     # Place the frames
-    system_mode_frame.pack(side="right", padx=20, pady=20)
-    dark_mode_frame.pack(side="right", padx=20, pady=20)
-    light_mode_frame.pack(side="right", padx=20, pady=20)
+    # system_mode_frame.pack(side="right", padx=5, pady=1)
+    # dark_mode_frame.pack(side="right", padx=5, pady=1)
+    # light_mode_frame.pack(side="right", padx=5, pady=11)
+
+    system_mode_frame.place(relx=0.85, rely=0.3, anchor="n") 
+    dark_mode_frame.place(relx=0.65, rely=0.3, anchor="n") 
+    light_mode_frame.place(relx=0.45, rely=0.3, anchor="n") 
 
     # Create labels for the images without text
     light_mode_label = ctk.CTkLabel(master=light_mode_frame, image=light_mode_image, text="")
@@ -2879,10 +2927,10 @@ b1.place(relx=0.5, rely=0.1, anchor="n")
 # b2 = ctk.CTkButton(master = leftframe, text = "External Camera", command = webcam(Camera_Select), fg_color = (("#333333", "#2b719e")))
 # b2.place(relx=0.5, rely=h*2, anchor="n") 
 
-b3 = ctk.CTkButton(master = leftframe, text = "Browse an Image", command = image_pose_estimation, fg_color = (("#333333", "#2b719e")))
+b3 = ctk.CTkButton(master = leftframe, text = "Browse an Image", command = browse_img, fg_color = (("#333333", "#2b719e")))
 b3.place(relx=0.5, rely=h*3, anchor="n") 
 
-b4 = ctk.CTkButton(master = leftframe, text = "Brose a Video", corner_radius=8, command = video_pose_estimation, fg_color = (("#333333", "#2b719e")))
+b4 = ctk.CTkButton(master = leftframe, text = "Browse a Video", corner_radius=8, command = browse_vid, fg_color = (("#333333", "#2b719e")))
 b4.place(relx=0.5, rely=h*4, anchor="n")
 
 b5 = ctk.CTkButton(master = leftframe, text = "Setting", corner_radius = 8, command = SettingOpt, fg_color = (("#333333", "#ec8a29")))
