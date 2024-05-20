@@ -2853,7 +2853,7 @@ l3.pack(side="right",expand=TRUE)
 
 
 ##################################################
-###
+###kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkdsadsadsadsadsad
 #ต้องเเก้ให้เข้ากัน
 def open_video():
     for label in vid_player.winfo_children():
