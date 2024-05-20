@@ -18,8 +18,30 @@ mimetypes.init()
 
 root = ctk.CTk()
 
+
+
+
+GUITellside=StringVar()
+##############For LC RC
 variable1=StringVar()    
-variable2=StringVar()    
+variable2=StringVar()
+#############################Left
+left_variableScorestep1=StringVar()
+left_variableScorestep2=StringVar()
+left_variableScorestep3=StringVar()
+left_variableScorestep4=StringVar()
+############################Right
+right_variableScorestep1=StringVar()
+right_variableScorestep2=StringVar()
+right_variableScorestep3=StringVar()
+right_variableScorestep4=StringVar()
+#####################################None Side
+nons_variablestep9=StringVar()
+nons_variablestep10=StringVar()
+nons_variablestep11=StringVar()
+#######################################Plese Wait
+plswait=StringVar()
+
 
 root.geometry("960x720+100x100")
 root.minsize(960, 720)
@@ -1059,8 +1081,8 @@ def webcam_camSelect(name):
             break
         print("Left RULA grand score = " + str(LC))
         print("Right RULA grand score = " + str(RC))
-        variable1.set("LC : " + str(LC))
-        variable2.set("RC : " + str(RC))
+        variable1.set("Left RULA Score : " + str(LC))
+        variable2.set("Right RULA Score : " + str(RC))
         root.update()
         
             
@@ -1080,8 +1102,8 @@ def webcam_camSelect(name):
 
 def video_pose_estimation(name):
     # Initialize MediaPipe pose model
+     
 
-    
     mp_pose = mp.solutions.pose
     mp_drawing = mp.solutions.drawing_utils
     pose = mp_pose.Pose()
@@ -1777,8 +1799,9 @@ def video_pose_estimation(name):
             break
         print("Left RULA grand score = " + str(LC))
         print("Right RULA grand score = " + str(RC))
-        variable1.set("LC : " + str(LC))
-        variable2.set("RC : " + str(RC))
+        variable1.set("Left RULA Score : " + str(LC))
+        variable2.set("Right RULA Score : " + str(RC))
+        plswait.set("Processing video, please wait.")
         root.update()
         
         
@@ -2215,8 +2238,8 @@ def image_pose_estimation(name):
                 print("step4ang left = "+str(step4_angleleft))
                 print("step4scoretestright =  "+ str(step4_right_score))
                 print("step4scoretestleft =  "+ str(step4_left_score))
-                cv2.putText(image_with_keypoints, "step4testleft: " + str("{:0.2f}".format(step4_left_score)), (10, text_posx+text_step*9), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-                cv2.putText(image_with_keypoints, "step4testright : " + str("{:0.2f}".format(step4_right_score)), (10, text_posx+text_step*10), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+                #cv2.putText(image_with_keypoints, "step4testleft: " + str("{:0.2f}".format(step4_left_score)), (10, text_posx+text_step*9), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+                #cv2.putText(image_with_keypoints, "step4testright : " + str("{:0.2f}".format(step4_right_score)), (10, text_posx+text_step*10), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
                     
 
                 #Reset value
@@ -2302,16 +2325,16 @@ def image_pose_estimation(name):
             #cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(Tellside)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
             
             
-            cv2.putText(image_with_keypoints, "L_upper_angle : " + str("{:0.2f}".format(left_shoulder_angle)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            #cv2.putText(image_with_keypoints, "L_upper_angle : " + str("{:0.2f}".format(left_shoulder_angle)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
             #cv2.putText(image_with_keypoints, "L_upper_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
-            cv2.putText(image_with_keypoints, "R_upper_angle : " + str("{:0.2f}".format(right_shoulder_angle)), (10, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            #cv2.putText(image_with_keypoints, "R_upper_angle : " + str("{:0.2f}".format(right_shoulder_angle)), (10, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
             #cv2.putText(image_with_keypoints, "R_upper_score : " + str("{:0.2f}".format(right_shoulder_score)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
             
-            cv2.putText(image_with_keypoints, "L_upper_abduct angle : " + str("{:0.2f}".format(left_shoulder_abduct_angle)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
-            cv2.putText(image_with_keypoints, "R_upper_abduct angle : " + str("{:0.2f}".format(right_shoulder_abduct_angle)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "L_upper_abduct angle : " + str("{:0.2f}".format(left_shoulder_abduct_angle)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "R_upper_abduct angle : " + str("{:0.2f}".format(right_shoulder_abduct_angle)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
 
-            cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_shoulder_score)), (800, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_shoulder_score)), (800, text_posx+text_step), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2) 
+            # cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_shoulder_score)), (800, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_shoulder_score)), (800, text_posx+text_step), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2) 
 
             print("step1 left score = " + str(step1_left_score) + " and step1 right score = " + str(step1_right_score))
 
@@ -2342,10 +2365,10 @@ def image_pose_estimation(name):
             step2_left_score = left_elbow_score + wrist_midline
             step2_right_score = right_elbow_score + wrist_midline
             print("step2 left score = " + str(step2_left_score) + " and step2 right score = " + str(step2_right_score))
-            cv2.putText(image_with_keypoints, "L_lower_angle : " + str("{:0.2f}".format(left_elbow_angle)), (10, text_posx+text_step*3), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "R_lower_angle : " + str("{:0.2f}".format(right_elbow_angle)), (10, text_posx+text_step*4), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "L_Lower_score : " + str("{:0.2f}".format(left_elbow_score)), (600, text_posx+text_step*3), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "R_Lower_score : " + str("{:0.2f}".format(right_elbow_score)), (600, text_posx+text_step*4), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2) 
+            # cv2.putText(image_with_keypoints, "L_lower_angle : " + str("{:0.2f}".format(left_elbow_angle)), (10, text_posx+text_step*3), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "R_lower_angle : " + str("{:0.2f}".format(right_elbow_angle)), (10, text_posx+text_step*4), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "L_Lower_score : " + str("{:0.2f}".format(left_elbow_score)), (600, text_posx+text_step*3), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "R_Lower_score : " + str("{:0.2f}".format(right_elbow_score)), (600, text_posx+text_step*4), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2) 
 
 
             # Step 3 - side view wrist position
@@ -2381,8 +2404,8 @@ def image_pose_estimation(name):
             # print("pose right index  = " + str(Right_index_Pos))
             print("lefttwrist score= " + str(step3_left_score))
             print("rightwrist score = " + str(step3_right_score))
-            cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_wrist_score)), (600, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_wrist_score)), (600, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2) 
+            # cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_wrist_score)), (600, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_wrist_score)), (600, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2) 
             # Step 4 - front view wrist twist
             left_wrist_twist_angle = calculate_angle(Left_index_Pos, Left_wrist_Pos, Left_thumb_Pos, 'front')
             right_wrist_twist_angle = calculate_angle(Right_index_Pos, Right_wrist_Pos, Right_thumb_Pos, 'front')
@@ -2514,9 +2537,14 @@ def image_pose_estimation(name):
                 break
             print("Left RULA grand score = " + str(LC))
             print("Right RULA grand score = " + str(RC))
-            variable1.set("LC : " + str(LC))
-            variable2.set("RC : " + str(RC))
+            
+            variable1.set("Left RULA Score : " + str(LC))
+            variable2.set("Right RULA Score : " + str(RC))
+            
+            
+            
             root.update()
+
 
     # Close MediaPipe pose model
     pose.close()
@@ -2533,6 +2561,27 @@ def find_rula_opp():
     print("step 9 neck score = "+ str(step9_score))
     print("step 10 trunkscore = "+ str(step10_score))
     print("step 11 legscore = "+ str(step11_score))
+
+    #GUITellside.set("Please turn your side to the camera")
+
+
+    #FOR LEFT########################
+    left_variableScorestep1.set("Left Step 1 Score:" + str(step1_left_score))
+    left_variableScorestep2.set("Left Step 2 Score:" + str(step2_left_score))
+    left_variableScorestep3.set("Left Step 3 Score:" + str(step3_left_score))
+    left_variableScorestep4.set("Left Step 1 Score:" + str(step4_left_score))
+    #FOR RIGHT######################
+    right_variableScorestep1.set("Right Step 1 Score:" + str(step1_right_score))
+    right_variableScorestep2.set("Right Step 2 Score:" + str(step2_right_score))
+    right_variableScorestep3.set("Right Step 3 Score:" + str(step3_right_score))
+    right_variableScorestep4.set("Right Step 4 Score:" + str(step4_right_score))
+    ###None Side##################
+    nons_variablestep9.set("Step 9 Score:" + str(step9_score))
+    nons_variablestep10.set("Step 10 Score:" + str(step10_score))
+    nons_variablestep11.set("Step 11 Score:" + str(step11_score))
+    ################For LC RC
+    # variable1.set("LC : " + str(LC))
+    # variable2.set("RC : " + str(RC)) ย้ายไปอยู่ท้าย เเต่ละdefเเทน
   
     
 
@@ -2605,7 +2654,6 @@ def find_rula_opp():
 def reset_vid_player():
     # Stop the video player
     vid_player.stop()
-    
     # Clear the content of the video player
     for widget in vid_player.winfo_children():
         widget.destroy()
@@ -2619,29 +2667,29 @@ def camera():
     reset_vid_player()
     webcam_camSelect(1)    
 
-def browse():
-    #text_variable.set("You pressed the Browse button!")
-    filename = filedialog.askopenfilename()
-    mimestart = mimetypes.guess_type(str(filename))[0]
+# def browse():
+#     #text_variable.set("You pressed the Browse button!")
+#     filename = filedialog.askopenfilename()
+#     mimestart = mimetypes.guess_type(str(filename))[0]
 
-    if mimestart != None:
-        mimestart = mimestart.split('/')[0]
-    if mimestart == 'video':
-        reset_vid_player()
-        video_pose_estimation(str(filename))
-    elif mimestart == 'image':
-        reset_vid_player()
-        image_pose_estimation(str(filename))
-        pil_image = Image.open("processed_image.jpg")
-        #img = img.resize((800, 600), Image.LANCZOS)
-        ctk_image = ctk.CTkImage(light_image=pil_image, dark_image=pil_image, size=(800, 600))
+#     if mimestart != None:
+#         mimestart = mimestart.split('/')[0]
+#     if mimestart == 'video':
+#         reset_vid_player()
+#         video_pose_estimation(str(filename))
+#     elif mimestart == 'image':
+#         reset_vid_player()
+#         image_pose_estimation(str(filename))
+#         pil_image = Image.open("processed_image.jpg")
+#         #img = img.resize((800, 600), Image.LANCZOS)
+#         ctk_image = ctk.CTkImage(light_image=pil_image, dark_image=pil_image, size=(800, 600))
 
-        # Create a label to display the image
-        label = ctk.CTkLabel(master=vid_player, image=ctk_image, text="")
-        # Keep a reference to avoid garbage collection
-        label.place(relx=0.5, rely=0.5, anchor="center")
-    else:
-        pass
+#         # Create a label to display the image
+#         label = ctk.CTkLabel(master=vid_player, image=ctk_image, text="")
+#         # Keep a reference to avoid garbage collection
+#         label.place(relx=0.5, rely=0.5, anchor="center")
+#     else:
+#         pass
 
 def browse_img():
     filename = filedialog.askopenfilename(filetypes=[("JPEG files", "*.jpg"), ("MP4 files", "*.mp4")]) # Only allow .jpg files
@@ -2676,7 +2724,11 @@ def browse_vid():
             mimestart = mimestart.split('/')[0]
         if mimestart == 'video':
             reset_vid_player()
+            ####################################################รอวิดีโอออออออออออออออออออออออออ
+            PLS=Label(master=vid_player,textvariable=plswait,font= ('Helvetica 10 bold', 25), fg = "white", bg = "#242424")
+            PLS.place(relx=0.5, rely=0.5, anchor=CENTER)
             video_pose_estimation(str(filename))
+            open_video()
         elif mimestart == 'image':
             reset_vid_player()
             image_pose_estimation(str(filename))
@@ -2722,15 +2774,85 @@ subfram2=ctk.CTkFrame(master=rightframe,width=500,height=240,border_color="#cfcf
 subfram2.pack(side="bottom",expand=False,fill="both")
 
 RULAleftframe=ctk.CTkFrame(master=subfram2,border_color=("#333333", "#242424"),border_width=14, bg_color=("#333333", "#242424"), fg_color=("#cfcfcf","#333333"))
-RULAleftframe.pack(side="left",expand=True,fill="x")
+RULAleftframe.pack(side="left",expand=True,fill="both")
 
 RULArightframe=ctk.CTkFrame(master=subfram2,border_color=("#333333", "#242424"),border_width=14, bg_color=("#333333", "#242424"), fg_color=("#cfcfcf","#333333"))
-RULArightframe.pack(side="left",expand=True,fill="x")
+RULArightframe.pack(side="left",expand=True,fill="both")
 
 ##############
+            #             #############################Left
+# left_variableScorestep1=StringVar()
+# left_variableScorestep2=StringVar()
+# left_variableScorestep3=StringVar()
+# left_variableScorestep4=StringVar()
+# ############################Right
+# right_variableScorestep1=StringVar()
+# right_variableScorestep2=StringVar()
+# right_variableScorestep3=StringVar()
+# right_variableScorestep4=StringVar()
+# #####################################None Side
+# nons_variablestep9=StringVar()
+# nons_variablestep10=StringVar()
+# nons_variablestep11=StringVar()
+###########String คะเเนนฝั่งซ้าย
 
-################################################
 
+LS1=Label(master=RULAleftframe,textvariable=left_variableScorestep1, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+LS1.pack(side=TOP,expand=True)
+#LS1.place(relx=.5, rely=0.05,anchor= N)
+LS2=Label(master=RULAleftframe,textvariable=left_variableScorestep2, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+LS2.pack(side=TOP,expand=True)
+#LS2.place(relx=.5, rely=0.1,anchor= N)
+LS3=Label(master=RULAleftframe,textvariable=left_variableScorestep3, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+LS3.pack(side=TOP,expand=True)
+
+LS4=Label(master=RULAleftframe,textvariable=left_variableScorestep4, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+LS4.pack(side=TOP,expand=True)
+
+NS9=Label(master=RULAleftframe,textvariable=nons_variablestep9,font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+NS9.pack(side=TOP,expand=True)
+
+NS10=Label(master=RULAleftframe,textvariable=nons_variablestep10,font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+NS10.pack(side=TOP,expand=True)
+
+NS11=Label(master=RULAleftframe,textvariable=nons_variablestep11,font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+NS11.pack(side=TOP,expand=True)
+
+l2 =Label(master=RULAleftframe, textvariable = variable1, font= ('Helvetica 10 bold', 15), fg = "white", bg = "#242424")
+l2.pack(side=RIGHT,expand=TRUE)
+
+################################################String คะแนนฝั่งขวา
+RS1=Label(master=RULArightframe,textvariable=right_variableScorestep1, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+RS1.pack(side=TOP,expand=True)
+
+RS2=Label(master=RULArightframe,textvariable=right_variableScorestep2, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+RS2.pack(side=TOP,expand=True)
+
+RS3=Label(master=RULArightframe,textvariable=right_variableScorestep3, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+RS3.pack(side=TOP,expand=True)
+
+RS4=Label(master=RULArightframe,textvariable=right_variableScorestep4, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+RS4.pack(side=TOP,expand=True)
+
+NS9=Label(master=RULArightframe,textvariable=nons_variablestep9,font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+NS9.pack(side=TOP,expand=True)
+
+NS10=Label(master=RULArightframe,textvariable=nons_variablestep10,font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+NS10.pack(side=TOP,expand=True)
+
+NS11=Label(master=RULArightframe,textvariable=nons_variablestep11,font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+NS11.pack(side=TOP,expand=True)
+
+l3 =Label(master=RULArightframe, textvariable = variable2, font= ('Helvetica 10 bold', 15), fg = "white", bg = "#242424")
+l3.pack(side="right",expand=TRUE)
+
+
+
+
+
+
+##################################################
+###kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkdsadsadsadsadsad
 #ต้องเเก้ให้เข้ากัน
 def open_video():
     for label in vid_player.winfo_children():
@@ -2738,10 +2860,10 @@ def open_video():
     
     vid_player.stop()
     global video_file
-    video_file=filedialog.askopenfilename(filetypes =[('Video', ['*.mp4','*.avi','*.mov','*.mkv','*gif']),('All Files', '*.*')])
-    if video_file:
+    #video_file=filedialog.askopenfilename(filetypes =[('Video', ['*.mp4','*.avi','*.mov','*.mkv','*gif']),('All Files', '*.*')])
+    if 'output_video.mp4':
         try:
-            vid_player.load(video_file)
+            vid_player.load('output_video.mp4')
             vid_player.play()
             progress_slider.set(-1)
             play_pause_btn.configure(text="Pause ||", fg_color = (("#333333", "#ab1345")))
@@ -2756,7 +2878,7 @@ def update_duration(event):
         pass
     
 def seek(value):
-    if video_file:
+    if 'output_video.mp4':
         try:
             vid_player.seek(int(value))
             vid_player.play()
@@ -2772,7 +2894,7 @@ def update_scale(event):
         pass
     
 def play_pause():
-    if video_file:
+    if 'output_video.mp4':
         if vid_player.is_paused():
             vid_player.play()
             play_pause_btn.configure(text="Pause ||", fg_color = (("#333333", "#ab1345")))
@@ -2811,14 +2933,8 @@ progress_slider.pack(fill="both", padx=10, pady=10)
 play_pause_btn = ctk.CTkButton(master=frame_1, text="Play ►", command=play_pause, fg_color = (("#333333", "#1f8969")))
 play_pause_btn.pack(pady=10)
 
-def reset_vid_player():
-    # Stop the video player
-    vid_player.stop()
-    
-    # Clear the content of the video player
-    for widget in vid_player.winfo_children():
-        widget.destroy()
 
+ 
 def optionmenu_callback(choice):
     print("optionmenu dropdown clicked:", choice)
 
@@ -2992,14 +3108,14 @@ h = 0.1
 b1 = ctk.CTkButton(master = leftframe, text = "Webcam", command = webcam, fg_color = (("#333333", "#2b719e")))
 b1.place(relx=0.5, rely=0.1, anchor="n") 
 
-b2 = ctk.CTkButton(master = leftframe, text = "External Camera", command = camera, fg_color = (("#333333", "#2b719e")))
-b2.place(relx=0.5, rely=h*2, anchor="n") 
+# b2 = ctk.CTkButton(master = leftframe, text = "External Camera", command = camera, fg_color = (("#333333", "#2b719e")))
+# b2.place(relx=0.5, rely=h*2, anchor="n") 
 
 b3 = ctk.CTkButton(master = leftframe, text = "Browse an Image", command = browse_img, fg_color = (("#333333", "#2b719e")))
-b3.place(relx=0.5, rely=h*3, anchor="n") 
+b3.place(relx=0.5, rely=h*2, anchor="n") 
 
 b4 = ctk.CTkButton(master = leftframe, text = "Browse a Video", corner_radius=8, command = browse_vid, fg_color = (("#333333", "#2b719e")))
-b4.place(relx=0.5, rely=h*4, anchor="n")
+b4.place(relx=0.5, rely=h*3, anchor="n")
 
 b5 = ctk.CTkButton(master = leftframe, text = "Setting", corner_radius = 8, command = SettingOpt, fg_color = (("#333333", "#bc951e")))
 b5.place(relx=0.5, rely=h*9, anchor="n")

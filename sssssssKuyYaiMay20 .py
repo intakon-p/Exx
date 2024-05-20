@@ -2726,8 +2726,8 @@ def browse_vid():
         if mimestart == 'video':
             reset_vid_player()
             ####################################################รอวิดีโอออออออออออออออออออออออออ
-            PLS=Label(master=vid_player,textvariable=plswait,ont= ('Helvetica 10 bold', 25), fg = "white", bg = "#242424")
-            PLS.pack(anchor=CENTER)
+            PLS=Label(master=vid_player,textvariable=plswait,font= ('Helvetica 10 bold', 25), fg = "white", bg = "#242424")
+            PLS.place(relx=0.5, rely=0.5, anchor=CENTER)
             video_pose_estimation(str(filename))
             open_video()
         elif mimestart == 'image':
@@ -2861,7 +2861,7 @@ def open_video():
     
     vid_player.stop()
     global video_file
-    video_file=filedialog.askopenfilename(filetypes =[('Video', ['*.mp4','*.avi','*.mov','*.mkv','*gif']),('All Files', '*.*')])
+    #video_file=filedialog.askopenfilename(filetypes =[('Video', ['*.mp4','*.avi','*.mov','*.mkv','*gif']),('All Files', '*.*')])
     if 'output_video.mp4':
         try:
             vid_player.load('output_video.mp4')
@@ -2879,7 +2879,7 @@ def update_duration(event):
         pass
     
 def seek(value):
-    if video_file:
+    if 'output_video.mp4':
         try:
             vid_player.seek(int(value))
             vid_player.play()
@@ -2895,7 +2895,7 @@ def update_scale(event):
         pass
     
 def play_pause():
-    if video_file:
+    if 'output_video.mp4':
         if vid_player.is_paused():
             vid_player.play()
             play_pause_btn.configure(text="Pause ||", fg_color = (("#333333", "#ab1345")))
@@ -2935,13 +2935,6 @@ play_pause_btn = ctk.CTkButton(master=frame_1, text="Play ►", command=play_pau
 play_pause_btn.pack(pady=10)
 
 
-def reset_vid_player():
-    # Stop the video player
-    vid_player.stop()
-    
-    # Clear the content of the video player
-    for widget in vid_player.winfo_children():
-        widget.destroy()
  
 def optionmenu_callback(choice):
     print("optionmenu dropdown clicked:", choice)
