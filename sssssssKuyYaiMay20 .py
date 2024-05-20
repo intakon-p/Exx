@@ -39,6 +39,8 @@ right_variableScorestep4=StringVar()
 nons_variablestep9=StringVar()
 nons_variablestep10=StringVar()
 nons_variablestep11=StringVar()
+#######################################Plese Wait
+plswait=StringVar()
 
 
 root.geometry("960x720+100x100")
@@ -1799,6 +1801,7 @@ def video_pose_estimation(name):
         print("Right RULA grand score = " + str(RC))
         variable1.set("Left RULA Score : " + str(LC))
         variable2.set("Right RULA Score : " + str(RC))
+        plswait.set("Processing video, please wait.")
         root.update()
         
         
@@ -2235,8 +2238,8 @@ def image_pose_estimation(name):
                 print("step4ang left = "+str(step4_angleleft))
                 print("step4scoretestright =  "+ str(step4_right_score))
                 print("step4scoretestleft =  "+ str(step4_left_score))
-                cv2.putText(image_with_keypoints, "step4testleft: " + str("{:0.2f}".format(step4_left_score)), (10, text_posx+text_step*9), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-                cv2.putText(image_with_keypoints, "step4testright : " + str("{:0.2f}".format(step4_right_score)), (10, text_posx+text_step*10), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+                #cv2.putText(image_with_keypoints, "step4testleft: " + str("{:0.2f}".format(step4_left_score)), (10, text_posx+text_step*9), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+                #cv2.putText(image_with_keypoints, "step4testright : " + str("{:0.2f}".format(step4_right_score)), (10, text_posx+text_step*10), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
                     
 
                 #Reset value
@@ -2322,16 +2325,16 @@ def image_pose_estimation(name):
             #cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(Tellside)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
             
             
-            cv2.putText(image_with_keypoints, "L_upper_angle : " + str("{:0.2f}".format(left_shoulder_angle)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            #cv2.putText(image_with_keypoints, "L_upper_angle : " + str("{:0.2f}".format(left_shoulder_angle)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
             #cv2.putText(image_with_keypoints, "L_upper_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
-            cv2.putText(image_with_keypoints, "R_upper_angle : " + str("{:0.2f}".format(right_shoulder_angle)), (10, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            #cv2.putText(image_with_keypoints, "R_upper_angle : " + str("{:0.2f}".format(right_shoulder_angle)), (10, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
             #cv2.putText(image_with_keypoints, "R_upper_score : " + str("{:0.2f}".format(right_shoulder_score)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
             
-            cv2.putText(image_with_keypoints, "L_upper_abduct angle : " + str("{:0.2f}".format(left_shoulder_abduct_angle)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
-            cv2.putText(image_with_keypoints, "R_upper_abduct angle : " + str("{:0.2f}".format(right_shoulder_abduct_angle)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "L_upper_abduct angle : " + str("{:0.2f}".format(left_shoulder_abduct_angle)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "R_upper_abduct angle : " + str("{:0.2f}".format(right_shoulder_abduct_angle)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
 
-            cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_shoulder_score)), (800, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_shoulder_score)), (800, text_posx+text_step), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2) 
+            # cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_shoulder_score)), (800, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_shoulder_score)), (800, text_posx+text_step), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2) 
 
             print("step1 left score = " + str(step1_left_score) + " and step1 right score = " + str(step1_right_score))
 
@@ -2362,10 +2365,10 @@ def image_pose_estimation(name):
             step2_left_score = left_elbow_score + wrist_midline
             step2_right_score = right_elbow_score + wrist_midline
             print("step2 left score = " + str(step2_left_score) + " and step2 right score = " + str(step2_right_score))
-            cv2.putText(image_with_keypoints, "L_lower_angle : " + str("{:0.2f}".format(left_elbow_angle)), (10, text_posx+text_step*3), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "R_lower_angle : " + str("{:0.2f}".format(right_elbow_angle)), (10, text_posx+text_step*4), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "L_Lower_score : " + str("{:0.2f}".format(left_elbow_score)), (600, text_posx+text_step*3), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "R_Lower_score : " + str("{:0.2f}".format(right_elbow_score)), (600, text_posx+text_step*4), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2) 
+            # cv2.putText(image_with_keypoints, "L_lower_angle : " + str("{:0.2f}".format(left_elbow_angle)), (10, text_posx+text_step*3), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "R_lower_angle : " + str("{:0.2f}".format(right_elbow_angle)), (10, text_posx+text_step*4), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "L_Lower_score : " + str("{:0.2f}".format(left_elbow_score)), (600, text_posx+text_step*3), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "R_Lower_score : " + str("{:0.2f}".format(right_elbow_score)), (600, text_posx+text_step*4), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2) 
 
 
             # Step 3 - side view wrist position
@@ -2401,8 +2404,8 @@ def image_pose_estimation(name):
             # print("pose right index  = " + str(Right_index_Pos))
             print("lefttwrist score= " + str(step3_left_score))
             print("rightwrist score = " + str(step3_right_score))
-            cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_wrist_score)), (600, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_wrist_score)), (600, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2) 
+            # cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_wrist_score)), (600, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_wrist_score)), (600, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2) 
             # Step 4 - front view wrist twist
             left_wrist_twist_angle = calculate_angle(Left_index_Pos, Left_wrist_Pos, Left_thumb_Pos, 'front')
             right_wrist_twist_angle = calculate_angle(Right_index_Pos, Right_wrist_Pos, Right_thumb_Pos, 'front')
@@ -2722,7 +2725,11 @@ def browse_vid():
             mimestart = mimestart.split('/')[0]
         if mimestart == 'video':
             reset_vid_player()
+            ####################################################รอวิดีโอออออออออออออออออออออออออ
+            PLS=Label(master=vid_player,textvariable=plswait,ont= ('Helvetica 10 bold', 25), fg = "white", bg = "#242424")
+            PLS.pack(anchor=CENTER)
             video_pose_estimation(str(filename))
+            open_video()
         elif mimestart == 'image':
             reset_vid_player()
             image_pose_estimation(str(filename))
@@ -2839,16 +2846,14 @@ NS11.pack(side=TOP,expand=True)
 
 l3 =Label(master=RULArightframe, textvariable = variable2, font= ('Helvetica 10 bold', 15), fg = "white", bg = "#242424")
 l3.pack(side="right",expand=TRUE)
-####################################################
 
 
 
-##################################################String GrnadScore
-# l2 =Label(master=RULAleftframe, textvariable = variable1, font= ('Helvetica 10 bold', 25), fg = "white", bg = "#242424").place(relx=.5, rely=.775,anchor= N)
-# l2.pack(side=TOP,expand=TRUE)
-# l3 =Label(master=RULArightframe, textvariable = variable2, font= ('Helvetica 10 bold', 25), fg = "white", bg = "#242424").place(relx=.5, rely=.85,anchor= N)
-# l3.pack(side=TOP,expand=TRUE)
-#############################################################
+
+
+
+##################################################
+###kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkdsadsadsadsadsad
 #ต้องเเก้ให้เข้ากัน
 def open_video():
     for label in vid_player.winfo_children():
@@ -2857,9 +2862,9 @@ def open_video():
     vid_player.stop()
     global video_file
     video_file=filedialog.askopenfilename(filetypes =[('Video', ['*.mp4','*.avi','*.mov','*.mkv','*gif']),('All Files', '*.*')])
-    if video_file:
+    if 'output_video.mp4':
         try:
-            vid_player.load(video_file)
+            vid_player.load('output_video.mp4')
             vid_player.play()
             progress_slider.set(-1)
             play_pause_btn.configure(text="Pause ||", fg_color = (("#333333", "#ab1345")))
@@ -2928,6 +2933,7 @@ progress_slider.pack(fill="both", padx=10, pady=10)
 
 play_pause_btn = ctk.CTkButton(master=frame_1, text="Play ►", command=play_pause, fg_color = (("#333333", "#1f8969")))
 play_pause_btn.pack(pady=10)
+
 
 def reset_vid_player():
     # Stop the video player
