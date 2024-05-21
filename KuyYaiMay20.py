@@ -2557,7 +2557,7 @@ def find_rula_opp():
     print("step 1 leftscore = "+ str(step1_left_score) + "      step 1 rightscore = " + str(step1_right_score))
     print("step 2 leftscore = "+ str(step2_left_score) + "      step 2 rightscore = " + str(step2_right_score) )
     print("step 3 leftscore = "+ str(step3_left_score)+ "      step 3 rightscore = " + str(step3_right_score))
-    print("step 4 lefttwist = "+ str(step4_left_score)+ "      step 4 righthscore = " + str(step1_right_score))
+    print("step 4 lefttwist = "+ str(step4_left_score)+ "      step 4 righthscore = " + str(step4_right_score))
     print("step 9 neck score = "+ str(step9_score))
     print("step 10 trunkscore = "+ str(step10_score))
     print("step 11 legscore = "+ str(step11_score))
@@ -2569,7 +2569,7 @@ def find_rula_opp():
     left_variableScorestep1.set("Left Step 1 Score:" + str(step1_left_score))
     left_variableScorestep2.set("Left Step 2 Score:" + str(step2_left_score))
     left_variableScorestep3.set("Left Step 3 Score:" + str(step3_left_score))
-    left_variableScorestep4.set("Left Step 1 Score:" + str(step4_left_score))
+    left_variableScorestep4.set("Left Step 4 Score:" + str(step4_left_score))
     #FOR RIGHT######################
     right_variableScorestep1.set("Right Step 1 Score:" + str(step1_right_score))
     right_variableScorestep2.set("Right Step 2 Score:" + str(step2_right_score))
@@ -2773,10 +2773,10 @@ subframe.pack(side="top",expand=True,fill="both")
 subfram2=ctk.CTkFrame(master=rightframe,width=500,height=240,border_color="#cfcfcf",border_width=0)
 subfram2.pack(side="bottom",expand=False,fill="both")
 
-RULAleftframe=ctk.CTkFrame(master=subfram2,border_color=("#333333", "#242424"),border_width=14, bg_color=("#333333", "#242424"), fg_color=("#cfcfcf","#333333"))
+RULAleftframe=ctk.CTkFrame(master=subfram2,border_color=("#333333", "#242424"),border_width=0, bg_color=("#333333", "#242424"), fg_color=("#cfcfcf","#333333"))
 RULAleftframe.pack(side="left",expand=True,fill="both")
 
-RULArightframe=ctk.CTkFrame(master=subfram2,border_color=("#333333", "#242424"),border_width=14, bg_color=("#333333", "#242424"), fg_color=("#cfcfcf","#333333"))
+RULArightframe=ctk.CTkFrame(master=subfram2,border_color=("#333333", "#242424"),border_width=0, bg_color=("#333333", "#242424"), fg_color=("#cfcfcf","#333333"))
 RULArightframe.pack(side="left",expand=True,fill="both")
 
 ##############
