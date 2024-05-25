@@ -330,8 +330,9 @@ def findAngle(x1, y1, x2, y2):
 
 #for webcam
 def webcam_camSelect(name):
+    global cap, webcam_active
     # Initialize MediaPipe pose model
-
+    webcam_active=True
     # text_variable.set("Section1 mp module")
     # time.sleep(2)
     mp_pose = mp.solutions.pose
@@ -472,7 +473,7 @@ def webcam_camSelect(name):
 
     # text_variable.set("Section 3 While")
     # time.sleep(1)
-    while True:
+    while webcam_active:
         #Resetค่า##############################################3
         Pinky_Tip=None
         Thumb_Tip=None
@@ -573,12 +574,15 @@ def webcam_camSelect(name):
             if hands_results.multi_hand_landmarks:
                 handskeypoints_3d = []
                 for hand_landmarks in hands_results.multi_hand_landmarks:
+                    #เม้นกลับถ้าจะใช้มือ
                     # mp_drawing.draw_landmarks(
                     # image_with_keypoints,
                     # hand_landmarks,
                     # mp_hands.HAND_CONNECTIONS,
                     #  mp_drawing_styles.get_default_hand_landmarks_style(),
                     # mp_drawing_styles.get_default_hand_connections_style()) 
+
+
                     for landmark in hand_landmarks.landmark:
                         cx, cy, cz = landmark.x * frame.shape[1], landmark.y * frame.shape[0], landmark.z
                         handskeypoints_3d.append((cx, cy, cz))
@@ -819,13 +823,13 @@ def webcam_camSelect(name):
             #cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(Tellside)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
             
             
-            cv2.putText(image_with_keypoints, "L_upper_angle : " + str("{:0.2f}".format(left_shoulder_angle)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            #cv2.putText(image_with_keypoints, "L_upper_angle : " + str("{:0.2f}".format(left_shoulder_angle)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
             #cv2.putText(image_with_keypoints, "L_upper_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
-            cv2.putText(image_with_keypoints, "R_upper_angle : " + str("{:0.2f}".format(right_shoulder_angle)), (10, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            #cv2.putText(image_with_keypoints, "R_upper_angle : " + str("{:0.2f}".format(right_shoulder_angle)), (10, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
             #cv2.putText(image_with_keypoints, "R_upper_score : " + str("{:0.2f}".format(right_shoulder_score)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
             
-            cv2.putText(image_with_keypoints, "L_upper_abduct angle : " + str("{:0.2f}".format(left_shoulder_abduct_angle)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
-            cv2.putText(image_with_keypoints, "R_upper_abduct angle : " + str("{:0.2f}".format(right_shoulder_abduct_angle)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            #cv2.putText(image_with_keypoints, "L_upper_abduct angle : " + str("{:0.2f}".format(left_shoulder_abduct_angle)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            #cv2.putText(image_with_keypoints, "R_upper_abduct angle : " + str("{:0.2f}".format(right_shoulder_abduct_angle)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
             
             # Step 2 - side view elbow position
                
@@ -1000,32 +1004,32 @@ def webcam_camSelect(name):
             LC, RC = find_rula_opp()
 
             #######################################puttext
-            cv2.putText(image_with_keypoints, "Body side angle : " + str("{:0.2f}".format(bodysideangle)), (10, text_posx*5), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "Body side : " + str("{:0.2f}".format(Tellside)), (10, text_posx*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "Body side angle : " + str("{:0.2f}".format(bodysideangle)), (10, text_posx*5), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "Body side : " + str("{:0.2f}".format(Tellside)), (10, text_posx*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
 
-            cv2.putText(image_with_keypoints, "step1L_upper_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (850, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
-            cv2.putText(image_with_keypoints, "step1R_upper_score : " + str("{:0.2f}".format(right_shoulder_score)), (850, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "step1L_upper_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (850, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "step1R_upper_score : " + str("{:0.2f}".format(right_shoulder_score)), (850, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
                         
-            cv2.putText(image_with_keypoints, "step2L_Lower_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (600, text_posx+text_step*3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
-            cv2.putText(image_with_keypoints, "step2R_Lower_score : " + str("{:0.2f}".format(right_shoulder_score)), (600, text_posx+text_step*4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "step2L_Lower_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (600, text_posx+text_step*3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "step2R_Lower_score : " + str("{:0.2f}".format(right_shoulder_score)), (600, text_posx+text_step*4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
 
-            cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_wrist_score)), (600, text_posx+text_step*5), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_wrist_score)), (600, text_posx+text_step*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_wrist_score)), (600, text_posx+text_step*5), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_wrist_score)), (600, text_posx+text_step*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
 
-            cv2.putText(image_with_keypoints, "step4left: " + str("{:0.2f}".format(step4_left_score)), (600, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "step4right : " + str("{:0.2f}".format(step4_right_score)), (600, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-
-
-            cv2.putText(image_with_keypoints, "step9 score : " + str("{:0.2f}".format(neck_score)), (600, text_posx+text_step*9), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "step4left: " + str("{:0.2f}".format(step4_left_score)), (600, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "step4right : " + str("{:0.2f}".format(step4_right_score)), (600, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
 
 
-            cv2.putText(image_with_keypoints, "step10 trunk score : " + str("{:0.2f}".format(trunk_score)), (600, text_posx+text_step*10), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-
-            cv2.putText(image_with_keypoints, "step11 leg score : " + str("{:0.2f}".format(legs_score)), (600, text_posx+text_step*11), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "step9 score : " + str("{:0.2f}".format(neck_score)), (600, text_posx+text_step*9), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
 
 
-            cv2.putText(image_with_keypoints, "Left RULA score : " + str("{:0.2f}".format(LC)), (600, text_posx+text_step*12), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "Right RULA score : " + str("{:0.2f}".format(RC)), (600, text_posx+text_step*13), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "step10 trunk score : " + str("{:0.2f}".format(trunk_score)), (600, text_posx+text_step*10), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+            # cv2.putText(image_with_keypoints, "step11 leg score : " + str("{:0.2f}".format(legs_score)), (600, text_posx+text_step*11), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+
+            # cv2.putText(image_with_keypoints, "Left RULA score : " + str("{:0.2f}".format(LC)), (600, text_posx+text_step*12), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "Right RULA score : " + str("{:0.2f}".format(RC)), (600, text_posx+text_step*13), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
             
             
             
@@ -1078,7 +1082,10 @@ def webcam_camSelect(name):
         
         # Check for 'q' key press to exit
         if cv2.waitKey(2) & 0xFF == ord('q'):
+           
             break
+        
+        
         print("Left RULA grand score = " + str(LC))
         print("Right RULA grand score = " + str(RC))
         variable1.set("Left RULA Score : " + str(LC))
@@ -1443,8 +1450,8 @@ def video_pose_estimation(name):
             ##cv2.putText(image_with_keypoints, "view : " + str("{:0.2f}".format(view2)), (10, text_posx*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
             
             
-            cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(bodysideangle)), (10, text_posx*5), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(Tellside)), (10, text_posx*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(bodysideangle)), (10, text_posx*5), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(Tellside)), (10, text_posx*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
                     
             # Step 1 - side view shoulder position
             #หันหน้า
@@ -1475,8 +1482,8 @@ def video_pose_estimation(name):
                   left_wrist_angle = abs(180-calculate_angle(Left_elbow_Pos, Left_wrist_Pos,Pinky_Tip, 'front'))
                   right_wrist_angle = abs(180-calculate_angle(Right_elbow_Pos, Right_wrist_Pos,Pinky_Tip, 'front'))
               
-              cv2.putText(image_with_keypoints, "L_wrist_angle : " + str("{:0.2f}".format(left_wrist_angle)), (10, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-              cv2.putText(image_with_keypoints, "R_wrist_angle : " + str("{:0.2f}".format(right_wrist_angle)), (10, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            #   cv2.putText(image_with_keypoints, "L_wrist_angle : " + str("{:0.2f}".format(left_wrist_angle)), (10, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            #   cv2.putText(image_with_keypoints, "R_wrist_angle : " + str("{:0.2f}".format(right_wrist_angle)), (10, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
                
 
             #หันข้าง
@@ -1538,12 +1545,12 @@ def video_pose_estimation(name):
               print("step4ang left = "+str(step4_angleleft))
               print("step4scoretestright =  "+ str(step4_right_score))
               print("step4scoretestleft =  "+ str(step4_left_score))
-              cv2.putText(image_with_keypoints, "step4testleft: " + str("{:0.2f}".format(step4_left_score)), (10, text_posx+text_step*9), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-              cv2.putText(image_with_keypoints, "step4testright : " + str("{:0.2f}".format(step4_right_score)), (10, text_posx+text_step*10), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            #   cv2.putText(image_with_keypoints, "step4testleft: " + str("{:0.2f}".format(step4_left_score)), (10, text_posx+text_step*9), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            #   cv2.putText(image_with_keypoints, "step4testright : " + str("{:0.2f}".format(step4_right_score)), (10, text_posx+text_step*10), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
               
               
-              cv2.putText(image_with_keypoints, "L_wrist_angle : " + str("{:0.2f}".format(left_wrist_angle)), (10, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-              cv2.putText(image_with_keypoints, "R_wrist_angle : " + str("{:0.2f}".format(right_wrist_angle)), (10, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            #   cv2.putText(image_with_keypoints, "L_wrist_angle : " + str("{:0.2f}".format(left_wrist_angle)), (10, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            #   cv2.putText(image_with_keypoints, "R_wrist_angle : " + str("{:0.2f}".format(right_wrist_angle)), (10, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
               
             #   if Left_index_Pos is None:
             #         print("Left hand index not detected")
@@ -1598,13 +1605,13 @@ def video_pose_estimation(name):
             #cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(Tellside)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
             
             
-            cv2.putText(image_with_keypoints, "L_upper_angle : " + str("{:0.2f}".format(left_shoulder_angle)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            #cv2.putText(image_with_keypoints, "L_upper_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
-            cv2.putText(image_with_keypoints, "R_upper_angle : " + str("{:0.2f}".format(right_shoulder_angle)), (10, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
-            #cv2.putText(image_with_keypoints, "R_upper_score : " + str("{:0.2f}".format(right_shoulder_score)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "L_upper_angle : " + str("{:0.2f}".format(left_shoulder_angle)), (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # #cv2.putText(image_with_keypoints, "L_upper_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "R_upper_angle : " + str("{:0.2f}".format(right_shoulder_angle)), (10, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # #cv2.putText(image_with_keypoints, "R_upper_score : " + str("{:0.2f}".format(right_shoulder_score)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
             
-            cv2.putText(image_with_keypoints, "L_upper_abduct angle : " + str("{:0.2f}".format(left_shoulder_abduct_angle)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
-            cv2.putText(image_with_keypoints, "R_upper_abduct angle : " + str("{:0.2f}".format(right_shoulder_abduct_angle)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "L_upper_abduct angle : " + str("{:0.2f}".format(left_shoulder_abduct_angle)), (300, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "R_upper_abduct angle : " + str("{:0.2f}".format(right_shoulder_abduct_angle)), (300, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
             
             # Step 2 - side view elbow position
                
@@ -1656,8 +1663,8 @@ def video_pose_estimation(name):
 
             step3_left_score = left_wrist_score
             step3_right_score = right_wrist_score
-            cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_wrist_score)), (600, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_wrist_score)), (600, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_wrist_score)), (600, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_wrist_score)), (600, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
             
             # print("leftwrist angle = " + str(left_wrist_angle))
             # print("rightwrist angle = " + str(right_wrist_angle))
@@ -1777,12 +1784,101 @@ def video_pose_estimation(name):
             # print("Calweight = " + str(Calweight))
 
             LC, RC = find_rula_opp()
+                        #######################################puttext
+            # cv2.putText(image_with_keypoints, "Body side angle : " + str("{:0.2f}".format(bodysideangle)), (10, text_posx*5), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "Body side : " + str("{:0.2f}".format(Tellside)), (10, text_posx*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+            # cv2.putText(image_with_keypoints, "step1L_upper_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (850, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "step1R_upper_score : " + str("{:0.2f}".format(right_shoulder_score)), (850, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+                        
+            # cv2.putText(image_with_keypoints, "step2L_Lower_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (600, text_posx+text_step*3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "step2R_Lower_score : " + str("{:0.2f}".format(right_shoulder_score)), (600, text_posx+text_step*4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+
+            # cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_wrist_score)), (600, text_posx+text_step*5), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_wrist_score)), (600, text_posx+text_step*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+            # cv2.putText(image_with_keypoints, "step4left: " + str("{:0.2f}".format(step4_left_score)), (600, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "step4right : " + str("{:0.2f}".format(step4_right_score)), (600, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+
+            # cv2.putText(image_with_keypoints, "step9 score : " + str("{:0.2f}".format(neck_score)), (600, text_posx+text_step*9), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+
+            # cv2.putText(image_with_keypoints, "step10 trunk score : " + str("{:0.2f}".format(trunk_score)), (600, text_posx+text_step*10), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+            # cv2.putText(image_with_keypoints, "step11 leg score : " + str("{:0.2f}".format(legs_score)), (600, text_posx+text_step*11), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+
+            # cv2.putText(image_with_keypoints, "Left RULA score : " + str("{:0.2f}".format(LC)), (600, text_posx+text_step*12), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "Right RULA score : " + str("{:0.2f}".format(RC)), (600, text_posx+text_step*13), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
             
+            
+            
+            text_posx = 20
+            text_step = 40
+            x,y,w,h = 0,0,330,320
+            frame_width = 1230
+            x2, y2, w2, h2 = frame_width - 270, 0, 320, 320
+
+            # Draw black background rectangle
+            cv2.rectangle(image_with_keypoints, (x, y), (x + w, y + h), (0,0,0), -1)
+            cv2.rectangle(image_with_keypoints, (x2, y2), (x2 + w2, y2 + h2), (0, 0, 0), -1)
+            cv2.putText(image_with_keypoints, "Step 1 Left Score = " + str("{:0.2f}".format(step1_left_score)), 
+                        (10, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints, "Step 2 Left Score = " + str("{:0.2f}".format(step2_left_score)), 
+                        (10, text_posx + text_step), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints,"Step 3 Left Score = " + str("{:0.2f}".format(step3_left_score)),
+                        (10, text_posx+ text_step * 2),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints,"Step 4 Left Score = " + str("{:0.2f}".format(step4_left_score)), 
+                        (10, text_posx + text_step * 3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints,"Step 9 Neck Score = " + str("{:0.2f}".format(step9_score)), 
+                        (10, text_posx + text_step * 4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints,"Step 10 Trunk score = " + str("{:0.2f}".format(step10_score)), 
+                        (10, text_posx + text_step * 5),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints,"Step 11 Leg Score = " + str("{:0.2f}".format(step11_score)), 
+                        (10, text_posx + text_step * 6) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints,"RULA Left Score= " + str("{:0.2f}".format(LC)), 
+                        (10, text_posx + text_step * 7) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+
+
+
+
+            # Put text on the image for right scores
+            cv2.putText(image_with_keypoints,"Step 1 Right Score = " + str("{:0.2f}".format(step1_right_score)), 
+                        (970, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints,"Step 2 Right Score = " + str("{:0.2f}".format(step2_right_score)), 
+                        (970, text_posx + text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints,"Step 3 Right Score = " + str("{:0.2f}".format(step3_right_score)), 
+                        (970, text_posx + text_step * 2),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints,"Step 4 Right Score = " + str("{:0.2f}".format(step4_right_score)), 
+                        (970, text_posx + text_step * 3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints,"Step 9 Neck Score = " + str("{:0.2f}".format(step9_score)), 
+                        (970, text_posx + text_step * 4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints,"Step 10 Trunk Score = " + str("{:0.2f}".format(step10_score)), 
+                        (970, text_posx + text_step * 5),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints,"Step 11 Leg Score = " + str("{:0.2f}".format(step11_score)), 
+                        (970, text_posx + text_step * 6) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+            
+            cv2.putText(image_with_keypoints,"RULA Right Score= " + str("{:0.2f}".format(RC)), 
+                        (970, text_posx + text_step * 7) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
             
             #cv2.imshow("Proccesing", image_with_keypoints)
             
             
-            
+            ########################################################################
 
         else:
             image_with_keypoints = frame.copy() 
@@ -2064,12 +2160,14 @@ def image_pose_estimation(name):
             if hands_results.multi_hand_landmarks:
                 handskeypoints_3d = []
                 for hand_landmarks in hands_results.multi_hand_landmarks:
-                    mp_drawing.draw_landmarks(
-                    image_with_keypoints,
-                    hand_landmarks,
-                    mp_hands.HAND_CONNECTIONS,
-                     mp_drawing_styles.get_default_hand_landmarks_style(),
-                    mp_drawing_styles.get_default_hand_connections_style()) 
+                    #เม้นกลับวาดมือ
+                    # mp_drawing.draw_landmarks(
+                    # image_with_keypoints,
+                    # hand_landmarks,
+                    # mp_hands.HAND_CONNECTIONS,
+                    #  mp_drawing_styles.get_default_hand_landmarks_style(),
+                    # mp_drawing_styles.get_default_hand_connections_style()) 
+
                     for landmark in hand_landmarks.landmark:
                         cx, cy, cz = landmark.x * frame.shape[1], landmark.y * frame.shape[0], landmark.z
                         handskeypoints_3d.append((cx, cy, cz))
@@ -2108,8 +2206,7 @@ def image_pose_estimation(name):
                 # cv2.putText(image_with_keypoints, Pinky_text, Pinky_text_pos, cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
             print("hand pinky  index   = " + str(Pinky_Tip))     
-            text_posx = 20
-            text_step = 40
+          
             
 
             
@@ -2144,8 +2241,8 @@ def image_pose_estimation(name):
                 #หันข้าง
                 Tellside = 1
 
-            cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(bodysideangle)), (10, text_posx*5), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-            cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(Tellside)), (10, text_posx*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(bodysideangle)), (10, text_posx*5), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "Left base side : " + str("{:0.2f}".format(Tellside)), (10, text_posx*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
         
                     
             # Step 1 - side view shoulder position
@@ -2262,9 +2359,9 @@ def image_pose_estimation(name):
                 #   print("view2 = " + str(view2))
                 #   print("hand  index   = " + str(Index_Tip))
               
-                print("pose  index  = " + str(Right_index_Pos))
-                cv2.putText(image_with_keypoints, "L_wrist_angle : " + str("{:0.2f}".format(left_wrist_angle)), (10, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
-                cv2.putText(image_with_keypoints, "R_wrist_angle : " + str("{:0.2f}".format(right_wrist_angle)), (10, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+                # print("pose  index  = " + str(Right_index_Pos))
+                # cv2.putText(image_with_keypoints, "L_wrist_angle : " + str("{:0.2f}".format(left_wrist_angle)), (10, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+                # cv2.putText(image_with_keypoints, "R_wrist_angle : " + str("{:0.2f}".format(right_wrist_angle)), (10, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
 
 
             
@@ -2530,6 +2627,90 @@ def image_pose_estimation(name):
 
             LC, RC = find_rula_opp()
 
+            #######################################puttext
+            # cv2.putText(image_with_keypoints, "Body side angle : " + str("{:0.2f}".format(bodysideangle)), (10, text_posx*5), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "Body side : " + str("{:0.2f}".format(Tellside)), (10, text_posx*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+            # cv2.putText(image_with_keypoints, "step1L_upper_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (850, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "step1R_upper_score : " + str("{:0.2f}".format(right_shoulder_score)), (850, text_posx+text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+                        
+            # cv2.putText(image_with_keypoints, "step2L_Lower_arm_score : " + str("{:0.2f}".format(left_shoulder_score)), (600, text_posx+text_step*3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+            # cv2.putText(image_with_keypoints, "step2R_Lower_score : " + str("{:0.2f}".format(right_shoulder_score)), (600, text_posx+text_step*4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0,0,255), 2)
+
+            # cv2.putText(image_with_keypoints, "L_wrist_score : " + str("{:0.2f}".format(left_wrist_score)), (600, text_posx+text_step*5), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "R_wrist_score : " + str("{:0.2f}".format(right_wrist_score)), (600, text_posx+text_step*6), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+            # cv2.putText(image_with_keypoints, "step4left: " + str("{:0.2f}".format(step4_left_score)), (600, text_posx+text_step*7), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "step4right : " + str("{:0.2f}".format(step4_right_score)), (600, text_posx+text_step*8), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+
+            # cv2.putText(image_with_keypoints, "step9 score : " + str("{:0.2f}".format(neck_score)), (600, text_posx+text_step*9), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+
+            # cv2.putText(image_with_keypoints, "step10 trunk score : " + str("{:0.2f}".format(trunk_score)), (600, text_posx+text_step*10), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+            #cv2.putText(image_with_keypoints, "step11 leg score : " + str("{:0.2f}".format(legs_score)), (600, text_posx+text_step*11), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+
+            # cv2.putText(image_with_keypoints, "Left RULA score : " + str("{:0.2f}".format(LC)), (600, text_posx+text_step*12), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            # cv2.putText(image_with_keypoints, "Right RULA score : " + str("{:0.2f}".format(RC)), (600, text_posx+text_step*13), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            ##################################3
+            # text_posx = 20
+            # text_step = 40
+            # cv2.putText(image_with_keypoints, "step 1 leftscore = " + str("{:0.2f}".format(step1_left_score)), 
+            #             (10, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints, "step 2 leftscore = " + str("{:0.2f}".format(step2_left_score)), 
+            #             (10, text_posx + text_step), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints,"step 3 leftscore = " + str("{:0.2f}".format(step3_left_score)),
+            #             (10, text_posx+ text_step * 2),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints,"step 4 lefttwist = " + str("{:0.2f}".format(step4_left_score)), 
+            #             (10, text_posx + text_step * 3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints,"step 9 neck score = " + str("{:0.2f}".format(step9_score)), 
+            #             (10, text_posx + text_step * 4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints,"step 10 trunkscore = " + str("{:0.2f}".format(step10_score)), 
+            #             (10, text_posx + text_step * 5),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints,"step 11 legscore = " + str("{:0.2f}".format(step11_score)), 
+            #             (10, text_posx + text_step * 6) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints,"RULA Left Score= " + str("{:0.2f}".format(LC)), 
+            #             (10, text_posx + text_step * 7) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+
+
+
+
+            # # Put text on the image for right scores
+            # cv2.putText(image_with_keypoints,"step 1 rightscore = " + str("{:0.2f}".format(step1_right_score)), 
+            #             (1000, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints,"step 2 rightscore = " + str("{:0.2f}".format(step2_right_score)), 
+            #             (1000, text_posx + text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints,"step 3 rightscore = " + str("{:0.2f}".format(step3_right_score)), 
+            #             (1000, text_posx + text_step * 2),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints,"step 4 rightscore = " + str("{:0.2f}".format(step4_right_score)), 
+            #             (1000, text_posx + text_step * 3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints,"step 9 neck score = " + str("{:0.2f}".format(step9_score)), 
+            #             (1000, text_posx + text_step * 4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints,"step 10 trunkscore = " + str("{:0.2f}".format(step10_score)), 
+            #             (1000, text_posx + text_step * 5),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints,"step 11 legscore = " + str("{:0.2f}".format(step11_score)), 
+            #             (1000, text_posx + text_step * 6) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            
+            # cv2.putText(image_with_keypoints,"RULA Right Score= " + str("{:0.2f}".format(RC)), 
+            #             (1000, text_posx + text_step * 7) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
+            ##############################################################################################################
+
             #cv2.imshow("Image with Keypoints", image_with_keypoints)
             cv2.imwrite("processed_image.jpg", image_with_keypoints)  
             # Check for 'q' key press to exit
@@ -2653,20 +2834,63 @@ def find_rula_opp():
 #############เพิ่มมา
 def reset_vid_player():
     # Stop the video player
+    close_webcam()
     vid_player.stop()
     # Clear the content of the video player
     for widget in vid_player.winfo_children():
         widget.destroy()
+        
+    for child in vid_player.winfo_children():
+        child.destroy()
+    for label in vid_player.winfo_children():
+        label.destroy()
+        
+    
+##########################################################################webcam butt
+webcam_active = False
+cap = None
+# def webcam_toggle():
+#     global webcam_active
+#     if webcam_active:
+#         close_webcam()
+#         b1.configure(text="Webcam", fg_color=("#333333", "#2b719e"))  # Reset button text and color
+#     else:
+#         open_webcam()
+#         b1.configure(text="Close Webcam", fg_color=("#333333", "#c0392b"))
 
-def webcam():
+def open_webcam():
+    global webcam_active, cap
+    # Open webcam
     reset_vid_player()
-    #text_variable.set("You pressed the Webcam button!")
+    cap = cv2.VideoCapture(0)  # Assuming webcam index is 0
+    if not cap.isOpened():
+        print("Error opening webcam!")
+        return
+    webcam_active = True
     webcam_camSelect(0)
+# def webcam():
+#     global webcam_on
+#     reset_vid_player()
+#     webcam_on=True
+#     #text_variable.set("You pressed the Webcam button!")
+#     webcam_camSelect(0)
+def close_webcam():
+    
+    # Add code to stop the webcam and destroy the frame here
+    while webcam_active:
+         cap.release() 
+         cv2.destroyAllWindows()
+         break 
+    if hasattr(webcam_camSelect, 'label'):
+        webcam_camSelect.label.destroy()
+        delattr(webcam_camSelect, 'label') 
+    
+    
 
 def camera():
     reset_vid_player()
     webcam_camSelect(1)    
-
+####################################################################################
 # def browse():
 #     #text_variable.set("You pressed the Browse button!")
 #     filename = filedialog.askopenfilename()
@@ -2855,20 +3079,20 @@ l3.pack(side="right",expand=TRUE)
 ###kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkdsadsadsadsadsad
 #ต้องเเก้ให้เข้ากัน
 def open_video():
-    for label in vid_player.winfo_children():
-     label.destroy()
-    
-    vid_player.stop()
+   
+  
     global video_file
     #video_file=filedialog.askopenfilename(filetypes =[('Video', ['*.mp4','*.avi','*.mov','*.mkv','*gif']),('All Files', '*.*')])
     if 'output_video.mp4':
         try:
+            
             vid_player.load('output_video.mp4')
             vid_player.play()
             progress_slider.set(-1)
             play_pause_btn.configure(text="Pause ||", fg_color = (("#333333", "#ab1345")))
         except:
             print("Unable to load the file")
+            
 
 def update_duration(event):
     try:
@@ -2933,7 +3157,10 @@ progress_slider.pack(fill="both", padx=10, pady=10)
 play_pause_btn = ctk.CTkButton(master=frame_1, text="Play ►", command=play_pause, fg_color = (("#333333", "#1f8969")))
 play_pause_btn.pack(pady=10)
 
+###############3
 
+
+#################################3
  
 def optionmenu_callback(choice):
     print("optionmenu dropdown clicked:", choice)
@@ -3105,7 +3332,8 @@ def SettingOpt():
 
 #############################################
 h = 0.1
-b1 = ctk.CTkButton(master = leftframe, text = "Webcam", command = webcam, fg_color = (("#333333", "#2b719e")))
+###webcam button
+b1 = ctk.CTkButton(master = leftframe, text = "Webcam", command =open_webcam, fg_color = (("#333333", "#2b719e")))
 b1.place(relx=0.5, rely=0.1, anchor="n") 
 
 # b2 = ctk.CTkButton(master = leftframe, text = "External Camera", command = camera, fg_color = (("#333333", "#2b719e")))
