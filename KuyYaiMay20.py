@@ -2714,17 +2714,19 @@ def image_pose_estimation(name):
             #cv2.imshow("Image with Keypoints", image_with_keypoints)
             cv2.imwrite("processed_image.jpg", image_with_keypoints)  
             # Check for 'q' key press to exit
-            if cv2.waitKey(2) & 0xFF == ord('q'):
-                break
-            print("Left RULA grand score = " + str(LC))
-            print("Right RULA grand score = " + str(RC))
-            
-            variable1.set("Left RULA Score : " + str(LC))
-            variable2.set("Right RULA Score : " + str(RC))
+           
+        else :
+            LC=None
+            RC=None
+            cv2.imwrite("processed_image.jpg", frame) 
             
             
+        print("Left RULA grand score = " + str(LC))
+        print("Right RULA grand score = " + str(RC))
             
-            root.update()
+        variable1.set("Left RULA Score : " + str(LC))
+        variable2.set("Right RULA Score : " + str(RC))    
+        root.update()
 
 
     # Close MediaPipe pose model
@@ -3079,7 +3081,7 @@ l3.pack(side="right",expand=TRUE)
 ###kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkdsadsadsadsadsad
 #ต้องเเก้ให้เข้ากัน
 def open_video():
-   
+    vid_player.option_clear
   
     global video_file
     #video_file=filedialog.askopenfilename(filetypes =[('Video', ['*.mp4','*.avi','*.mov','*.mkv','*gif']),('All Files', '*.*')])
