@@ -2671,30 +2671,35 @@ def image_pose_estimation(name):
             global Calweight
             global Weight    
         
-            Muscle = "No"
-            Weight = 0
+            # Muscle = "No"
+            # Weight = 0
 
-            if Muscle == "Yes":
-                MuscleN = 1
-            elif Muscle == "No":
-                MuscleN = 0
-            else:
-                MuscleN = 0
+            # if Muscle == "Yes":
+            #     MuscleN = 1
+            # elif Muscle == "No":
+            #     MuscleN = 0
+            # else:
+            #     MuscleN = 0
+
+            Weight = float(Weight)
+            update_value_label(Weight)
 
             Calweight = 0
             if Weight < 1.99 :
                 Calweight = 0
-            elif 1.99 <= Weight < 9.97 and Muscle == "No":
+            elif 1.99 <= Weight < 9.97 and Muscle == 0:
                 Calweight = 1
-            elif 1.99 <= Weight < 9.97 and Muscle == "Yes":
+            elif 1.99 <= Weight < 9.97 and Muscle == 1:
                 Calweight = 2 
-            elif Weight > 9.97 and Muscle == "No":
+            elif Weight > 9.97 and Muscle == 0:
                 Calweight = 2
-            elif Weight > 9.97 and Muscle == "Yes":
+            elif Weight > 9.97 and Muscle == 1:
                 Calweight = 3
             # print("Start")
             # print("")
             # print("Calweight = " + str(Calweight))
+            print("Weight = " + str(Weight))
+            print("Muscle = " + str(Muscle))
 
             LC, RC = find_rula_opp()
 
@@ -3062,7 +3067,7 @@ leftframe.pack(side="left",expand=False,fill="y")
 rightframe=ctk.CTkFrame(master=root ,border_color="yellow",border_width=15)
 rightframe.pack(side="left",expand=True,fill="both")
 
-subframe=ctk.CTkFrame(master=rightframe,width=500,height=540,border_color=("#333333", "#242424"), border_width=12, bg_color=("#333333", "#242424"))
+subframe=ctk.CTkFrame(master=rightframe,width=500,height=40,border_color=("#333333", "#242424"), border_width=12, bg_color=("#333333", "#242424"))
 subframe.pack(side="top",expand=True,fill="both")
 
 subfram2=ctk.CTkFrame(master=rightframe,width=500,height=240,border_color="#cfcfcf",border_width=0)
@@ -3160,7 +3165,6 @@ def open_video():
         except:
             print("Unable to load the file")
             
-
 def update_duration(event):
     try:
         duration = int(vid_player.video_info()["duration"])
@@ -3350,6 +3354,25 @@ def SettingOpt():
     yELLOW = "#f1c232"
     rED = "#c22b6a"
 
+    def update_slider_color(value):
+        value = float(value)
+        update_value_label(value)
+
+        Calweight = 0
+        if value < 1.99 :
+            Calweight = 0
+        elif 1.99 <= value < 9.97 and Muscle == 0:
+            Calweight = 1
+        elif 1.99 <= valu < 9.97 and Muscle == 1:
+            Calweight = 2 
+        elif Weight > 9.97 and Muscle == 0:
+            Calweight = 2
+        elif Weight > 9.97 and Muscle == 1:
+            Calweight = 3
+
+    def update_value_label(value):
+        value_label.configure(text=f"Value: {value:.1f} kg")
+
     # Callback function for the slider to update the color dynamically
     def update_slider_color(value):
         value = float(value)
@@ -3387,7 +3410,7 @@ def SettingOpt():
     # Weight = st.select_slider("What is the weight of the load?", options = values)
     # st.write("Weight = " + str(Weight))
 
-
+    Weight = 0
     Weight = ctk.CTkSlider(master = toplevel, from_=0, to=16, command=update_slider_color, width = 460, number_of_steps=32, progress_color="#f1c232", button_color="#f1c232", button_hover_color=yELLOW, fg_color=rED)
     Weight.grid(row=4, column=7, sticky="e", padx=10, pady=30)         
 
