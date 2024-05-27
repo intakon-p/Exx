@@ -922,8 +922,10 @@ def webcam_camSelect(name):
                 wrist_midline = 0
                 # print("Lines are parallel, no intersection point")
 
-            step2_left_score = left_elbow_score + wrist_midline
-            step2_right_score = right_elbow_score + wrist_midline
+            # step2_left_score = left_elbow_score + wrist_midline
+            # step2_right_score = right_elbow_score + wrist_midline
+            step2_left_score = left_elbow_score
+            step2_right_score = right_elbow_score
             #print("step2 left score = " + str(step2_left_score) + " and step2 right score = " + str(step2_right_score))
 
            
@@ -1710,8 +1712,10 @@ def video_pose_estimation(name):
                 wrist_midline = 0
                 # print("Lines are parallel, no intersection point")
 
-            step2_left_score = left_elbow_score + wrist_midline
-            step2_right_score = right_elbow_score + wrist_midline
+            # step2_left_score = left_elbow_score + wrist_midline
+            # step2_right_score = right_elbow_score + wrist_midline
+            step2_left_score = left_elbow_score
+            step2_right_score = right_elbow_score
             #print("step2 left score = " + str(step2_left_score) + " and step2 right score = " + str(step2_right_score))
 
 
@@ -2573,8 +2577,10 @@ def image_pose_estimation(name):
                 wrist_midline = 0
                 # print("Lines are parallel, no intersection point")
 
-            step2_left_score = left_elbow_score + wrist_midline
-            step2_right_score = right_elbow_score + wrist_midline
+            # step2_left_score = left_elbow_score + wrist_midline
+            # step2_right_score = right_elbow_score + wrist_midline
+            step2_left_score = left_elbow_score
+            step2_right_score = right_elbow_score
             print("step2 left score = " + str(step2_left_score) + " and step2 right score = " + str(step2_right_score))
             # cv2.putText(image_with_keypoints, "L_lower_angle : " + str("{:0.2f}".format(left_elbow_angle)), (10, text_posx+text_step*3), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
             # cv2.putText(image_with_keypoints, "R_lower_angle : " + str("{:0.2f}".format(right_elbow_angle)), (10, text_posx+text_step*4), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
