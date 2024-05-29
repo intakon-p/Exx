@@ -2730,7 +2730,7 @@ def reset_vid_player():
 webcam_active = False
 cap = None
 
-def open_camera():
+def open_camera_0():
     global webcam_active, cap
     # Open webcam
     reset_vid_player()
@@ -2740,6 +2740,23 @@ def open_camera():
         return
     webcam_active = True
     webcam_camSelect(0)
+
+def open_camera_1():
+    global webcam_active, cap
+    # Open webcam
+    reset_vid_player()
+    cap = cv2.VideoCapture(1)  # Assuming webcam index is 1
+    if not cap.isOpened():
+        print("Error opening webcam!")
+        return
+    webcam_active = True
+    webcam_camSelect(1)
+
+def open_camera():
+    if num_of_cam == 0:
+        open_camera_0()
+    elif num_of_cam == 1:
+        open_camera_1()
 
 def close_webcam():
     
@@ -2841,54 +2858,57 @@ RRULA_Right=ctk.CTkFrame(master=RULArightframe,border_color=("#333333", "#242424
 RRULA_Right.pack(side="right",expand=True,fill="x")
 
 
+# Define background colors for light and dark themes
+bg_color_light = "#cfcfcf"
+bg_color_dark = "#333333"
 
-LS1=Label(master=LRULA_Left,textvariable=left_variableScorestep1, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+LS1=ctk.CTkLabel(master=LRULA_Left,textvariable=left_variableScorestep1, font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 LS1.pack(side=TOP,expand=True)
 #LS1.place(relx=.5, rely=0.05,anchor= N)
-LS2=Label(master=LRULA_Left,textvariable=left_variableScorestep2, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+LS2=ctk.CTkLabel(master=LRULA_Left,textvariable=left_variableScorestep2, font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 LS2.pack(side=TOP,expand=True)
 #LS2.place(relx=.5, rely=0.1,anchor= N)
-LS3=Label(master=LRULA_Left,textvariable=left_variableScorestep3, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+LS3=ctk.CTkLabel(master=LRULA_Left,textvariable=left_variableScorestep3, font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 LS3.pack(side=TOP,expand=True)
 
-LS4=Label(master=LRULA_Left,textvariable=left_variableScorestep4, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+LS4=ctk.CTkLabel(master=LRULA_Left,textvariable=left_variableScorestep4, font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 LS4.pack(side=TOP,expand=True)
 
-NS9=Label(master=LRULA_Left,textvariable=nons_variablestep9,font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+NS9=ctk.CTkLabel(master=LRULA_Left,textvariable=nons_variablestep9,font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 NS9.pack(side=TOP,expand=True)
 
-NS10=Label(master=LRULA_Left,textvariable=nons_variablestep10,font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+NS10=ctk.CTkLabel(master=LRULA_Left,textvariable=nons_variablestep10,font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 NS10.pack(side=TOP,expand=True)
 
-NS11=Label(master=LRULA_Left,textvariable=nons_variablestep11,font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+NS11=ctk.CTkLabel(master=LRULA_Left,textvariable=nons_variablestep11,font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 NS11.pack(side=TOP,expand=True)
 
-l2 =Label(master=LRULA_Right, textvariable = variable1, font= ('Helvetica 10 bold', 15), fg = "white", bg = "#242424")
+l2 =ctk.CTkLabel(master=LRULA_Right, textvariable = variable1, font= ('Helvetica 10 bold', 20), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 l2.pack(side=TOP,expand=TRUE)
 
 ################################################String คะแนนฝั่งขวา
-RS1=Label(master=RRULA_Right,textvariable=right_variableScorestep1, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+RS1=ctk.CTkLabel(master=RRULA_Right,textvariable=right_variableScorestep1, font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 RS1.pack(side=TOP,expand=True)
 
-RS2=Label(master=RRULA_Right,textvariable=right_variableScorestep2, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+RS2=ctk.CTkLabel(master=RRULA_Right,textvariable=right_variableScorestep2, font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 RS2.pack(side=TOP,expand=True)
 
-RS3=Label(master=RRULA_Right,textvariable=right_variableScorestep3, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+RS3=ctk.CTkLabel(master=RRULA_Right,textvariable=right_variableScorestep3, font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 RS3.pack(side=TOP,expand=True)
 
-RS4=Label(master=RRULA_Right,textvariable=right_variableScorestep4, font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+RS4=ctk.CTkLabel(master=RRULA_Right,textvariable=right_variableScorestep4, font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 RS4.pack(side=TOP,expand=True)
 
-NS9=Label(master=RRULA_Right,textvariable=nons_variablestep9,font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+NS9=ctk.CTkLabel(master=RRULA_Right,textvariable=nons_variablestep9,font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 NS9.pack(side=TOP,expand=True)
 
-NS10=Label(master=RRULA_Right,textvariable=nons_variablestep10,font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+NS10=ctk.CTkLabel(master=RRULA_Right,textvariable=nons_variablestep10,font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 NS10.pack(side=TOP,expand=True)
 
-NS11=Label(master=RRULA_Right,textvariable=nons_variablestep11,font= ('Helvetica 10 bold', 10), fg = "White", bg = "#242424")
+NS11=ctk.CTkLabel(master=RRULA_Right,textvariable=nons_variablestep11,font= ('Helvetica 10 bold', 10), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 NS11.pack(side=TOP,expand=True)
 
-l3 =Label(master=RRULA_Left, textvariable = variable2, font= ('Helvetica 10 bold', 15), fg = "white", bg = "#242424")
+l3 =ctk.CTkLabel(master=RRULA_Left, textvariable = variable2, font= ('Helvetica 10 bold', 20), fg_color = ("#cfcfcf", "#333333"), bg_color = ("#cfcfcf","#333333"))
 l3.pack(side=TOP,expand=TRUE)
 
 ##################################################
@@ -3031,9 +3051,9 @@ def SettingOpt():
     # dark_mode_frame.pack(side="right", padx=5, pady=1)
     # light_mode_frame.pack(side="right", padx=5, pady=11)
 
-    system_mode_frame.place(relx=0.85, rely=0.25, anchor="n") 
-    dark_mode_frame.place(relx=0.65, rely=0.25, anchor="n") 
-    light_mode_frame.place(relx=0.45, rely=0.25, anchor="n") 
+    system_mode_frame.place(relx=0.85, rely=0.1, anchor="n") 
+    dark_mode_frame.place(relx=0.65, rely=0.1, anchor="n") 
+    light_mode_frame.place(relx=0.45, rely=0.1, anchor="n") 
 
     # Create labels for the images without text
     light_mode_label = ctk.CTkLabel(master=light_mode_frame, image=light_mode_image, text="")
@@ -3061,14 +3081,14 @@ def SettingOpt():
     system_mode_label.bind("<Button-1>", lambda e: segmented_button_callback("Automatic"))
 
     # Use grid geometry manager to align labels
-    text00 = ctk.CTkLabel(master=toplevel, text="k", fg_color="transparent")
+    text00 = ctk.CTkLabel(master=toplevel, text="k", fg_color="transparent", text_color = ("#ebebeb", "#242424"))
     text00.grid(row=0, column=3, sticky="e", padx=10, pady=30)
 
-    text01 = ctk.CTkLabel(master=toplevel, text="u", fg_color="transparent")
-    text01.grid(row=1, column=4, sticky="e", padx=10, pady=30)
+    # text01 = ctk.CTkLabel(master=toplevel, text="u", fg_color="transparent")
+    # text01.grid(row=1, column=4, sticky="e", padx=10, pady=30)
 
-    text02 = ctk.CTkLabel(master=toplevel, text="y", fg_color="transparent")
-    text02.grid(row=2, column=5, sticky="e", padx=10, pady=30)
+    # text02 = ctk.CTkLabel(master=toplevel, text="y", fg_color="transparent")
+    # text02.grid(row=2, column=5, sticky="e", padx=10, pady=30)
 
     ##############################################
 
@@ -3076,10 +3096,13 @@ def SettingOpt():
     text1.grid(row=2, column=6, sticky="e", padx=10, pady=30)
     
     text2 = ctk.CTkLabel(master=toplevel, text="Action of the Posture: ", fg_color="transparent")
-    text2.grid(row=3, column=6, sticky="e", padx=10, pady=30)
+    text2.grid(row=4, column=6, sticky="e", padx=10, pady=30)
     
     text3 = ctk.CTkLabel(master=toplevel, text="Weight of the Load(s): ", fg_color="transparent")
-    text3.grid(row=4, column=6, sticky="e", padx=10, pady=30)
+    text3.grid(row=5, column=6, sticky="e", padx=10, pady=30)
+
+    text4 = ctk.CTkLabel(master=toplevel, text="Select the camera: ", fg_color="transparent")
+    text4.grid(row=3, column=6, sticky="e", padx=10, pady=30)
 
     ###############################################
 
@@ -3100,6 +3123,18 @@ def SettingOpt():
             Muscle = 1
         else:
             Muscle = 0
+        print("optionmenu dropdown clicked:", choice)
+
+    def optionmenu_callback_num(choice):
+        global num_of_cam
+        if choice == "Webcam":
+            num_of_cam = 0
+            print("optionmenu dropdown clicked:", "num of cam = " + str(0))
+        elif choice == "External Camera":
+            num_of_cam = 1
+            print("optionmenu dropdown clicked:", "num of cam = " + str(1))
+        else:
+            num_of_cam = 1
         print("optionmenu dropdown clicked:", choice)
 
     # Callback function for the slider to update the color dynamically
@@ -3131,44 +3166,36 @@ def SettingOpt():
     Muscle_var = ctk.StringVar(value="Is the posture mainly static or action repeated occurs?")
     Muscle_test = ctk.CTkOptionMenu(master = toplevel, values=["Intermittent", "Static or repeated"],
                                         command=optionmenu_callback,
-                                        variable=Muscle_var, width = 460,
+                                        variable=Muscle_var, width = 480,
                                         fg_color=(("#333333", "#2b719e")),
                                         text_color=(("#ebebeb", "#ebebeb")))
     
-    Muscle_test.grid(row=3, column=7, sticky="e", padx=10, pady=30)
+    Muscle_test.grid(row=4, column=7, sticky="e", padx=10, pady=30)
 
     global Weight
-    Weight = ctk.CTkSlider(master = toplevel, from_=0, to=16, command=update_slider_color, width = 460, number_of_steps=32, progress_color="#f1c232", button_color="#f1c232", button_hover_color=yELLOW, fg_color=rED)
-    Weight.grid(row=4, column=7, sticky="e", padx=10, pady=30)         
+    Weight = ctk.CTkSlider(master = toplevel, from_=0, to=16, command=update_slider_color, width = 480, number_of_steps=32, progress_color="#f1c232", button_color="#f1c232", button_hover_color=yELLOW, fg_color=rED)
+    Weight.grid(row=5, column=7, sticky="e", padx=10, pady=30)         
 
     # Create a label to display the current value of the slider
     value_label = ctk.CTkLabel(master=toplevel, text="Value: 8.0 kg")
-    value_label.grid(row=5, column=7, sticky="e", padx=10, pady=5)
+    value_label.grid(row=6, column=7, sticky="e", padx=10, pady=5)
 
     # Initialize slider value
     initial_value = 0.0
     Weight.set(initial_value)
     update_slider_color(initial_value)
+
+    ######## Fucxing camera
+    global num_of_cam
+    num_of_cam = 1
+    num_var = ctk.StringVar(value="Webcam or External camera?")
+    num_of_cam_test = ctk.CTkOptionMenu(master = toplevel, values=["Webcam", "External Camera"],
+                                        command=optionmenu_callback_num,
+                                        variable=num_var, width = 480,
+                                        fg_color=(("#333333", "#2b719e")),
+                                        text_color=(("#ebebeb", "#ebebeb")))
     
-    # Weight = float(Weight)
-    # update_value_label(Weight)
-
-    # Calweight = 0
-
-    # def weight_cal(value):
-    #     value = float(value)
-    #     if value < 1.99 :
-    #         Calweight = 0
-    #     elif 1.99 <= value < 9.97 and Muscle == 0:
-    #         Calweight = 1
-    #     elif 1.99 <= value < 9.97 and Muscle == 1:
-    #         Calweight = 2 
-    #     elif value > 9.97 and Muscle == 0:
-    #         Calweight = 2
-    #     elif value > 9.97 and Muscle == 1:
-    #         Calweight = 3
-
-    #########################################
+    num_of_cam_test.grid(row=3, column=7, sticky="e", padx=10, pady=30)
 
 #############################################
 
@@ -3183,11 +3210,12 @@ else:
 
 h = 0.1
 ###webcam button
-b1 = ctk.CTkButton(master = leftframe, text = "Camera", command = open_camera, fg_color = (("#333333", "#2b719e")))
-b1.place(relx=0.5, rely=0.1, anchor="n") 
 
 # b2 = ctk.CTkButton(master = leftframe, text = "External Camera", command = camera, fg_color = (("#333333", "#2b719e")))
 # b2.place(relx=0.5, rely=h*2, anchor="n") 
+
+b1 = ctk.CTkButton(master = leftframe, text = "Camera", command = open_camera, fg_color = (("#333333", "#2b719e")))
+b1.place(relx=0.5, rely=0.1, anchor="n") 
 
 b3 = ctk.CTkButton(master = leftframe, text = "Browse an Image", command = browse_img, fg_color = (("#333333", "#2b719e")))
 b3.place(relx=0.5, rely=h*2, anchor="n") 
@@ -3200,8 +3228,5 @@ b5.place(relx=0.5, rely=h*9, anchor="n")
 # b5.pack(side="right", padx=1, pady=1)
 
 SettingOpt()
- 
-
-
 
 root.mainloop()
