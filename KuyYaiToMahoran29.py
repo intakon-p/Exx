@@ -1131,8 +1131,6 @@ def webcam_camSelect(name):
         variable1.set("Left RULA Score : " + str(LC))
         variable2.set("Right RULA Score : " + str(RC))
         root.update()
-        
-            
     
 
     # Release the webcam and close all OpenCV windows
@@ -1143,8 +1141,6 @@ def webcam_camSelect(name):
     pose.close()
 
 ###############################################################################################################################3
-
-
 
 
 def video_pose_estimation(name):
@@ -1159,9 +1155,6 @@ def video_pose_estimation(name):
     mp_holistic = mp.solutions.holistic
     hands = mp_hands.Hands(max_num_hands=2, min_detection_confidence=0.8)
 
-    
-    
-    
 
 
     # Define indices of keypoints for drawing lines (connections)
@@ -1445,10 +1438,6 @@ def video_pose_estimation(name):
             # thumb_text_pos = (int(thumb[0]), int(thumb[1]))
             # cv2.putText(image_with_keypoints, thumb_text, thumb_text_pos, cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             
-            
-            
-            
-
             text_posx = 20
             text_step = 40
 
@@ -1637,9 +1626,7 @@ def video_pose_estimation(name):
             if right_shoulder_abduct_angle > 45:
                 right_shoulder_abduct_score = 1 
             else:
-                right_shoulder_abduct_score = 0
-            
-             
+                right_shoulder_abduct_score = 0 
 
             step1_left_score = left_shoulder_score + left_shoulder_abduct_score
             step1_right_score = right_shoulder_score + right_shoulder_abduct_score
@@ -1792,95 +1779,94 @@ def video_pose_estimation(name):
 
             text_posx = 20
             text_step = 40
-            
+
+            left_text_pos = 10
+            right_text_pos = frame.shape[1] - 240
+
             cv2.putText(image_with_keypoints, f"LS1 : {int(step1_left_score)}",
-                        (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (left_text_pos, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints, f"LS1 : {int(step1_left_score)}",
-                        (10, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (left_text_pos, text_posx), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
             
         
             cv2.putText(image_with_keypoints, f"LS2 : {int(step2_left_score)}", 
-                        (10, text_posx + text_step), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (left_text_pos, text_posx + text_step), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints, f"LS2 : {int(step2_left_score)}", 
-                        (10, text_posx + text_step), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (left_text_pos, text_posx + text_step), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
             
             cv2.putText(image_with_keypoints,f"LS3 : {int(step3_left_score)}",
-                        (10, text_posx+ text_step * 2),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (left_text_pos, text_posx+ text_step * 2),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints,f"LS3 : {int(step3_left_score)}",
-                        (10, text_posx+ text_step * 2),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (left_text_pos, text_posx+ text_step * 2),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
             
             cv2.putText(image_with_keypoints,f"LS4 : {int(step4_left_score)}", 
-                        (10, text_posx + text_step * 3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (left_text_pos, text_posx + text_step * 3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints,f"LS4 : {int(step4_left_score)}", 
-                        (10, text_posx + text_step * 3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (left_text_pos, text_posx + text_step * 3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
             
             cv2.putText(image_with_keypoints,f"S9 : {int(step9_score)}", 
-                        (10, text_posx + text_step * 4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (left_text_pos, text_posx + text_step * 4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints,f"S9 : {int(step9_score)}", 
-                        (10, text_posx + text_step * 4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (left_text_pos, text_posx + text_step * 4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
            
             
             cv2.putText(image_with_keypoints,f"S10 : {int(step10_score)}", 
-                        (10, text_posx + text_step * 5),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (left_text_pos, text_posx + text_step * 5),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints,f"S10 : {int(step10_score)}", 
-                        (10, text_posx + text_step * 5),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (left_text_pos, text_posx + text_step * 5),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
             
             
             cv2.putText(image_with_keypoints,f"S11 : {int(step11_score)}", 
-                        (10, text_posx + text_step * 6) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (left_text_pos, text_posx + text_step * 6) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints,f"S11 : {int(step11_score)}", 
-                        (10, text_posx + text_step * 6) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (left_text_pos, text_posx + text_step * 6) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
             
             
             cv2.putText(image_with_keypoints,f"L.RULA : {int(LC)}", 
-                        (10, text_posx + text_step * 7) ,cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 6)
+                        (left_text_pos, text_posx + text_step * 7) ,cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints,f"L.RULA : {int(LC)}", 
-                        (10, text_posx + text_step * 7) ,cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+                        (left_text_pos, text_posx + text_step * 7) ,cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
             
-
-
-
-
             # Put text on the image for right scores
             cv2.putText(image_with_keypoints, f"RS1 : {int(step1_right_score)}", 
-                        (1190, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (right_text_pos, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints, f"RS1 : {int(step1_right_score)}", 
-                        (1190, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (right_text_pos, text_posx),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
            
             cv2.putText(image_with_keypoints,f"RS2 : {int(step2_right_score)}", 
-                        (1190, text_posx + text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (right_text_pos, text_posx + text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints,f"RS2 : {int(step2_right_score)}", 
-                        (1190, text_posx + text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (right_text_pos, text_posx + text_step),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
             
             cv2.putText(image_with_keypoints,f"RS3 : {int(step3_right_score)}", 
-                        (1190, text_posx + text_step * 2),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (right_text_pos, text_posx + text_step * 2),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints,f"RS3 : {int(step3_right_score)}", 
-                        (1190, text_posx + text_step * 2),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (right_text_pos, text_posx + text_step * 2),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
             
             cv2.putText(image_with_keypoints,f"RS4 : {int(step4_right_score)}", 
-                        (1190, text_posx + text_step * 3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (right_text_pos, text_posx + text_step * 3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints,f"RS4 : {int(step4_right_score)}", 
-                        (1190, text_posx + text_step * 3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (right_text_pos, text_posx + text_step * 3),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
             
             cv2.putText(image_with_keypoints,f"S9 : {int(step9_score)}", 
-                        (1190, text_posx + text_step * 4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (right_text_pos, text_posx + text_step * 4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints,f"S9 : {int(step9_score)}", 
-                        (1190, text_posx + text_step * 4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (right_text_pos, text_posx + text_step * 4),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
             
             cv2.putText(image_with_keypoints,f"S10 : {int(step10_score)}", 
-                        (1190, text_posx + text_step * 5),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (right_text_pos, text_posx + text_step * 5),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints,f"S10 : {int(step10_score)}", 
-                        (1190, text_posx + text_step * 5),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (right_text_pos, text_posx + text_step * 5),cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
             
             cv2.putText(image_with_keypoints,f"S11 : {int(step11_score)}", 
-                        (1190, text_posx + text_step * 6) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
+                        (right_text_pos, text_posx + text_step * 6) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints,f"S11 : {int(step11_score)}", 
-                        (1190, text_posx + text_step * 6) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
+                        (right_text_pos, text_posx + text_step * 6) ,cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 255, 0), 2)
             
             cv2.putText(image_with_keypoints,f"R.RULA : {int(RC)}", 
-                        (1100, text_posx + text_step * 7) ,cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 6)
+                        (right_text_pos, text_posx + text_step * 7) ,cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 0), 6)
             cv2.putText(image_with_keypoints,f"R.RULA : {int(RC)}", 
-                        (1100, text_posx + text_step * 7) ,cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+                        (right_text_pos, text_posx + text_step * 7) ,cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
             
             #cv2.imshow("Proccesing", image_with_keypoints)
             
@@ -1892,7 +1878,6 @@ def video_pose_estimation(name):
             #cv2.imshow("Image with Keypoints", frame)
             LC=None
             RC=None
-
     
         ###############test
         frames.append(image_with_keypoints)
